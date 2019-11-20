@@ -1,4 +1,4 @@
-import HiddenWidget from './components/manage/Widgets/Hidden';
+import HiddenWidget from './Widgets/Hidden';
 
 export function applyConfig(config) {
   return {

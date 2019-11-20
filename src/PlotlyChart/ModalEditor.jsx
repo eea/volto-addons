@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import 'react-chart-editor/lib/react-chart-editor.css';
 import Loadable from 'react-loadable';
-import { connect } from 'react-redux';
-import { searchContent } from '@plone/volto/actions';
-import { getDataFromProvider } from '~/actions';
+import React, { Component } from 'react';
 import { Dropdown } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { getDataFromProvider } from '../actions';
+import { searchContent } from '@plone/volto/actions';
+
+import 'react-chart-editor/lib/react-chart-editor.css';
 
 const LoadablePlotlyEditor = Loadable({
   loader: () => import('react-chart-editor'),

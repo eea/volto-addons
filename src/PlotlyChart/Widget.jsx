@@ -1,4 +1,4 @@
-import ChartEditor from './ChartEditor';
+import ChartEditor from './ModalEditor';
 import React, { Component } from 'react';
 import { Button, Modal, Form, Grid, Label } from 'semantic-ui-react';
 import { map } from 'lodash';
