@@ -7,6 +7,10 @@ import TableauBlockEdit from './Tableau/BlockEdit';
 export function applyConfig(config) {
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
+  return config;
+}
+
+export function installTableau(config) {
   config.blocks.blocksConfig.tableau = {
     id: 'tableau',
     title: 'Tableau',
