@@ -8,27 +8,49 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { readAsDataURL } from 'promise-file-reader';
-import { Button, Dimmer, Input, Loader, Message } from 'semantic-ui-react';
-import { defineMessages, injectIntl } from 'react-intl';
+import { Button, Dimmer, Input, Loader, Message, Grid, Segment, Form } from 'semantic-ui-react';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import cx from 'classnames';
 import Dropzone from 'react-dropzone';
 
 import { settings } from '~/config';
 
-import { Icon, ImageSidebar, SidebarPortal } from '@plone/volto/components';
+import { Icon, SidebarPortal, CheckboxWidget, TextWidget } from '@plone/volto/components';
 import { createContent } from '@plone/volto/actions';
-import { flattenToAppURL, getBaseUrl } from '@plone/volto/helpers';
+import { flattenToAppURL, getBaseUrl, AlignBlock } from '@plone/volto/helpers';
 
+import imageSVG from '@plone/volto/icons/image.svg';
 import imageBlockSVG from './block-image.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
-import PDFViewer from 'mgr-pdf-viewer-react';
+import downSVG from '@plone/volto/icons/down-key.svg';
+
+import Loadable from 'react-loadable';
+
+const LoadablePDFViewer = Loadable({
+  loader: () => import('mgr-pdf-viewer-react'),
+  loading() {
+    return <div>Loading PDF file...</div>;
+  },
+});
 
 const messages = defineMessages({
   ImageBlockInputPlaceholder: {
     id: 'Browse the site, drop a PDF document or type an URL',
     defaultMessage: 'Browse the site, drop a PDF document or type an URL',
+  },
+  Origin: {
+    id: 'Origin',
+    defaultMessage: 'Origin',
+  },
+  Align: {
+    id: 'Alignment',
+    defaultMessage: 'Alignment',
+  },
+  externalURL: {
+    id: 'External URL',
+    defaultMessage: 'External URL',
   },
 });
 
@@ -89,8 +111,6 @@ class Edit extends Component {
         url: nextProps.content['@id'],
       });
     }
-
-    console.log(nextProps, 'state');
   }
 
   /**
@@ -217,6 +237,9 @@ class Edit extends Component {
           ? `${flattenToAppURL(this.props.data.url)}/@@download/file`
           : this.props.data.url)) ||
       null;
+      const data = {
+        ...this.props.data,
+      };
     return (
       <div
         className={cx(
@@ -259,7 +282,7 @@ class Edit extends Component {
           )}
         {this.props.data.url ? (
           <div>
-            <PDFViewer
+            <LoadablePDFViewer
               className={cx({ 'full-width': this.props.data.align === 'full' })}
               document={{
                 url: dataUrl,
@@ -314,7 +337,83 @@ class Edit extends Component {
           </div>
         )}
         <SidebarPortal selected={this.props.selected}>
-          <ImageSidebar {...this.props} />
+          <Segment.Group raised>
+            <header className="header pulled">
+              <h2> PDF Block </h2>
+            </header>
+
+            {!data.url && (
+              <>
+                <Segment className="sidebar-metadata-container" secondary>
+                  <FormattedMessage
+                    id="No image selected"
+                    defaultMessage="No image selected"
+                  />
+                  <Icon name={imageSVG} size="100px" color="#b8c6c8" />
+                </Segment>
+              </>
+            )}
+            {data.url && (
+              <>
+                <Segment className="sidebar-metadata-container" secondary>
+                  {data.url.split('/').slice(-1)[0]}
+                </Segment>
+                <Segment className="form sidebar-image-data">
+                  {data.url.includes(settings.apiPath) && (
+                    <TextWidget
+                      id="Origin"
+                      title={this.props.intl.formatMessage(messages.Origin)}
+                      required={false}
+                      value={data.url.split('/').slice(-1)[0]}
+                      icon={navTreeSVG}
+                      iconAction={() => this.props.openObjectBrowser({mode: 'link'})}
+                      onChange={() => {}}
+                    />
+                  )}
+                  {!data.url.includes(settings.apiPath) && (
+                    <TextWidget
+                      id="external"
+                      title={this.props.intl.formatMessage(messages.externalURL)}
+                      required={false}
+                      value={data.url}
+                      icon={clearSVG}
+                      iconAction={() =>
+                        onChangeBlock(block, {
+                          ...data,
+                          url: '',
+                        })
+                      }
+                      onChange={() => {}}
+                    />
+                  )}
+                <Form.Field inline required={this.props.required}>
+                    <Grid>
+                      <Grid.Row>
+                        <Grid.Column width="4">
+                          <div className="wrapper">
+                            <label htmlFor="field-align">
+                              <FormattedMessage
+                                id="Alignment"
+                                defaultMessage="Alignment"
+                              />
+                            </label>
+                          </div>
+                        </Grid.Column>
+                        <Grid.Column width="8" className="align-tools">
+                          <AlignBlock
+                            align={data.align}
+                            onChangeBlock={this.props.onChangeBlock}
+                            data={data}
+                            block={this.props.block}
+                          />
+                        </Grid.Column>
+                      </Grid.Row>
+                    </Grid>
+                  </Form.Field>
+                </Segment>
+              </>
+            )}
+          </Segment.Group>
         </SidebarPortal>
       </div>
     );

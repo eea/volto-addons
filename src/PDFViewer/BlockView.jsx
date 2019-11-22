@@ -11,6 +11,15 @@ import { settings } from '~/config';
 
 import { flattenToAppURL } from '@plone/volto/helpers';
 
+import Loadable from 'react-loadable';
+
+const LoadablePDFViewer = Loadable({
+  loader: () => import('mgr-pdf-viewer-react'),
+  loading() {
+    return <div>Loading PDF file...</div>;
+  },
+});
+
 /**
  * View image block class.
  * @class View
@@ -30,54 +39,20 @@ const View = ({ data, detached }) => (
     {data.url && (
       <>
         {(() => {
-          const image = (
-            <img
+          const dataUrl =
+            (data.url &&
+              (data.url.includes(settings.apiPath)
+                ? `${flattenToAppURL(data.url)}/@@download/file`
+                : data.url)) ||
+            null;
+          return (
+            <LoadablePDFViewer
               className={cx({ 'full-width': data.align === 'full' })}
-              src={
-                data.url.includes(settings.apiPath)
-                  ? `${flattenToAppURL(data.url)}/@@images/image`
-                  : data.url
-              }
-              alt={data.alt || ''}
+              document={{
+                url: dataUrl,
+              }}
             />
           );
-          if (data.external) {
-            const isReallyExternal =
-              (data.external.startsWith('http') ||
-                data.external.startsWith('https')) &&
-              !data.external.includes(settings.apiPath);
-
-            if (isReallyExternal) {
-              return (
-                <a
-                  target={data.openLinkInNewTab ? '_blank' : null}
-                  href={data.external}
-                >
-                  {image}
-                </a>
-              );
-            } else {
-              return (
-                <Link
-                  to={data.external.replace(settings.apiPath, '')}
-                  target={data.openLinkInNewTab ? '_blank' : null}
-                >
-                  {image}
-                </Link>
-              );
-            }
-          } else if (data.href) {
-            return (
-              <Link
-                to={data.href}
-                target={data.openLinkInNewTab ? '_blank' : null}
-              >
-                {image}
-              </Link>
-            );
-          } else {
-            return image;
-          }
         })()}
       </>
     )}

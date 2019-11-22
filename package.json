@@ -14,5 +14,6 @@
   "author": "Tiberiu Ichim",
   "license": "ISC",
   "dependencies": {
+    "mgr-pdf-viewer-react": "^1.0.3"
   }
 }
