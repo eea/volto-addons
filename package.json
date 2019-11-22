@@ -12,5 +12,7 @@
     "EEA"
   ],
   "author": "Tiberiu Ichim",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+  }
 }
