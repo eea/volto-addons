@@ -1,6 +1,9 @@
 import chartIcon from '@plone/volto/icons/world.svg';
 import HiddenWidget from './Widgets/Hidden';
 
+import PDFBlockView from './PDFViewer/BlockView';
+import PDFBlockEdit from './PDFViewer/BlockEdit';
+
 import TableauBlockView from './Tableau/BlockView';
 import TableauBlockEdit from './Tableau/BlockEdit';
 
@@ -26,6 +29,15 @@ export function applyConfig(config) {
     title: 'Collection Listing',
     view: CollectionBlockView,
     edit: CollectionBlockEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+
+  config.blocks.blocksConfig.pdf_viewer = {
+    id: 'pdf_viewer',
+    title: 'PDF Viewer',
+    view: PDFBlockView,
+    edit: PDFBlockEdit,
     icon: chartIcon,
     group: 'custom_addons',
   };

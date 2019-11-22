@@ -12,5 +12,8 @@
     "EEA"
   ],
   "author": "Tiberiu Ichim",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mgr-pdf-viewer-react": "^1.0.3"
+  }
 }
