@@ -9,8 +9,6 @@ class View extends Component {
   constructor(props) {
     super(props);
 
-    console.log('props view', props);
-
     this.updateContent = this.updateContent.bind(this);
     this.getRequestKey = this.getRequestKey.bind(this);
 

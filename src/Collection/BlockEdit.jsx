@@ -10,12 +10,6 @@ import { connect } from 'react-redux';
 import { getBaseUrl } from '@plone/volto/helpers';
 import { getContent } from '@plone/volto/actions';
 
-/**
- * View text tile class.
- * @class View
- * @extends Component
- */
-
 class Edit extends Component {
   constructor(props) {
     super(props);
