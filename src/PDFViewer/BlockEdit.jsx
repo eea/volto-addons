@@ -23,6 +23,7 @@ import imageBlockSVG from './block-image.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
+import PDFViewer from 'mgr-pdf-viewer-react';
 
 const messages = defineMessages({
   ImageBlockInputPlaceholder: {
@@ -210,6 +211,12 @@ class Edit extends Component {
    * @returns {string} Markup for the component.
    */
   render() {
+    const dataUrl =
+      (this.props.data.url &&
+        (this.props.data.url.includes(settings.apiPath)
+          ? `${flattenToAppURL(this.props.data.url)}/@@download/file`
+          : this.props.data.url)) ||
+      null;
     return (
       <div
         className={cx(
@@ -251,18 +258,17 @@ class Edit extends Component {
             <div className="toolbar">{this.props.appendSecondaryActions}</div>
           )}
         {this.props.data.url ? (
-          <img
-            className={cx({ 'full-width': this.props.data.align === 'full' })}
-            src={
-              this.props.data.url.includes(settings.apiPath)
-                ? `${flattenToAppURL(this.props.data.url)}/@@images/image`
-                : this.props.data.url
-            }
-            alt={this.props.data.alt || ''}
-          />
+          <div>
+            <PDFViewer
+              className={cx({ 'full-width': this.props.data.align === 'full' })}
+              document={{
+                url: dataUrl,
+              }}
+            />
+          </div>
         ) : (
           <div>
-            <Dropzone onDrop={this.onDrop} className="dropzone" >
+            <Dropzone onDrop={this.onDrop} className="dropzone">
               <Message>
                 <center>
                   <img src={imageBlockSVG} alt="" />
