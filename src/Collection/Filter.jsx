@@ -3,12 +3,9 @@ import { Portal } from 'react-portal';
 import React, { Component } from 'react';
 import { getIndexValues } from '../actions';
 import { Menu, Label } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 
 class Filter extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
   componentDidMount() {
     if (this.props.index_name) {
       this.props.getIndexValues(this.props.index_name);
@@ -57,12 +54,26 @@ class Filter extends Component {
           </h5>
           <Menu vertical>
             {this.props.filters.map(item => (
-              <Menu.Item key={item} onClick={() => {}}>
+              <Menu.Item
+                key={item}
+                name={item}
+                onClick={this.props.handleSelectFilter}
+                active={this.props.selectedValue === item}
+              >
                 <Label color="teal">{stats[item]}</Label>
                 {item}
               </Menu.Item>
             ))}
           </Menu>
+          {this.props.selectedValue ? (
+            <Button
+              onClick={() => this.props.handleSelectFilter(null, { name: '' })}
+            >
+              Clear
+            </Button>
+          ) : (
+            ''
+          )}
         </div>
       </Portal>
     ) : (
