@@ -4,7 +4,7 @@ import clearSVG from '@plone/volto/icons/clear.svg';
 import { Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { SidebarPortal } from '@plone/volto/components';
+import { Pagination, SidebarPortal } from '@plone/volto/components';
 import { TextWidget } from '@plone/volto/components';
 import { connect } from 'react-redux';
 import { getBaseUrl } from '@plone/volto/helpers';
@@ -96,6 +96,13 @@ class Edit extends Component {
           handleSelectFilter={() => {}}
           selectedValue=""
           results={this.state.items}
+        />
+        <Pagination
+          current={0}
+          total={10}
+          pageSize={10}
+          onChangePage={() => {}}
+          onChangePageSize={() => {}}
         />
 
         <SidebarPortal selected={this.props.selected}>

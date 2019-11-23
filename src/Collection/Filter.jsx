@@ -18,14 +18,20 @@ class Filter extends Component {
     }
   }
 
-  computeStats(filters, results, fieldname) {
+  computeStats() {
+    const filters = this.props.filters;
+    const results = this.props.results;
+    const index_name = this.props.index_name;
+
+    if (!results) return [];
+
     const res = {};
     filters.forEach(f => {
       res[f] = 0;
     });
     results.forEach(item => {
       filters.forEach(f => {
-        if (item[fieldname] && item[fieldname].indexOf(f) > -1) {
+        if (item[index_name] && item[index_name].indexOf(f) > -1) {
           res[f] += 1;
         }
       });
@@ -34,11 +40,7 @@ class Filter extends Component {
   }
 
   render() {
-    const stats = this.computeStats(
-      this.props.filters,
-      this.props.results,
-      this.props.index_name,
-    );
+    const stats = this.computeStats();
     return __CLIENT__ &&
       this.props.index_name &&
       document.querySelector('.cols.content-cols .inPageNavigation') ? (
