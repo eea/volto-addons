@@ -58,7 +58,10 @@ class BlockView extends Component {
       <div>
         <TilesListing items={this.state.items} />
         {this.props.data.index_name ? (
-          <Filter index_name={this.props.data.index_name} />
+          <Filter
+            index_name={this.props.data.index_name}
+            items={this.state.items}
+          />
         ) : (
           ''
         )}
