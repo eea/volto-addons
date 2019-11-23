@@ -10,6 +10,8 @@ import TableauBlockEdit from './Tableau/BlockEdit';
 import CollectionBlockView from './Collection/BlockView';
 import CollectionBlockEdit from './Collection/BlockEdit';
 
+import * as addonReducers from './reducers';
+
 export function applyConfig(config) {
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
@@ -40,6 +42,11 @@ export function applyConfig(config) {
     edit: PDFBlockEdit,
     icon: chartIcon,
     group: 'custom_addons',
+  };
+
+  config.addonReducers = {
+    ...config.addonReducers,
+    ...addonReducers,
   };
 
   return config;

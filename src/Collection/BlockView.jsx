@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TilesListing from './TilesListing';
 import { getBaseUrl } from '@plone/volto/helpers';
-import { getContent } from '@plone/volto/actions';
+import { getContentWithData } from '../actions';
+import Filter from './Filter';
 
-class View extends Component {
+class BlockView extends Component {
   constructor(props) {
     super(props);
 
@@ -26,7 +27,9 @@ class View extends Component {
     if (!path) return;
 
     const url = `${getBaseUrl(path)}`;
-    this.props.getContent(url, null, this.getRequestKey());
+    this.props.getContentWithData(url, null, this.getRequestKey(), {
+      metadata_fields: '_all',
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -51,11 +54,22 @@ class View extends Component {
   }
 
   render() {
-    return this.state.items ? <TilesListing items={this.state.items} /> : '';
+    return this.state.items ? (
+      <div>
+        <TilesListing items={this.state.items} />
+        {this.props.data.index_name ? (
+          <Filter index_name={this.props.data.index_name} />
+        ) : (
+          ''
+        )}
+      </div>
+    ) : (
+      ''
+    );
   }
 }
 
-View.propTypes = {
+BlockView.propTypes = {
   data: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
@@ -64,6 +78,6 @@ export default connect(
     contentSubrequests: state.content.subrequests,
   }),
   {
-    getContent,
+    getContentWithData,
   },
-)(View);
+)(BlockView);

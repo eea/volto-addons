@@ -8,18 +8,34 @@ import { SidebarPortal } from '@plone/volto/components';
 import { TextWidget } from '@plone/volto/components';
 import { connect } from 'react-redux';
 import { getBaseUrl } from '@plone/volto/helpers';
-import { getContent } from '@plone/volto/actions';
+import { getContent, getVocabulary } from '@plone/volto/actions';
+import SelectListingType from './SelectListingType';
+import { SelectWidget } from '@plone/volto/components';
+import Filter from './Filter';
+
+const vocabulary = 'plone.app.contenttypes.metadatafields';
 
 class Edit extends Component {
   constructor(props) {
     super(props);
 
-    this.updateContent = this.updateContent.bind(this);
-    this.getRequestKey = this.getRequestKey.bind(this);
-
     this.state = {
       items: [],
+      // index_name: this.props.data.index_name || '',
     };
+
+    this.updateContent = this.updateContent.bind(this);
+    this.getRequestKey = this.getRequestKey.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(id, value) {
+    const data = this.props.data;
+
+    this.props.onChangeBlock(this.props.block, {
+      ...data,
+      [id]: value,
+    });
   }
 
   getRequestKey() {
@@ -35,6 +51,7 @@ class Edit extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    // console.log('metadata', this.props.metadataFields);
     if (prevProps.data.collection_url !== this.props.data.collection_url) {
       return this.updateContent();
     }
@@ -52,6 +69,7 @@ class Edit extends Component {
   }
 
   componentDidMount() {
+    this.props.getVocabulary(vocabulary);
     this.updateContent();
   }
 
@@ -73,6 +91,8 @@ class Edit extends Component {
           </strong>
         )}
 
+        <Filter index_name={this.props.data.index_name || ''} />
+
         <SidebarPortal selected={this.props.selected}>
           <Segment.Group raised>
             <header className="header pulled">
@@ -80,7 +100,7 @@ class Edit extends Component {
             </header>
             <Segment>
               <TextWidget
-                id="sparqlquery"
+                id="collection_url"
                 title="Query"
                 required={false}
                 value={data.collection_url.split('/').slice(-1)[0]}
@@ -99,12 +119,20 @@ class Edit extends Component {
                           mode: 'link',
                         })
                 }
-                onChange={(name, value) => {
-                  this.props.onChangeBlock(this.props.block, {
-                    ...data,
-                    collection_url: value,
-                  });
-                }}
+                onChange={this.handleChange}
+              />
+
+              <SelectListingType />
+
+              <SelectWidget
+                required={false}
+                error={[]}
+                fieldSet="collection"
+                id="index_name"
+                title="Use filter"
+                choices={this.props.metadataFields}
+                value={this.props.data.index_name || []}
+                onChange={this.handleChange}
               />
             </Segment>
           </Segment.Group>
@@ -124,10 +152,18 @@ Edit.propTypes = {
 };
 
 export default connect(
-  (state, props) => ({
-    contentSubrequests: state.content.subrequests,
-  }),
+  (state, props) => {
+    // console.log('vocabs', state.vocabularies);
+    return {
+      contentSubrequests: state.content.subrequests,
+      metadataFields:
+        state.vocabularies[vocabulary] && state.vocabularies[vocabulary].items
+          ? state.vocabularies[vocabulary].items.map(o => [o.value, o.label])
+          : [],
+    };
+  },
   {
+    getVocabulary,
     getContent,
   },
 )(Edit);

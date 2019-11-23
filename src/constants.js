@@ -1,0 +1,1 @@
+export const GET_INDEX_VALUES = 'GET_INDEX_VALUES';

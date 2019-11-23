@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 
 const TilesListing = ({ items }) => {
@@ -11,10 +10,6 @@ const TilesListing = ({ items }) => {
       ))}
     </div>
   );
-};
-
-TilesListing.propTypes = {
-  items: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default TilesListing;
