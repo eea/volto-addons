@@ -18,12 +18,12 @@ class Filter extends Component {
     }
   }
 
-  computeStats(filters, items, fieldname) {
+  computeStats(filters, results, fieldname) {
     const res = {};
     filters.forEach(f => {
       res[f] = 0;
     });
-    items.forEach(item => {
+    results.forEach(item => {
       filters.forEach(f => {
         if (item[fieldname] && item[fieldname].indexOf(f) > -1) {
           res[f] += 1;
@@ -36,7 +36,7 @@ class Filter extends Component {
   render() {
     const stats = this.computeStats(
       this.props.filters,
-      this.props.items,
+      this.props.results,
       this.props.index_name,
     );
     return __CLIENT__ &&

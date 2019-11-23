@@ -91,7 +91,12 @@ class Edit extends Component {
           </strong>
         )}
 
-        <Filter index_name={this.props.data.index_name || ''} />
+        <Filter
+          index_name={this.props.data.index_name || ''}
+          handleSelectFilter={() => {}}
+          selectedValue=""
+          results={this.state.items}
+        />
 
         <SidebarPortal selected={this.props.selected}>
           <Segment.Group raised>

@@ -13,10 +13,9 @@ class BlockView extends Component {
     this.updateContent = this.updateContent.bind(this);
     this.getRequestKey = this.getRequestKey.bind(this);
     this.filterItems = this.filterItems.bind(this);
-    this.handleChangeFilter = this.handleChangeFilter.bind(this);
 
     this.state = {
-      items: [],
+      results: [],
       activeFilter: null,
     };
   }
@@ -48,7 +47,7 @@ class BlockView extends Component {
     const now = this.props.contentSubrequests[key];
 
     if (prev.loading && now.loaded) {
-      this.setState({ items: now.data.items });
+      this.setState({ results: now.data.items });
     }
   }
 
@@ -57,31 +56,29 @@ class BlockView extends Component {
   }
 
   filterItems() {
-    const items = this.state.items || [];
+    const results = this.state.results || [];
     const filterFor = this.state.activeFilter;
     const index_name = this.props.data.index_name;
 
-    if (!(filterFor && index_name)) return items;
+    if (!(filterFor && index_name)) return results;
 
-    return items.filter(obj =>
+    return results.filter(obj =>
       obj[index_name].indexOf(filterFor) > -1 ? true : false,
     );
   }
 
-  handleChangeFilter(ev, { name }) {
-    this.setState({ activeFilter: name });
-  }
-
   render() {
-    return this.state.items ? (
+    return this.state.results ? (
       <div>
         <TilesListing items={this.filterItems()} />
         {this.props.data.index_name ? (
           <Filter
-            handleSelectFilter={this.handleChangeFilter}
+            handleSelectFilter={(ev, { name }) =>
+              this.setState({ activeFilter: name })
+            }
             index_name={this.props.data.index_name}
             selectedValue={this.state.activeFilter}
-            items={this.state.items}
+            results={this.state.items}
           />
         ) : (
           ''
