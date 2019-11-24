@@ -1,17 +1,16 @@
-import TilesListing from './TilesListing';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import { Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Pagination, SidebarPortal } from '@plone/volto/components';
+import { SidebarPortal } from '@plone/volto/components';
 import { TextWidget } from '@plone/volto/components';
 import { connect } from 'react-redux';
 import { getBaseUrl } from '@plone/volto/helpers';
 import { getContent, getVocabulary } from '@plone/volto/actions';
 import SelectListingType from './SelectListingType';
 import { SelectWidget } from '@plone/volto/components';
-import Filter from './Filter';
+import BlockView from './BlockView';
 
 const vocabulary = 'plone.app.contenttypes.metadatafields';
 
@@ -81,29 +80,7 @@ class Edit extends Component {
 
     return (
       <div>
-        {data.collection_url ? (
-          <div>
-            <TilesListing items={this.state.items} />
-          </div>
-        ) : (
-          <strong>
-            Use the right sidebar block editor to pick a collection.
-          </strong>
-        )}
-
-        <Filter
-          index_name={this.props.data.index_name || ''}
-          handleSelectFilter={() => {}}
-          selectedValue=""
-          results={this.state.items}
-        />
-        <Pagination
-          current={0}
-          total={10}
-          pageSize={10}
-          onChangePage={() => {}}
-          onChangePageSize={() => {}}
-        />
+        {data.collection_url ? <BlockView {...this.props} /> : ''}
 
         <SidebarPortal selected={this.props.selected}>
           <Segment.Group raised>
