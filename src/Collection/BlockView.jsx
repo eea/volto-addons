@@ -8,11 +8,6 @@ import { getContentWithData } from '../actions';
 import Filter from './Filter';
 
 function filterResults(results = [], filterFor, index_name) {
-  // const results = this.state.results || [];
-  // const filterFor = this.state.activeFilter;
-  // const index_name = this.props.data.index_name;
-  console.log('filterResults', arguments);
-
   if (!(filterFor && index_name)) return results;
 
   return results.filter(obj =>
@@ -24,22 +19,39 @@ class BlockView extends Component {
   constructor(props) {
     super(props);
 
-    this.loadContent = this.loadContent.bind(this);
-    this.getRequestKey = this.getRequestKey.bind(this);
-
     this.state = {
       results: [],
-      all_data: [],
+      all_items: [],
       filteredResults: [],
       activeFilter: null,
       currentPage: 0,
-      pageSize: 1, // 15
-      pageSizes: [1, 2], // [15, 30, 50],
-      totalPages: 1,
+      pageSize: 15,
+      pageSizes: [15, 30, 50],
+      totalPages: 0,
     };
 
+    this.getRequestKey = this.getRequestKey.bind(this);
+    this.handleSelectFilter = this.handleSelectFilter.bind(this);
+    this.loadContent = this.loadContent.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
     this.onChangePageSize = this.onChangePageSize.bind(this);
+  }
+
+  handleSelectFilter(ev, { name }) {
+    const filteredResults = filterResults(
+      this.state.all_items,
+      name,
+      this.props.data.index_name,
+    );
+    console.log('select filter', filteredResults);
+
+    this.setState({
+      activeFilter: name,
+      filteredResults,
+      currentPage: 0,
+      results: filteredResults.slice(0, this.state.pageSize),
+      totalPages: Math.ceil(filteredResults.length / this.state.pageSize),
+    });
   }
 
   onChangePage(ev, { value }) {
@@ -110,9 +122,6 @@ class BlockView extends Component {
 
     const prev = prevProps.contentSubrequests[key];
     const now = this.props.contentSubrequests[key];
-    const b_size = this.state.pageSize;
-    const b_start = this.state.currentPage * b_size;
-    const end = b_start + b_size;
 
     if (prev.loading && now.loaded) {
       // now.data.items_total
@@ -121,13 +130,16 @@ class BlockView extends Component {
         this.state.activeFilter,
         this.props.index_name,
       );
-      console.log('got resp', filteredResults);
+      const b_size = this.state.pageSize;
+      const b_start = this.state.currentPage * b_size;
+      const end = b_start + b_size;
       this.setState({
-        all_data: now.data.items,
+        all_items: now.data.items,
         filteredResults,
         results: filteredResults.slice(b_start, end),
         totalPages: Math.ceil(filteredResults.length / this.state.pageSize),
       });
+      return;
     }
   }
 
@@ -149,12 +161,10 @@ class BlockView extends Component {
         />
         {this.props.data.index_name ? (
           <Filter
-            handleSelectFilter={(ev, { name }) =>
-              this.setState({ activeFilter: name })
-            }
+            handleSelectFilter={this.handleSelectFilter}
             index_name={this.props.data.index_name}
             selectedValue={this.state.activeFilter}
-            results={this.state.all_data}
+            results={this.state.all_items}
           />
         ) : (
           ''
