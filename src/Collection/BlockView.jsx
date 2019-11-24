@@ -7,16 +7,30 @@ import { Pagination } from '@plone/volto/components';
 import { getContentWithData } from '../actions';
 import Filter from './Filter';
 
+function filterResults(results = [], filterFor, index_name) {
+  // const results = this.state.results || [];
+  // const filterFor = this.state.activeFilter;
+  // const index_name = this.props.data.index_name;
+  console.log('filterResults', arguments);
+
+  if (!(filterFor && index_name)) return results;
+
+  return results.filter(obj =>
+    obj[index_name].indexOf(filterFor) > -1 ? true : false,
+  );
+}
+
 class BlockView extends Component {
   constructor(props) {
     super(props);
 
     this.loadContent = this.loadContent.bind(this);
     this.getRequestKey = this.getRequestKey.bind(this);
-    this.filterItems = this.filterItems.bind(this);
 
     this.state = {
       results: [],
+      all_data: [],
+      filteredResults: [],
       activeFilter: null,
       currentPage: 0,
       pageSize: 1, // 15
@@ -29,11 +43,29 @@ class BlockView extends Component {
   }
 
   onChangePage(ev, { value }) {
-    this.setState({ currentPage: value }, this.loadContent);
+    // this.setState({ currentPage: value }, this.loadContent);
+
+    const b_size = this.state.pageSize;
+    const b_start = value * b_size;
+    const end = b_start + b_size;
+
+    this.setState({
+      currentPage: value,
+      results: this.state.filteredResults.slice(b_start, end),
+    });
   }
 
   onChangePageSize(ev, { value }) {
-    this.setState({ pageSize: value, currentPage: 0 }, this.loadContent);
+    // this.setState({ pageSize: value, currentPage: 0 }, this.loadContent);
+    const b_size = value;
+    const b_start = 0;
+    const end = b_start + b_size;
+    this.setState({
+      pageSize: value,
+      currentPage: 0,
+      results: this.state.filteredResults.slice(b_start, end),
+      totalPages: Math.ceil(this.state.filteredResults.length / value),
+    });
   }
 
   getRequestKey() {
@@ -83,9 +115,18 @@ class BlockView extends Component {
     const end = b_start + b_size;
 
     if (prev.loading && now.loaded) {
+      // now.data.items_total
+      const filteredResults = filterResults(
+        now.data.items,
+        this.state.activeFilter,
+        this.props.index_name,
+      );
+      console.log('got resp', filteredResults);
       this.setState({
-        results: now.data.items.slice(b_start, end),
-        totalPages: Math.ceil(now.data.items_total / this.state.pageSize),
+        all_data: now.data.items,
+        filteredResults,
+        results: filteredResults.slice(b_start, end),
+        totalPages: Math.ceil(filteredResults.length / this.state.pageSize),
       });
     }
   }
@@ -94,22 +135,10 @@ class BlockView extends Component {
     this.loadContent();
   }
 
-  filterItems() {
-    const results = this.state.results || [];
-    const filterFor = this.state.activeFilter;
-    const index_name = this.props.data.index_name;
-
-    if (!(filterFor && index_name)) return results;
-
-    return results.filter(obj =>
-      obj[index_name].indexOf(filterFor) > -1 ? true : false,
-    );
-  }
-
   render() {
     return this.state.results ? (
       <div>
-        <TilesListing items={this.filterItems()} />
+        <TilesListing items={this.state.results} />
         <Pagination
           current={this.state.currentPage}
           total={this.state.totalPages}
@@ -125,7 +154,7 @@ class BlockView extends Component {
             }
             index_name={this.props.data.index_name}
             selectedValue={this.state.activeFilter}
-            results={this.state.results}
+            results={this.state.all_data}
           />
         ) : (
           ''

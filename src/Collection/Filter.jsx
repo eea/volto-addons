@@ -6,6 +6,10 @@ import { Menu, Label } from 'semantic-ui-react';
 import { Button } from 'semantic-ui-react';
 
 class Filter extends Component {
+  constructor(props) {
+    super(props);
+    console.log('filter props', props);
+  }
   componentDidMount() {
     if (this.props.index_name) {
       this.props.getIndexValues(this.props.index_name);
@@ -13,6 +17,7 @@ class Filter extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log('filter update', this.props.results);
     if (this.props.index_name !== prevProps.index_name) {
       this.props.getIndexValues(this.props.index_name);
     }
