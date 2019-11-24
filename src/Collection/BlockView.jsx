@@ -43,7 +43,6 @@ class BlockView extends Component {
       name,
       this.props.data.index_name,
     );
-    console.log('select filter', filteredResults);
 
     this.setState({
       activeFilter: name,
@@ -55,8 +54,6 @@ class BlockView extends Component {
   }
 
   onChangePage(ev, { value }) {
-    // this.setState({ currentPage: value }, this.loadContent);
-
     const b_size = this.state.pageSize;
     const b_start = value * b_size;
     const end = b_start + b_size;
@@ -68,7 +65,6 @@ class BlockView extends Component {
   }
 
   onChangePageSize(ev, { value }) {
-    // this.setState({ pageSize: value, currentPage: 0 }, this.loadContent);
     const b_size = value;
     const b_start = 0;
     const end = b_start + b_size;
