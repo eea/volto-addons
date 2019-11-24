@@ -44,12 +44,27 @@ class BlockView extends Component {
     const path = this.props.data.collection_url;
     if (!path) return;
 
+    // NOTE: while this works, we needed a ton of overrides: override for
+    // Collection behavior in eea.restapi and a new action, the
+    // getContentWithData. I think this can be achieved by using the @search
+    // endpoint, reading the collection query property and changing that, to
+    // pass a custom query to the endpoint
     const url = `${getBaseUrl(path)}`;
-    this.props.getContentWithData(url, null, this.getRequestKey(), {
+    const options = {
       metadata_fields: '_all',
-      b_start: this.state.currentPage * this.state.pageSize,
-      b_size: this.state.pageSize,
-    });
+      // b_start: this.state.currentPage * this.state.pageSize,
+      // b_size: this.state.pageSize,
+      // custom_query: this.state.activeFilter
+      //   ? [
+      //       {
+      //         i: this.props.index_name,
+      //         o: 'plone.app.querystring.operation.any',
+      //         v: this.state.activeFilter,
+      //       },
+      //     ]
+      //   : [],
+    };
+    this.props.getContentWithData(url, null, this.getRequestKey(), options);
   }
 
   componentDidUpdate(prevProps) {
@@ -63,10 +78,13 @@ class BlockView extends Component {
 
     const prev = prevProps.contentSubrequests[key];
     const now = this.props.contentSubrequests[key];
+    const b_size = this.state.pageSize;
+    const b_start = this.state.currentPage * b_size;
+    const end = b_start + b_size;
 
     if (prev.loading && now.loaded) {
       this.setState({
-        results: now.data.items,
+        results: now.data.items.slice(b_start, end),
         totalPages: Math.ceil(now.data.items_total / this.state.pageSize),
       });
     }

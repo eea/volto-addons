@@ -1,5 +1,6 @@
 import { GET_INDEX_VALUES } from './constants';
 import { GET_CONTENT } from '@plone/volto/constants/ActionTypes';
+import { dataToQueryString } from './helpers';
 
 export function getIndexValues(name) {
   return {
@@ -18,9 +19,7 @@ export function getContentWithData(
   subrequest = null,
   data = {},
 ) {
-  const qs = Object.keys(data)
-    .map(key => key + '=' + data[key])
-    .join('&');
+  const qs = dataToQueryString(data);
   return {
     type: GET_CONTENT,
     subrequest,
