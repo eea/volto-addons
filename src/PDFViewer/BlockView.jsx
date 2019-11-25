@@ -7,11 +7,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
+import { Icon } from '@plone/volto/components';
 import { settings } from '~/config';
-
 import { flattenToAppURL } from '@plone/volto/helpers';
-
 import Loadable from 'react-loadable';
+
+import CustomNavigation, {
+  CustomPrevButton,
+  CustomNextButton,
+  CustomPages,
+} from './PDFNavigation';
+
+import './pdf-styling.css';
+
+import zoomInSVG from '@plone/volto/icons/add.svg';
+import zoomOutSVG from '@plone/volto/icons/remove.svg';
 
 const LoadablePDFViewer = Loadable({
   loader: () => import('mgr-pdf-viewer-react'),
@@ -60,8 +70,17 @@ class PDFView extends Component {
              null;
            return (
              <div>
-               <button onClick={this.decreaseScale}>-</button>
-               <button onClick={this.increaseScale}>+</button>
+               <div className="pdf-top-toolbar">
+                 <button className= "scale-btn"
+                         onClick={this.increaseScale}>
+                  <Icon name={zoomInSVG} size="15px" />
+                </button>
+                <div className="scale-separator"></div>
+                 <button className= "scale-btn"
+                         onClick={this.decreaseScale}>
+                  <Icon name={zoomOutSVG} size="15px" />
+                 </button>
+               </div>
                <LoadablePDFViewer
                  className={cx({ 'full-width': data.align === 'full' })}
                  document={{
@@ -69,6 +88,7 @@ class PDFView extends Component {
                  }}
                  scale={this.state.scale}
                  css='pdf-viewer'
+                 navigation={CustomNavigation}
                 />
              </div>
            );

@@ -19,6 +19,8 @@ import { Icon, SidebarPortal, CheckboxWidget, TextWidget } from '@plone/volto/co
 import { createContent } from '@plone/volto/actions';
 import { flattenToAppURL, getBaseUrl, AlignBlock } from '@plone/volto/helpers';
 
+import './pdf-styling.css';
+
 import imageSVG from '@plone/volto/icons/image.svg';
 import pdfSVG from './pdf-icon.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
