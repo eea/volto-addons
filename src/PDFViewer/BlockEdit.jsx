@@ -20,7 +20,8 @@ import { createContent } from '@plone/volto/actions';
 import { flattenToAppURL, getBaseUrl, AlignBlock } from '@plone/volto/helpers';
 
 import imageSVG from '@plone/volto/icons/image.svg';
-import imageBlockSVG from './block-image.svg';
+// import imageBlockSVG from './block-image.svg';
+import documentSVG from '@plone/volto/icons/add-document.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
@@ -294,7 +295,7 @@ class Edit extends Component {
             <Dropzone onDrop={this.onDrop} className="dropzone">
               <Message>
                 <center>
-                  <img src={imageBlockSVG} alt="" />
+                  <Icon name={documentSVG} size="80px" />
                   <div className="toolbar-inner">
                     <Button.Group>
                       <Button
