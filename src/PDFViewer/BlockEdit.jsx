@@ -20,8 +20,7 @@ import { createContent } from '@plone/volto/actions';
 import { flattenToAppURL, getBaseUrl, AlignBlock } from '@plone/volto/helpers';
 
 import imageSVG from '@plone/volto/icons/image.svg';
-// import imageBlockSVG from './block-image.svg';
-import documentSVG from '@plone/volto/icons/add-document.svg';
+import pdfSVG from './pdf-icon.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
@@ -288,6 +287,7 @@ class Edit extends Component {
               document={{
                 url: dataUrl,
               }}
+              css='pdf-viewer'
             />
           </div>
         ) : (
@@ -295,7 +295,7 @@ class Edit extends Component {
             <Dropzone onDrop={this.onDrop} className="dropzone">
               <Message>
                 <center>
-                  <Icon name={documentSVG} size="80px" />
+                  <img src={pdfSVG} alt="" />
                   <div className="toolbar-inner">
                     <Button.Group>
                       <Button
@@ -347,10 +347,10 @@ class Edit extends Component {
               <>
                 <Segment className="sidebar-metadata-container" secondary>
                   <FormattedMessage
-                    id="No image selected"
-                    defaultMessage="No image selected"
+                    id="No PDF selected"
+                    defaultMessage="No PDF selected"
                   />
-                  <Icon name={imageSVG} size="100px" color="#b8c6c8" />
+                  <img src={pdfSVG} alt="" />
                 </Segment>
               </>
             )}

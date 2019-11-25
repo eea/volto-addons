@@ -68,6 +68,7 @@ class PDFView extends Component {
                    url: dataUrl,
                  }}
                  scale={this.state.scale}
+                 css='pdf-viewer'
                 />
              </div>
            );
