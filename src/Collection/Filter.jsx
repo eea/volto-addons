@@ -59,7 +59,12 @@ class Filter extends Component {
               <Menu.Item
                 key={item}
                 name={item}
-                onClick={this.props.handleSelectFilter}
+                onClick={(ev, { name }) =>
+                  this.props.handleSelectFilter(ev, {
+                    index_name: this.props.index_name,
+                    selected: name,
+                  })
+                }
                 active={this.props.selectedValue === item}
               >
                 <Label color="teal">{stats[item]}</Label>
@@ -69,7 +74,12 @@ class Filter extends Component {
           </Menu>
           {this.props.selectedValue ? (
             <Button
-              onClick={() => this.props.handleSelectFilter(null, { name: '' })}
+              onClick={() =>
+                this.props.handleSelectFilter(null, {
+                  index_name: this.props.index_name,
+                  selected: null,
+                })
+              }
             >
               Clear
             </Button>

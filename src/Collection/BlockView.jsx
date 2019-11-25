@@ -7,8 +7,8 @@ import { Pagination } from '@plone/volto/components';
 import { getContentWithData } from '../actions';
 import Filter from './Filter';
 
-function filterResults(results = [], filterFor, index_name) {
-  if (!(filterFor && index_name)) return results;
+function filterResults(results = [], filterFor, facets = []) {
+  if (!(filterFor && facets.length)) return results;
 
   return results.filter(obj =>
     obj[index_name].indexOf(filterFor) > -1 ? true : false,
@@ -20,14 +20,15 @@ class BlockView extends Component {
     super(props);
 
     this.state = {
-      results: [],
-      all_items: [],
-      filteredResults: [],
-      activeFilter: null,
-      currentPage: 0,
-      pageSize: 15,
-      pageSizes: [15, 30, 50],
-      totalPages: 0,
+      results: [], // paged results to show in the listing
+      all_items: [], // all items retrieved from backend
+      filteredResults: [], // all items filtered by active filter
+      activeFilters: [], // choice to filter, made in filter
+      currentPage: 0, // current pagination page
+      pageSize: 15, // how many items in a page
+      pageSizes: [15, 30, 50], // choose between these page sizes
+      totalPages: 0, // needed info for the pagination widget
+      facetValues: {},
     };
 
     this.getRequestKey = this.getRequestKey.bind(this);
@@ -37,11 +38,11 @@ class BlockView extends Component {
     this.onChangePageSize = this.onChangePageSize.bind(this);
   }
 
-  handleSelectFilter(ev, { name }) {
+  handleSelectFilter(ev, { index_name, selected }) {
     const filteredResults = filterResults(
       this.state.all_items,
       name,
-      this.props.data.index_name,
+      this.props.data.facets,
     );
 
     this.setState({
@@ -124,7 +125,7 @@ class BlockView extends Component {
       const filteredResults = filterResults(
         now.data.items,
         this.state.activeFilter,
-        this.props.index_name,
+        this.props.data.facets,
       );
       const b_size = this.state.pageSize;
       const b_start = this.state.currentPage * b_size;
@@ -155,16 +156,14 @@ class BlockView extends Component {
           onChangePage={this.onChangePage}
           onChangePageSize={this.onChangePageSize}
         />
-        {this.props.data.index_name ? (
+        {this.props.data.facets.map(index_name => (
           <Filter
             handleSelectFilter={this.handleSelectFilter}
-            index_name={this.props.data.index_name}
+            index_name={index_name}
             selectedValue={this.state.activeFilter}
             results={this.state.all_items}
           />
-        ) : (
-          ''
-        )}
+        ))}
       </div>
     ) : (
       ''
