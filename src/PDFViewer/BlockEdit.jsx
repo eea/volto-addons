@@ -338,6 +338,7 @@ class Edit extends Component {
               <>
                 <Segment className="sidebar-metadata-container" secondary>
                   {data.url.split('/').slice(-1)[0]}
+                  <img src={pdfSVG} alt="" />
                 </Segment>
                 <Segment className="form sidebar-image-data">
                   {data.url.includes(settings.apiPath) && (

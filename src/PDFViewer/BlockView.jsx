@@ -56,12 +56,6 @@ class PDFView extends Component {
         {data.url && (
          <>
            {(() => {
-             const dataUrl =
-               (data.url &&
-                 (data.url.includes(settings.apiPath)
-                   ? `${flattenToAppURL(data.url)}/@@download/file`
-                   : data.url)) ||
-               null;
              return (
                <div>
                  <div>
@@ -81,9 +75,11 @@ class PDFView extends Component {
                      <p className="scale-ratio">{this.state.scale_ratio + '%'}</p>
                    </div>
                   <div>
-                    <button className="pdf-toolbar-btn" title="Download">
-                      <Icon name={downloadSVG} size="15px" />
-                    </button>
+                    <a href={dataUrl}>
+                      <button className="pdf-toolbar-btn" title="Download">
+                        <Icon name={downloadSVG} size="15px" />
+                      </button>
+                    </a>
                   </div>
                  </div>
 
