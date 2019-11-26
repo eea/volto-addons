@@ -3,6 +3,7 @@
  * @module components/theme/View/View
  */
 
+import { push } from 'connected-react-router';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -20,50 +21,7 @@ import {
   getLayoutFieldname,
   flattenToAppURL,
 } from '@plone/volto/helpers';
-
-const getViewDefault = context => views.defaultView;
-
-/**
- * Get view by content type
- * @method getViewByType
- * @returns {string} Markup for component.
- */
-const getViewByType = context =>
-  views.contentTypesViews[context.content['@type']] || null;
-
-/**
- * Get view by content layout property
- * @method getViewByLayout
- * @returns {string} Markup for component.
- */
-const getViewByLayout = context =>
-  views.layoutViews[context.content[getLayoutFieldname(context.content)]] ||
-  null;
-
-function getNewContext(context) {
-  return (
-    (context &&
-      context.content &&
-      context.content['@components'] &&
-      context.content['@components']['defaultpage']) ||
-    null
-  );
-}
-
-function getViewContext(context) {
-  /**
-   * Default fallback view
-   * @method getViewDefault
-   * @returns {string} Markup for component.
-   */
-  let RenderedView;
-  context = getNewContext(context) || context;
-  RenderedView =
-    getViewByType(context) ||
-    getViewByLayout(context) ||
-    getViewDefault(context);
-  return { context, RenderedView };
-}
+import { settings } from '~/config';
 
 /**
  * View container class.
@@ -159,9 +117,7 @@ class View extends Component {
    * @returns {undefined}
    */
   componentWillMount() {
-    const url = getBaseUrl(this.props.pathname);
-
-    this.props.listActions(url);
+    this.props.listActions(getBaseUrl(this.props.pathname));
     this.props.getContent(
       getBaseUrl(this.props.pathname),
       this.props.versionId,
@@ -183,6 +139,23 @@ class View extends Component {
       );
     }
 
+    console.log('nextProps', nextProps.pathname);
+    if (
+      this.props.pathname === nextProps.pathname &&
+      nextProps.content &&
+      nextProps.content['@components'] &&
+      nextProps.content['@components'].defaultpage &&
+      nextProps.content['@components'].defaultpage.content
+    ) {
+      const url = nextProps.content['@components'].defaultpage.content['@id'];
+      const pathname = flattenToAppURL(url);
+      const nexturl = getBaseUrl(pathname).replace(settings.apiPath, '');
+      console.log('fetching next', nexturl); // , nextProps.pathname
+      this.props.listActions(nexturl);
+      this.props.getContent(nexturl); // TODO: handle versions, if needed
+      // this.props.push(nexturl);
+    }
+
     if (nextProps.actions.object_buttons) {
       const objectButtons = nextProps.actions.object_buttons;
       this.setState({
@@ -190,6 +163,31 @@ class View extends Component {
       });
     }
   }
+
+  /**
+   * Default fallback view
+   * @method getViewDefault
+   * @returns {string} Markup for component.
+   */
+  getViewDefault = () => views.defaultView;
+
+  /**
+   * Get view by content type
+   * @method getViewByType
+   * @returns {string} Markup for component.
+   */
+  getViewByType = () =>
+    views.contentTypesViews[this.props.content['@type']] || null;
+
+  /**
+   * Get view by content layout property
+   * @method getViewByLayout
+   * @returns {string} Markup for component.
+   */
+  getViewByLayout = () =>
+    views.layoutViews[
+      this.props.content[getLayoutFieldname(this.props.content)]
+    ] || null;
 
   /**
    * Cleans the component displayName (specially for connected components)
@@ -232,12 +230,8 @@ class View extends Component {
     if (!this.props.content) {
       return <span />;
     }
-    const { context, RenderedView } = getViewContext(this.props);
-    if (!context.pathname) {
-      context.pathname = flattenToAppURL(context.content['@id']);
-      console.log('Will trigger listActions', context);
-      // this.props.listActions(url);
-    }
+    const RenderedView =
+      this.getViewByType() || this.getViewByLayout() || this.getViewDefault();
 
     return (
       <div id="view">
@@ -255,15 +249,16 @@ class View extends Component {
         />
 
         <RenderedView
-          content={context.content}
-          location={context.location}
-          token={context.token}
-          history={context.history}
+          content={this.props.content}
+          location={this.props.location}
+          token={this.props.token}
+          history={this.props.history}
         />
 
-        {context.content.subjects && context.content.subjects.length > 0 && (
-          <Tags tags={context.content.subjects} />
-        )}
+        {this.props.content.subjects &&
+          this.props.content.subjects.length > 0 && (
+            <Tags tags={this.props.content.subjects} />
+          )}
         {/* Add opt-in social sharing if required, disabled by default */}
         {/* In the future this might be parameterized from the app config */}
         {/* <SocialSharing
@@ -271,12 +266,12 @@ class View extends Component {
           title={this.props.content.title}
           description={this.props.content.description || ''}
         /> */}
-        {context.content.allow_discussion && (
-          <Comments pathname={context.pathname} />
+        {this.props.content.allow_discussion && (
+          <Comments pathname={this.props.pathname} />
         )}
 
         <Portal node={__CLIENT__ && document.getElementById('toolbar')}>
-          <Toolbar pathname={context.pathname} inner={<span />} />
+          <Toolbar pathname={this.props.pathname} inner={<span />} />
         </Portal>
       </div>
     );
@@ -299,6 +294,7 @@ export default compose(
     {
       listActions,
       getContent,
+      push,
     },
   ),
 )(View);
