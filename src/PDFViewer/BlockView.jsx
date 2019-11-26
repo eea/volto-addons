@@ -52,63 +52,55 @@ class PDFView extends Component {
      null;
 
     return (
-      <p
-        className={cx(
-         'block image align',
-         {
-           center: !Boolean(data.align),
-           detached,
-         },
-         data.align,
-        )}
-      >
-      {data.url && (
-       <>
-         {(() => {
-           const dataUrl =
-             (data.url &&
-               (data.url.includes(settings.apiPath)
-                 ? `${flattenToAppURL(data.url)}/@@download/file`
-                 : data.url)) ||
-             null;
-           return (
-             <div>
-               <h2>{data.url.split('/').slice(-1)[0]}</h2>
-               <div className="pdf-toolbar pdf-toolbar-top">
+      <div>
+        {data.url && (
+         <>
+           {(() => {
+             const dataUrl =
+               (data.url &&
+                 (data.url.includes(settings.apiPath)
+                   ? `${flattenToAppURL(data.url)}/@@download/file`
+                   : data.url)) ||
+               null;
+             return (
+               <div>
                  <div>
-                   <button className="pdf-toolbar-btn" title="Zoom In"
-                     onClick={this.increaseScale}>
-                     <Icon name={zoomInSVG} size="15px" />
-                   </button>
-                   <div className="scale-separator"></div>
-                   <button className="pdf-toolbar-btn" title="Zoom Out"
-                     onClick={this.decreaseScale}>
-                     <Icon name={zoomOutSVG} size="15px" />
-                   </button>
-                   <p className="scale-ratio">{this.state.scale_ratio + '%'}</p>
+                   <h2 className="pdf-title">{data.url.split('/').slice(-1)[0]}</h2>
                  </div>
-                <div>
-                  <button className="pdf-toolbar-btn" title="Download">
-                    <Icon name={downloadSVG} size="15px" />
-                  </button>
-                </div>
-               </div>
+                 <div className="pdf-toolbar pdf-toolbar-top">
+                   <div>
+                     <button className="pdf-toolbar-btn" title="Zoom In"
+                       onClick={this.increaseScale}>
+                       <Icon name={zoomInSVG} size="15px" />
+                     </button>
+                     <div className="scale-separator"></div>
+                     <button className="pdf-toolbar-btn" title="Zoom Out"
+                       onClick={this.decreaseScale}>
+                       <Icon name={zoomOutSVG} size="15px" />
+                     </button>
+                     <p className="scale-ratio">{this.state.scale_ratio + '%'}</p>
+                   </div>
+                  <div>
+                    <button className="pdf-toolbar-btn" title="Download">
+                      <Icon name={downloadSVG} size="15px" />
+                    </button>
+                  </div>
+                 </div>
 
-               <LoadablePDFViewer
-                 className={cx({ 'full-width': data.align === 'full' })}
-                 document={{
-                   url: dataUrl,
-                 }}
-                 scale={this.state.scale}
-                 css='pdf-viewer'
-                 navigation={CustomNavigation}
-                />
-             </div>
-           );
-         })()}
-       </>
-      )}
-      </p>
+                 <LoadablePDFViewer
+                   document={{
+                     url: dataUrl,
+                   }}
+                   scale={this.state.scale}
+                   css='pdf-viewer'
+                   navigation={CustomNavigation}
+                  />
+               </div>
+             );
+           })()}
+         </>
+        )}
+      </div>
     )
   }
 }

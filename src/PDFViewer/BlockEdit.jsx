@@ -17,7 +17,7 @@ import { settings } from '~/config';
 
 import { Icon, SidebarPortal, CheckboxWidget, TextWidget } from '@plone/volto/components';
 import { createContent } from '@plone/volto/actions';
-import { flattenToAppURL, getBaseUrl, AlignBlock } from '@plone/volto/helpers';
+import { flattenToAppURL, getBaseUrl } from '@plone/volto/helpers';
 
 import CustomNavigation from './PDFNavigation';
 import './pdf-styling.css';
@@ -46,10 +46,6 @@ const messages = defineMessages({
   Origin: {
     id: 'Origin',
     defaultMessage: 'Origin',
-  },
-  Align: {
-    id: 'Alignment',
-    defaultMessage: 'Alignment',
   },
   externalURL: {
     id: 'External URL',
@@ -142,18 +138,6 @@ class Edit extends Component {
     });
   };
 
-  /**
-   * Align block handler
-   * @method onAlignBlock
-   * @param {string} align Alignment option
-   * @returns {undefined}
-   */
-  onAlignBlock(align) {
-    this.props.onChangeBlock(this.props.block, {
-      ...this.props.data,
-      align,
-    });
-  }
 
   /**
    * Change url handler
@@ -244,15 +228,7 @@ class Edit extends Component {
         ...this.props.data,
       };
     return (
-      <div
-        className={cx(
-          'block image align',
-          {
-            center: !Boolean(this.props.data.align),
-          },
-          this.props.data.align,
-        )}
-      >
+      <div>
         {this.props.selected && !!this.props.data.url && (
           <div className="toolbar">
             {this.props.appendActions && <>{this.props.appendActions}</>}
@@ -287,7 +263,6 @@ class Edit extends Component {
           <div>
             <div className="pdf-toolbar pdf-toolbar-top"></div>
             <LoadablePDFViewer
-              className={cx({ 'full-width': this.props.data.align === 'full' })}
               document={{
                 url: dataUrl,
               }}
@@ -392,30 +367,6 @@ class Edit extends Component {
                       onChange={() => {}}
                     />
                   )}
-                <Form.Field inline required={this.props.required}>
-                    <Grid>
-                      <Grid.Row>
-                        <Grid.Column width="4">
-                          <div className="wrapper">
-                            <label htmlFor="field-align">
-                              <FormattedMessage
-                                id="Alignment"
-                                defaultMessage="Alignment"
-                              />
-                            </label>
-                          </div>
-                        </Grid.Column>
-                        <Grid.Column width="8" className="align-tools">
-                          <AlignBlock
-                            align={data.align}
-                            onChangeBlock={this.props.onChangeBlock}
-                            data={data}
-                            block={this.props.block}
-                          />
-                        </Grid.Column>
-                      </Grid.Row>
-                    </Grid>
-                  </Form.Field>
                 </Segment>
               </>
             )}
