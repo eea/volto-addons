@@ -17,11 +17,13 @@ import { settings } from '~/config';
 
 import { Icon, SidebarPortal, CheckboxWidget, TextWidget } from '@plone/volto/components';
 import { createContent } from '@plone/volto/actions';
-import { flattenToAppURL, getBaseUrl, AlignBlock } from '@plone/volto/helpers';
+import { flattenToAppURL, getBaseUrl } from '@plone/volto/helpers';
+
+import CustomNavigation from './PDFNavigation';
+import './pdf-styling.css';
 
 import imageSVG from '@plone/volto/icons/image.svg';
-// import imageBlockSVG from './block-image.svg';
-import documentSVG from '@plone/volto/icons/add-document.svg';
+import pdfSVG from './pdf-icon.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
@@ -44,10 +46,6 @@ const messages = defineMessages({
   Origin: {
     id: 'Origin',
     defaultMessage: 'Origin',
-  },
-  Align: {
-    id: 'Alignment',
-    defaultMessage: 'Alignment',
   },
   externalURL: {
     id: 'External URL',
@@ -140,18 +138,6 @@ class Edit extends Component {
     });
   };
 
-  /**
-   * Align block handler
-   * @method onAlignBlock
-   * @param {string} align Alignment option
-   * @returns {undefined}
-   */
-  onAlignBlock(align) {
-    this.props.onChangeBlock(this.props.block, {
-      ...this.props.data,
-      align,
-    });
-  }
 
   /**
    * Change url handler
@@ -242,15 +228,7 @@ class Edit extends Component {
         ...this.props.data,
       };
     return (
-      <div
-        className={cx(
-          'block image align',
-          {
-            center: !Boolean(this.props.data.align),
-          },
-          this.props.data.align,
-        )}
-      >
+      <div>
         {this.props.selected && !!this.props.data.url && (
           <div className="toolbar">
             {this.props.appendActions && <>{this.props.appendActions}</>}
@@ -283,11 +261,13 @@ class Edit extends Component {
           )}
         {this.props.data.url ? (
           <div>
+            <div className="pdf-toolbar pdf-toolbar-top"></div>
             <LoadablePDFViewer
-              className={cx({ 'full-width': this.props.data.align === 'full' })}
               document={{
                 url: dataUrl,
               }}
+              css='pdf-viewer'
+              navigation={CustomNavigation}
             />
           </div>
         ) : (
@@ -295,7 +275,7 @@ class Edit extends Component {
             <Dropzone onDrop={this.onDrop} className="dropzone">
               <Message>
                 <center>
-                  <Icon name={documentSVG} size="80px" />
+                  <img src={pdfSVG} alt="" />
                   <div className="toolbar-inner">
                     <Button.Group>
                       <Button
@@ -347,10 +327,10 @@ class Edit extends Component {
               <>
                 <Segment className="sidebar-metadata-container" secondary>
                   <FormattedMessage
-                    id="No image selected"
-                    defaultMessage="No image selected"
+                    id="No PDF selected"
+                    defaultMessage="No PDF selected"
                   />
-                  <Icon name={imageSVG} size="100px" color="#b8c6c8" />
+                  <img src={pdfSVG} alt="" />
                 </Segment>
               </>
             )}
@@ -358,6 +338,7 @@ class Edit extends Component {
               <>
                 <Segment className="sidebar-metadata-container" secondary>
                   {data.url.split('/').slice(-1)[0]}
+                  <img src={pdfSVG} alt="" />
                 </Segment>
                 <Segment className="form sidebar-image-data">
                   {data.url.includes(settings.apiPath) && (
@@ -387,30 +368,6 @@ class Edit extends Component {
                       onChange={() => {}}
                     />
                   )}
-                <Form.Field inline required={this.props.required}>
-                    <Grid>
-                      <Grid.Row>
-                        <Grid.Column width="4">
-                          <div className="wrapper">
-                            <label htmlFor="field-align">
-                              <FormattedMessage
-                                id="Alignment"
-                                defaultMessage="Alignment"
-                              />
-                            </label>
-                          </div>
-                        </Grid.Column>
-                        <Grid.Column width="8" className="align-tools">
-                          <AlignBlock
-                            align={data.align}
-                            onChangeBlock={this.props.onChangeBlock}
-                            data={data}
-                            block={this.props.block}
-                          />
-                        </Grid.Column>
-                      </Grid.Row>
-                    </Grid>
-                  </Form.Field>
                 </Segment>
               </>
             )}
