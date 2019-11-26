@@ -12,16 +12,12 @@ import { settings } from '~/config';
 import { flattenToAppURL } from '@plone/volto/helpers';
 import Loadable from 'react-loadable';
 
-import CustomNavigation, {
-  CustomPrevButton,
-  CustomNextButton,
-  CustomPages,
-} from './PDFNavigation';
-
+import CustomNavigation from './PDFNavigation';
 import './pdf-styling.css';
 
 import zoomInSVG from '@plone/volto/icons/add.svg';
 import zoomOutSVG from '@plone/volto/icons/remove.svg';
+import downloadSVG from '@plone/volto/icons/move-down.svg';
 
 const LoadablePDFViewer = Loadable({
   loader: () => import('mgr-pdf-viewer-react'),
@@ -34,10 +30,17 @@ const LoadablePDFViewer = Loadable({
 class PDFView extends Component {
   state = {
     scale: 1.0,
+    scale_ratio: 100,
   }
 
-  increaseScale = () => this.setState(({ scale }) => ({ scale: scale + 0.1 }))
-  decreaseScale = () => this.setState(({ scale }) => ({ scale: scale - 0.1 }))
+  increaseScale = () => this.setState(({ scale, scale_ratio }) => ({
+    scale: scale + 0.1,
+    scale_ratio: scale_ratio + 10
+  }))
+  decreaseScale = () => this.setState(({ scale, scale_ratio }) => ({
+    scale: scale - 0.1,
+    scale_ratio: scale_ratio - 10
+  }))
 
   render () {
     const { data, detached } = this.props;
@@ -70,17 +73,27 @@ class PDFView extends Component {
              null;
            return (
              <div>
-               <div className="pdf-top-toolbar">
-                 <button className= "scale-btn"
-                         onClick={this.increaseScale}>
-                  <Icon name={zoomInSVG} size="15px" />
-                </button>
-                <div className="scale-separator"></div>
-                 <button className= "scale-btn"
-                         onClick={this.decreaseScale}>
-                  <Icon name={zoomOutSVG} size="15px" />
-                 </button>
+               <h2>{data.url.split('/').slice(-1)[0]}</h2>
+               <div className="pdf-toolbar pdf-toolbar-top">
+                 <div>
+                   <button className="pdf-toolbar-btn" title="Zoom In"
+                     onClick={this.increaseScale}>
+                     <Icon name={zoomInSVG} size="15px" />
+                   </button>
+                   <div className="scale-separator"></div>
+                   <button className="pdf-toolbar-btn" title="Zoom Out"
+                     onClick={this.decreaseScale}>
+                     <Icon name={zoomOutSVG} size="15px" />
+                   </button>
+                   <p className="scale-ratio">{this.state.scale_ratio + '%'}</p>
+                 </div>
+                <div>
+                  <button className="pdf-toolbar-btn" title="Download">
+                    <Icon name={downloadSVG} size="15px" />
+                  </button>
+                </div>
                </div>
+
                <LoadablePDFViewer
                  className={cx({ 'full-width': data.align === 'full' })}
                  document={{

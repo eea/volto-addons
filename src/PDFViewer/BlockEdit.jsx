@@ -19,6 +19,7 @@ import { Icon, SidebarPortal, CheckboxWidget, TextWidget } from '@plone/volto/co
 import { createContent } from '@plone/volto/actions';
 import { flattenToAppURL, getBaseUrl, AlignBlock } from '@plone/volto/helpers';
 
+import CustomNavigation from './PDFNavigation';
 import './pdf-styling.css';
 
 import imageSVG from '@plone/volto/icons/image.svg';
@@ -284,12 +285,14 @@ class Edit extends Component {
           )}
         {this.props.data.url ? (
           <div>
+            <div className="pdf-toolbar pdf-toolbar-top"></div>
             <LoadablePDFViewer
               className={cx({ 'full-width': this.props.data.align === 'full' })}
               document={{
                 url: dataUrl,
               }}
               css='pdf-viewer'
+              navigation={CustomNavigation}
             />
           </div>
         ) : (

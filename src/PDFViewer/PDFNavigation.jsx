@@ -13,18 +13,17 @@ export const CustomPrevButton = (props) => {
   } = props;
   if (page === 1) {
     return (
-      <button className="toolbar-btn disabled-btn">
+      <button className="pdf-toolbar-btn disabled-btn">
         <Icon name={prevSVG} size="20px" />
       </button>
     );
   }
 
   return(
-    <button className="toolbar-btn" onClick={handlePrevClick}>
+    <button className="pdf-toolbar-btn" title="Previous Page" onClick={handlePrevClick}>
       <Icon name={prevSVG} size="20px" />
     </button>
   )
-
 };
 
 CustomPrevButton.propTypes = {
@@ -41,17 +40,17 @@ export const CustomNextButton = (props) => {
   } = props;
   if (page === pages) {
     return (
-      <button className="toolbar-btn disabled-btn">
+      <button className="pdf-toolbar-btn disabled-btn">
         <Icon name={nextSVG} size="20px" />
       </button>
     );
   };
 
-    return(
-      <button className="toolbar-btn" onClick={handleNextClick}>
-        <Icon name={nextSVG} size="20px" />
-      </button>
-    )
+  return(
+    <button className="pdf-toolbar-btn" title="Next Page" onClick={handleNextClick}>
+      <Icon name={nextSVG} size="20px" />
+    </button>
+  )
 };
 
 CustomNextButton.propTypes = {
@@ -75,18 +74,17 @@ CustomPages.propTypes = {
 const CustomNavigation = (props) => {
   const {
     page,
-    pages
-  } = props;
-
-  const {
+    pages,
     handlePrevClick,
-    handleNextClick
+    handleNextClick,
   } = props;
 
   return (
-    <div className="pdf-bottom-toolbar">
-      <CustomPrevButton page={page} pages={pages} handlePrevClick={handlePrevClick} />
-      <CustomNextButton page={page} pages={pages} handleNextClick={handleNextClick} />
+    <div className="pdf-toolbar pdf-toolbar-bottom">
+      <div>
+        <CustomPrevButton page={page} pages={pages} handlePrevClick={handlePrevClick} />
+        <CustomNextButton page={page} pages={pages} handleNextClick={handleNextClick} />
+      </div>
       <CustomPages page={page} pages={pages} />
     </div>
   );
