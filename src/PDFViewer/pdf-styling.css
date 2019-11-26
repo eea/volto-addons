@@ -16,7 +16,7 @@
   justify-content: space-between;
   background-color: #383838;
   width: 100%;
-  height: 30px;
+  height: 32px;
   padding: 0 6px;
   color: #fff;
 }
@@ -80,4 +80,8 @@
 
 .pdf-title {
   margin-bottom: 1em !important;
+}
+
+.pdf-toolbar .pdf-pages {
+  margin-right: 1em !important;
 }
