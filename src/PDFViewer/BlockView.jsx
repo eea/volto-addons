@@ -123,7 +123,6 @@ class PDFView extends Component {
                         </a>
                       </div>
                     </div>
-                    <p>{this.state.page}</p>
 
                     <LoadablePDFViewer
                       document={{
