@@ -20,7 +20,10 @@ export const CustomPrevButton = (props) => {
   }
 
   return(
-    <button className="pdf-toolbar-btn" title="Previous Page" onClick={handlePrevClick}>
+    <button className="pdf-toolbar-btn"
+            title="Previous Page"
+            onClick={handlePrevClick}
+            >
       <Icon name={prevSVG} size="20px" />
     </button>
   )
@@ -47,7 +50,10 @@ export const CustomNextButton = (props) => {
   };
 
   return(
-    <button className="pdf-toolbar-btn" title="Next Page" onClick={handleNextClick}>
+    <button className="pdf-toolbar-btn"
+            title="Next Page"
+            onClick={handleNextClick}
+            >
       <Icon name={nextSVG} size="20px" />
     </button>
   )

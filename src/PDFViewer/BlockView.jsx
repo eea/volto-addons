@@ -42,6 +42,25 @@ class PDFView extends Component {
     scale_ratio: scale_ratio - 10
   }))
 
+  componentDidMount() {
+    document.querySelector('.pdf-wrapper')
+      .addEventListener('wheel', this.handleWheel);
+  }
+
+  componentWillUnmount() {
+    document.querySelector('.pdf-wrapper')
+      .removeEventListener('wheel', this.handleWheel);
+  }
+
+  handleWheel(event) {
+    if (event.deltaY < 0) {
+     console.log('scrolling up');
+    }
+    else if (event.deltaY > 0) {
+     console.log('scrolling down');
+    }
+  }
+
   render () {
     const { data, detached } = this.props;
     const dataUrl =
@@ -58,39 +77,40 @@ class PDFView extends Component {
            {(() => {
              return (
                <div>
-                 <div>
+                 <div className="pdf-wrapper">
                    <h2 className="pdf-title">{data.url.split('/').slice(-1)[0]}</h2>
-                 </div>
-                 <div className="pdf-toolbar pdf-toolbar-top">
-                   <div>
-                     <button className="pdf-toolbar-btn" title="Zoom In"
-                       onClick={this.increaseScale}>
-                       <Icon name={zoomInSVG} size="15px" />
-                     </button>
-                     <div className="scale-separator"></div>
-                     <button className="pdf-toolbar-btn" title="Zoom Out"
-                       onClick={this.decreaseScale}>
-                       <Icon name={zoomOutSVG} size="15px" />
-                     </button>
-                     <p className="scale-ratio">{this.state.scale_ratio + '%'}</p>
+                   <div className="pdf-toolbar pdf-toolbar-top">
+                     <div>
+                       <button className="pdf-toolbar-btn" title="Zoom In"
+                         onClick={this.increaseScale}>
+                         <Icon name={zoomInSVG} size="15px" />
+                       </button>
+                       <div className="scale-separator"></div>
+                       <button className="pdf-toolbar-btn" title="Zoom Out"
+                         onClick={this.decreaseScale}>
+                         <Icon name={zoomOutSVG} size="15px" />
+                       </button>
+                       <p className="scale-ratio">{this.state.scale_ratio + '%'}</p>
+                     </div>
+                     <div>
+                       <a href={dataUrl}>
+                         <button className="pdf-toolbar-btn" title="Download">
+                           <Icon name={downloadSVG} size="15px" />
+                         </button>
+                       </a>
+                     </div>
                    </div>
-                  <div>
-                    <a href={dataUrl}>
-                      <button className="pdf-toolbar-btn" title="Download">
-                        <Icon name={downloadSVG} size="15px" />
-                      </button>
-                    </a>
-                  </div>
-                 </div>
+                   <p>{this.state.page}</p>
 
-                 <LoadablePDFViewer
-                   document={{
-                     url: dataUrl,
-                   }}
-                   scale={this.state.scale}
-                   css='pdf-viewer'
-                   navigation={CustomNavigation}
-                  />
+                   <LoadablePDFViewer
+                     document={{
+                       url: dataUrl,
+                     }}
+                     scale={this.state.scale}
+                     css='pdf-viewer'
+                     navigation={CustomNavigation}
+                     />
+                 </div>
                </div>
              );
            })()}
