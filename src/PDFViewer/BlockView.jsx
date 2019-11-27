@@ -91,9 +91,6 @@ class PDFView extends Component {
               return (
                 <div>
                   <div className="pdf-wrapper">
-                    <h2 className="pdf-title">
-                      {data.url.split('/').slice(-1)[0]}
-                    </h2>
                     <div className="pdf-toolbar pdf-toolbar-top">
                       <div>
                         <button
