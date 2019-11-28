@@ -11,7 +11,7 @@ function filterResults(results = [], filterValue, facetFilter) {
   if (!(filterValue && facetFilter)) return results;
 
   return results.filter(obj =>
-    obj[facetFilter.token].indexOf(filterValue) > -1 ? true : false,
+    (obj[facetFilter.token] || []).indexOf(filterValue) > -1 ? true : false,
   );
 }
 
