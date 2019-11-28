@@ -5,6 +5,7 @@ import TilesListing from './TilesListing';
 import { getBaseUrl } from '@plone/volto/helpers';
 import { Pagination } from '@plone/volto/components';
 import { getContentWithData } from '../actions';
+import { searchContent } from '@plone/volto/actions';
 import Filter from './Filter';
 
 function filterResults(results = [], filterValue, facetFilter) {
@@ -92,6 +93,7 @@ class BlockView extends Component {
     const url = `${getBaseUrl(path)}`;
     const options = {
       metadata_fields: '_all',
+      is_search: 1,
       // b_start: this.state.currentPage * this.state.pageSize,
       // b_size: this.state.pageSize,
       // custom_query: this.state.activeFilter
@@ -182,5 +184,6 @@ export default connect(
   }),
   {
     getContentWithData,
+    searchContent,
   },
 )(BlockView);
