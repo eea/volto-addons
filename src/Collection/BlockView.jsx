@@ -7,11 +7,11 @@ import { Pagination } from '@plone/volto/components';
 import { getContentWithData } from '../actions';
 import Filter from './Filter';
 
-function filterResults(results = [], filterFor, index_name) {
-  if (!(filterFor && index_name)) return results;
+function filterResults(results = [], filterValue, facetFilter) {
+  if (!(filterValue && facetFilter)) return results;
 
   return results.filter(obj =>
-    obj[index_name].indexOf(filterFor) > -1 ? true : false,
+    obj[facetFilter.token].indexOf(filterValue) > -1 ? true : false,
   );
 }
 
@@ -41,7 +41,7 @@ class BlockView extends Component {
     const filteredResults = filterResults(
       this.state.all_items,
       name,
-      this.props.data.index_name,
+      this.props.data.facetFilter,
     );
 
     this.setState({
@@ -97,7 +97,7 @@ class BlockView extends Component {
       // custom_query: this.state.activeFilter
       //   ? [
       //       {
-      //         i: this.props.index_name,
+      //         i: this.props.facetFilter,
       //         o: 'plone.app.querystring.operation.any',
       //         v: this.state.activeFilter,
       //       },
@@ -124,7 +124,7 @@ class BlockView extends Component {
       const filteredResults = filterResults(
         now.data.items,
         this.state.activeFilter,
-        this.props.index_name,
+        this.props.data.facetFilter,
       );
       const b_size = this.state.pageSize;
       const b_start = this.state.currentPage * b_size;
@@ -155,10 +155,10 @@ class BlockView extends Component {
           onChangePage={this.onChangePage}
           onChangePageSize={this.onChangePageSize}
         />
-        {this.props.data.index_name ? (
+        {this.props.data.facetFilter ? (
           <Filter
             handleSelectFilter={this.handleSelectFilter}
-            index_name={this.props.data.index_name}
+            facetFilter={this.props.data.facetFilter}
             selectedValue={this.state.activeFilter}
             results={this.state.all_items}
           />
