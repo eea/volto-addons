@@ -1,0 +1,24 @@
+.tile-listing {
+  margin-bottom: 1rem;
+}
+
+.tile-listing .ui.breadcrumb .divider {
+  margin: 0 0.3rem;
+}
+
+.tile-listing .ui.items > .item {
+  margin-bottom: 3rem;
+}
+
+.tile-listing .tile-title {
+  margin-bottom: 0.5em;
+}
+
+.tile-listing .ui.items > .item .extra {
+  color: inherit;
+  font-size: 14px;
+}
+
+.tile-listing .muted {
+  color: #aaa;
+}
