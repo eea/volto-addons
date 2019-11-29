@@ -40,15 +40,6 @@ export function applyConfig(config) {
     group: 'custom_addons',
   };
 
-  config.blocks.blocksConfig.folder_contents_block = {
-    id: 'folder_contents_block',
-    title: 'Folder Contents',
-    view: FolderListingBlockView,
-    edit: FolderListingBlockEdit,
-    icon: chartIcon,
-    group: 'custom_addons',
-  };
-
   config.blocks.blocksConfig.pdf_viewer = {
     id: 'pdf_viewer',
     title: 'PDF Viewer',
@@ -63,6 +54,18 @@ export function applyConfig(config) {
     ...addonReducers,
   };
 
+  return config;
+}
+
+export function installFolderListing(config) {
+  config.blocks.blocksConfig.folder_contents_block = {
+    id: 'folder_contents_block',
+    title: 'Folder Contents',
+    view: FolderListingBlockView,
+    edit: FolderListingBlockEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
   return config;
 }
 
