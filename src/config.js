@@ -11,6 +11,9 @@ import CollectionBlockView from './Collection/BlockView';
 import CollectionBlockEdit from './Collection/BlockEdit';
 import CollectionView from './Collection/View';
 
+import FolderListingBlockView from './FolderListing/BlockView';
+import FolderListingBlockEdit from './FolderListing/BlockEdit';
+
 import * as addonReducers from './reducers';
 
 export function applyConfig(config) {
@@ -33,6 +36,15 @@ export function applyConfig(config) {
     title: 'Collection Listing',
     view: CollectionBlockView,
     edit: CollectionBlockEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+
+  config.blocks.blocksConfig.folder_contents_block = {
+    id: 'folder_contents_block',
+    title: 'Folder Contents',
+    view: FolderListingBlockView,
+    edit: FolderListingBlockEdit,
     icon: chartIcon,
     group: 'custom_addons',
   };
