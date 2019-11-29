@@ -149,14 +149,16 @@ class BlockView extends Component {
     return this.state.results ? (
       <div>
         <TilesListing items={this.state.results} />
-        <Pagination
-          current={this.state.currentPage}
-          total={this.state.totalPages}
-          pageSize={this.state.pageSize}
-          pageSizes={this.state.pageSizes}
-          onChangePage={this.onChangePage}
-          onChangePageSize={this.onChangePageSize}
-        />
+        {this.state.totalPages > 1 && (
+          <Pagination
+            current={this.state.currentPage}
+            total={this.state.totalPages}
+            pageSize={this.state.pageSize}
+            pageSizes={this.state.pageSizes}
+            onChangePage={this.onChangePage}
+            onChangePageSize={this.onChangePageSize}
+          />
+        )}
         {this.props.data.facetFilter ? (
           <Filter
             handleSelectFilter={this.handleSelectFilter}

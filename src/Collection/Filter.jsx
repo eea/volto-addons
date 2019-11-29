@@ -46,11 +46,11 @@ class Filter extends Component {
     const stats = this.computeStats();
     return __CLIENT__ &&
       this.props.facetFilter &&
-      document.querySelector('.cols.content-cols .inPageNavigation') ? (
+      document.querySelector('.content-page .inPageNavigation') ? (
       <Portal
         node={
           __CLIENT__ &&
-          document.querySelector('.cols.content-cols .inPageNavigation')
+          document.querySelector('.content-page .inPageNavigation')
         }
       >
         <div className="headings_navigation">

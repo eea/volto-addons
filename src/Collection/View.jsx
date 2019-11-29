@@ -27,6 +27,13 @@ const CollectionView = ({ content }) => {
     <Container id="page-home">
       <Helmet title={content.title} />
       <section id="content-core">
+        <h1 className="documentFirstHeading">
+          {content.title}
+          {content.subtitle && ` - ${content.subtitle}`}
+        </h1>
+        {content.description && (
+          <p className="documentDescription">{content.description}</p>
+        )}
         <BlockView
           data={{
             collection_url: url,
