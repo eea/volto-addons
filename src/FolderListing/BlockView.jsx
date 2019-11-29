@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { Grid, Card } from 'semantic-ui-react';
 import { settings } from '~/config';
 
 class BlockView extends Component {
@@ -11,12 +13,24 @@ class BlockView extends Component {
   render() {
     return (
       <div>
-        {this.props.properties.items.length === 0 && <div>No children</div>}
-        {this.props.properties.items.map(item => (
-          <div>
-            <a href={this.getPath(item['@id'])}>{item.title || item.Title}</a>
-          </div>
-        ))}
+        <Grid>
+          <Grid.Row>
+            {this.props.properties.items.length === 0 && <div>No children</div>}
+            {this.props.properties.items.map(item => (
+              <Grid.Column width={6} style={{margin: '1rem 0'}}>
+                <Card.Group centered>
+                  <Card>
+                    <Card.Content style={{textAlign: 'center'}}>
+                      <Link key={item.url} to={this.getPath(item['@id'])}>
+                        <h3 style={{margin: 0}}>{item.title || item.Title}</h3>
+                      </Link>
+                    </Card.Content>
+                  </Card>
+                </Card.Group>
+              </Grid.Column>
+            ))}
+          </Grid.Row>
+        </Grid>
       </div>
     );
   }
