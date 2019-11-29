@@ -8,6 +8,8 @@ import { getContentWithData } from '../actions';
 import { searchContent } from '@plone/volto/actions';
 import Filter from './Filter';
 
+import './style.css';
+
 function filterResults(results = [], filterValue, facetFilter) {
   if (!(filterValue && facetFilter)) return results;
 
@@ -150,14 +152,16 @@ class BlockView extends Component {
       <div>
         <TilesListing items={this.state.results} />
         {this.state.totalPages > 1 && (
-          <Pagination
-            current={this.state.currentPage}
-            total={this.state.totalPages}
-            pageSize={this.state.pageSize}
-            pageSizes={this.state.pageSizes}
-            onChangePage={this.onChangePage}
-            onChangePageSize={this.onChangePageSize}
-          />
+          <div className="tile-listing-pagination">
+            <Pagination
+              current={this.state.currentPage}
+              total={this.state.totalPages}
+              pageSize={this.state.pageSize}
+              pageSizes={this.state.pageSizes}
+              onChangePage={this.onChangePage}
+              onChangePageSize={this.onChangePageSize}
+              />
+          </div>
         )}
         {this.props.data.facetFilter ? (
           <Filter

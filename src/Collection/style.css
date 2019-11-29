@@ -1,5 +1,5 @@
 .tile-listing {
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
 }
 
 .tile-listing .ui.breadcrumb .divider {
@@ -7,7 +7,7 @@
 }
 
 .tile-listing .ui.items > .item {
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 }
 
 .tile-listing .tile-title {
@@ -21,4 +21,8 @@
 
 .tile-listing .muted {
   color: #aaa;
+}
+
+.tile-listing-pagination .ui.secondary.attached.menu {
+  border: none;
 }

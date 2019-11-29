@@ -5,8 +5,6 @@ import { Breadcrumb } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { settings } from '~/config';
 
-import './style.css';
-
 class TilesListing extends Component {
   getPath(url) {
     return url
