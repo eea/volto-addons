@@ -26,8 +26,9 @@ const TilesListing = ({ items }) => {
                     {item['@components'] && item['@components'].breadcrumbs && (
                       <div className="card-content">
                         <Breadcrumb>
-                          {item['@components'].breadcrumbs.items.map(
-                            (item, index, items) => [
+                          {item['@components'].breadcrumbs.items
+                            .slice(0, -1)
+                            .map((item, index, items) => [
                               index < items.length - 1 ? (
                                 <Breadcrumb.Section key={item['@id']}>
                                   <Link to={item['@id']}>{item.title}</Link>
@@ -40,8 +41,7 @@ const TilesListing = ({ items }) => {
                                   <Link to={item['@id']}>{item.title}</Link>
                                 </Breadcrumb.Section>
                               ),
-                            ],
-                          )}
+                            ])}
                         </Breadcrumb>
                       </div>
                     )}
