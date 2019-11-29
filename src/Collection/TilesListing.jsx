@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedDate } from 'react-intl';
 import { Item } from 'semantic-ui-react';
-import { Breadcrumb } from 'semantic-ui-react';
+import { Breadcrumb, Placeholder } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { settings } from '~/config';
 
@@ -63,7 +63,21 @@ class TilesListing extends Component {
                     </Item.Content>
                   </Item>
                 ))
-              : 'No results'}
+              : (
+                <div>
+                  <p>No results.</p>
+                  <Placeholder>
+                    <Placeholder.Header image>
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                    </Placeholder.Header>
+                    <Placeholder.Paragraph>
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                    </Placeholder.Paragraph>
+                  </Placeholder>
+                </div>
+              )}
           </Item.Group>
         </div>
       </div>

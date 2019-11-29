@@ -26,3 +26,14 @@
 .tile-listing-pagination .ui.secondary.attached.menu {
   border: none;
 }
+
+
+/* Filter  */
+.headings_navigation .ui.vertical.menu .active.item,
+.headings_navigation .ui.vertical.menu .item:hover,
+.headings_navigation .ui.vertical.menu .active.item:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+.headings_navigation .ui.vertical.menu .active.item {
+  font-weight: bold;
+}
