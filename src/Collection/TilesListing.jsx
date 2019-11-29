@@ -24,11 +24,7 @@ const TilesListing = ({ items }) => {
                     <Item.Description>{item.description}</Item.Description>
                     <Item.Extra>
                       <span>
-                        Content Type:{' '}
-                        <span style={categoryStyle}>{item['@type']}</span>
-                      </span>
-                      <span>
-                        Date:{' '}
+                        Updated:{' '}
                         <span style={categoryStyle}>
                           <FormattedDate
                             value={item.created}
