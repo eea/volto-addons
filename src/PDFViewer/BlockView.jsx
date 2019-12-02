@@ -39,15 +39,17 @@ class PDFView extends Component {
     }));
 
   componentDidMount() {
-    document
-      .querySelector('.pdf-wrapper')
-      .addEventListener('wheel', this.handleWheel);
+    const pdfWrapper = document.querySelector('.pdf-wrapper');
+    if (pdfWrapper) {
+      pdfWrapper.addEventListener('wheel', this.handleWheel);
+    }
   }
 
   componentWillUnmount() {
-    document
-      .querySelector('.pdf-wrapper')
-      .removeEventListener('wheel', this.handleWheel);
+    const pdfWrapper = document.querySelector('.pdf-wrapper');
+    if (pdfWrapper) {
+      pdfWrapper.addEventListener('wheel', this.handleWheel);
+    }
   }
 
   handleWheel = event => {

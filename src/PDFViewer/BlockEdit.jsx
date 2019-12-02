@@ -32,7 +32,7 @@ import downSVG from '@plone/volto/icons/down-key.svg';
 import Loadable from 'react-loadable';
 
 const LoadablePDFViewer = Loadable({
-  loader: () => import('mgr-pdf-viewer-react'),
+  loader: () => import('./PDFViewer'),
   loading() {
     return <div>Loading PDF file...</div>;
   },
@@ -88,6 +88,46 @@ class Edit extends Component {
   state = {
     uploading: false,
     url: '',
+    currentPage: 1,
+    pageCount: 0,
+  };
+
+  componentDidMount() {
+    const pdfWrapper = document.querySelector('.pdf-wrapper');
+    if (pdfWrapper) {
+      pdfWrapper.addEventListener('wheel', this.handleWheel);
+    }
+  }
+
+  componentWillUnmount() {
+    const pdfWrapper = document.querySelector('.pdf-wrapper');
+    if (pdfWrapper) {
+      pdfWrapper.removeEventListener('wheel', this.handleWheel);
+    }
+  }
+
+  handleWheel = event => {
+    let page;
+    if (event.deltaY < 0) {
+      page = Math.max(this.state.currentPage - 1, 1);
+      this.setState({
+        currentPage: page,
+      });
+    } else if (event.deltaY > 0) {
+      page = Math.min(this.state.currentPage + 1, this.state.pageCount);
+      this.setState({
+        currentPage: page,
+      });
+    }
+
+    event.preventDefault();
+  };
+
+  onDocumentComplete = ({ page, pages }) => {
+    this.setState({
+      currentPage: page,
+      pageCount: pages,
+    });
   };
 
   /**
@@ -268,6 +308,8 @@ class Edit extends Component {
               }}
               css='pdf-viewer'
               navigation={CustomNavigation}
+              page={this.state.currentPage}
+              onDocumentComplete={this.onDocumentComplete}
             />
           </div>
         ) : (
