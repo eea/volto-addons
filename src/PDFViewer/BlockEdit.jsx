@@ -8,26 +8,23 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { readAsDataURL } from 'promise-file-reader';
-import { Button, Dimmer, Input, Loader, Message, Grid, Segment, Form } from 'semantic-ui-react';
+import { Button, Input, Message, Segment } from 'semantic-ui-react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import cx from 'classnames';
 import Dropzone from 'react-dropzone';
 
 import { settings } from '~/config';
 
-import { Icon, SidebarPortal, CheckboxWidget, TextWidget } from '@plone/volto/components';
+import { Icon, SidebarPortal, TextWidget } from '@plone/volto/components';
 import { createContent } from '@plone/volto/actions';
 import { flattenToAppURL, getBaseUrl } from '@plone/volto/helpers';
 
 import CustomNavigation from './PDFNavigation';
 import './pdf-styling.css';
 
-import imageSVG from '@plone/volto/icons/image.svg';
 import pdfSVG from './pdf-icon.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
-import downSVG from '@plone/volto/icons/down-key.svg';
 
 import Loadable from 'react-loadable';
 
@@ -178,7 +175,6 @@ class Edit extends Component {
     });
   };
 
-
   /**
    * Change url handler
    * @method onChangeUrl
@@ -264,9 +260,9 @@ class Edit extends Component {
           ? `${flattenToAppURL(this.props.data.url)}/@@download/file`
           : this.props.data.url)) ||
       null;
-      const data = {
-        ...this.props.data,
-      };
+    const data = {
+      ...this.props.data,
+    };
     return (
       <div>
         {this.props.selected && !!this.props.data.url && (
@@ -301,12 +297,12 @@ class Edit extends Component {
           )}
         {this.props.data.url ? (
           <div>
-            <div className="pdf-toolbar pdf-toolbar-top"></div>
+            <div className="pdf-toolbar pdf-toolbar-top" />
             <LoadablePDFViewer
               document={{
                 url: dataUrl,
               }}
-              css='pdf-viewer'
+              css="pdf-viewer"
               navigation={CustomNavigation}
               page={this.state.currentPage}
               onDocumentComplete={this.onDocumentComplete}
@@ -390,19 +386,23 @@ class Edit extends Component {
                       required={false}
                       value={data.url.split('/').slice(-1)[0]}
                       icon={navTreeSVG}
-                      iconAction={() => this.props.openObjectBrowser({mode: 'link'})}
+                      iconAction={() =>
+                        this.props.openObjectBrowser({ mode: 'link' })
+                      }
                       onChange={() => {}}
                     />
                   )}
                   {!data.url.includes(settings.apiPath) && (
                     <TextWidget
                       id="external"
-                      title={this.props.intl.formatMessage(messages.externalURL)}
+                      title={this.props.intl.formatMessage(
+                        messages.externalURL,
+                      )}
                       required={false}
                       value={data.url}
                       icon={clearSVG}
-                      iconAction={() =>
-                        onChangeBlock(block, {
+                      iconAction={block =>
+                        this.props.onChangeBlock(block, {
                           ...data,
                           url: '',
                         })
