@@ -21,16 +21,6 @@ export function applyConfig(config) {
   config.widgets.id.blocks_layout = HiddenWidget;
   config.views.contentTypesViews.Collection = CollectionView;
 
-  const hasCustomGroup = config.blocks.groupBlocksOrder.filter(
-    el => el.id === 'custom_addons',
-  );
-  if (!hasCustomGroup.length) {
-    config.blocks.groupBlocksOrder.push({
-      id: 'custom_addons',
-      title: 'Custom addons',
-    });
-  }
-
   config.blocks.blocksConfig.collection_block = {
     id: 'collection_block',
     title: 'Collection Listing',
@@ -57,6 +47,18 @@ export function applyConfig(config) {
   return config;
 }
 
+export function installCustomAddonGroup(config) {
+  const hasCustomGroup = config.blocks.groupBlocksOrder.filter(
+    el => el.id === 'custom_addons',
+  );
+  if (!hasCustomGroup.length) {
+    config.blocks.groupBlocksOrder.push({
+      id: 'custom_addons',
+      title: 'Custom addons',
+    });
+  }
+  return config;
+}
 export function installFolderListing(config) {
   config.blocks.blocksConfig.folder_contents_block = {
     id: 'folder_contents_block',
