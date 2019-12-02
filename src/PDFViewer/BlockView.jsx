@@ -11,6 +11,7 @@ import './pdf-styling.css';
 import zoomInSVG from '@plone/volto/icons/add.svg';
 import zoomOutSVG from '@plone/volto/icons/remove.svg';
 import downloadSVG from '@plone/volto/icons/move-down.svg';
+import { useCorsproxy } from '../helpers';
 
 const LoadablePDFViewer = Loadable({
   loader: () => import('./PDFViewer'),
@@ -82,7 +83,7 @@ class PDFView extends Component {
       (data.url &&
         (data.url.includes(settings.apiPath)
           ? `${flattenToAppURL(data.url)}/@@download/file`
-          : data.url)) ||
+          : useCorsproxy(data.url))) ||
       null;
 
     return (

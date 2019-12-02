@@ -1,4 +1,6 @@
 import { compact, concat, isArray, join, map, pickBy, toPairs } from 'lodash';
+import { settings } from '~/config';
+const url = require('url');
 
 // NOTE: this needs to be improvded to recursively convert the query to qs
 // Right now it fails on a query such as:
@@ -38,4 +40,13 @@ export function dataToQueryString(data) {
 
   const querystring = join(compact(queryArray), '&');
   return querystring;
+}
+
+// if URL matches a defined cors proxy destination, then use the cors proxy
+export function useCorsproxy(targetUrl) {
+  const allowed_cors_destinations = settings.allowed_cors_destinations || [];
+  const parsed = url.parse(targetUrl);
+  return allowed_cors_destinations.indexOf(parsed.host) === -1
+    ? targetUrl
+    : `/cors-proxy/${targetUrl}`;
 }
