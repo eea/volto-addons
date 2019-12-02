@@ -86,58 +86,48 @@ class PDFView extends Component {
       null;
 
     return (
-      <div>
+      <div className="pdf-viewer-block">
         {data.url && (
-          <>
-            {(() => {
-              return (
-                <div>
-                  <div className="pdf-wrapper">
-                    <div className="pdf-toolbar pdf-toolbar-top">
-                      <div>
-                        <button
-                          className="pdf-toolbar-btn"
-                          title="Zoom In"
-                          onClick={this.increaseScale}
-                        >
-                          <Icon name={zoomInSVG} size="15px" />
-                        </button>
-                        <div className="scale-separator" />
-                        <button
-                          className="pdf-toolbar-btn"
-                          title="Zoom Out"
-                          onClick={this.decreaseScale}
-                        >
-                          <Icon name={zoomOutSVG} size="15px" />
-                        </button>
-                        <p className="scale-ratio">
-                          {this.state.scale_ratio + '%'}
-                        </p>
-                      </div>
-                      <div>
-                        <a href={dataUrl}>
-                          <button className="pdf-toolbar-btn" title="Download">
-                            <Icon name={downloadSVG} size="15px" />
-                          </button>
-                        </a>
-                      </div>
-                    </div>
+          <div className="pdf-wrapper">
+            <div className="pdf-toolbar pdf-toolbar-top">
+              <div>
+                <button
+                  className="pdf-toolbar-btn"
+                  title="Zoom In"
+                  onClick={this.increaseScale}
+                >
+                  <Icon name={zoomInSVG} size="15px" />
+                </button>
+                <div className="scale-separator" />
+                <button
+                  className="pdf-toolbar-btn"
+                  title="Zoom Out"
+                  onClick={this.decreaseScale}
+                >
+                  <Icon name={zoomOutSVG} size="15px" />
+                </button>
+                <p className="scale-ratio">{this.state.scale_ratio + '%'}</p>
+              </div>
+              <div>
+                <a href={dataUrl}>
+                  <button className="pdf-toolbar-btn" title="Download">
+                    <Icon name={downloadSVG} size="15px" />
+                  </button>
+                </a>
+              </div>
+            </div>
 
-                    <LoadablePDFViewer
-                      document={{
-                        url: dataUrl,
-                      }}
-                      scale={this.state.scale}
-                      css="pdf-viewer"
-                      navigation={CustomNavigation}
-                      page={this.state.currentPage}
-                      onDocumentComplete={this.onDocumentComplete}
-                    />
-                  </div>
-                </div>
-              );
-            })()}
-          </>
+            <LoadablePDFViewer
+              document={{
+                url: dataUrl,
+              }}
+              scale={this.state.scale}
+              css="pdf-viewer"
+              navigation={CustomNavigation}
+              page={this.state.currentPage}
+              onDocumentComplete={this.onDocumentComplete}
+            />
+          </div>
         )}
       </div>
     );
