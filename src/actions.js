@@ -1,4 +1,4 @@
-import { GET_INDEX_VALUES } from './constants';
+import { GET_INDEX_VALUES, GET_CONTROLPANEL_FALLBACKS } from './constants';
 import { GET_CONTENT } from '@plone/volto/constants/ActionTypes';
 import { dataToQueryString } from './helpers';
 
@@ -29,6 +29,16 @@ export function getContentWithData(
         data ? '&' + qs : ''
       }`,
       data,
+    },
+  };
+}
+
+export function getControlpanelFallbacks() {
+  return {
+    type: GET_CONTROLPANEL_FALLBACKS,
+    request: {
+      op: 'get',
+      path: '/@controlpanels-fallbacks',
     },
   };
 }

@@ -13,6 +13,7 @@ import CollectionView from './Collection/View';
 
 import FolderListingBlockView from './FolderListing/BlockView';
 import FolderListingBlockEdit from './FolderListing/BlockEdit';
+import ControlPanelViewlet from './ControlPanel/Viewlet';
 
 import * as addonReducers from './reducers';
 
@@ -20,6 +21,13 @@ export function applyConfig(config) {
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
   config.views.contentTypesViews.Collection = CollectionView;
+  config.addonViewlets = [
+    {
+      path: '/controlpanel',
+      component: ControlPanelViewlet,
+    },
+    ...(config.addonViewlets || []),
+  ];
 
   config.blocks.blocksConfig.collection_block = {
     id: 'collection_block',
