@@ -1,82 +1,137 @@
-/**
- * View image block.
- * @module components/manage/Blocks/Image/View
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import cx from 'classnames';
+import { Icon } from '@plone/volto/components';
 import { settings } from '~/config';
-
 import { flattenToAppURL } from '@plone/volto/helpers';
-
 import Loadable from 'react-loadable';
 
+import CustomNavigation from './PDFNavigation';
+import './pdf-styling.css';
+
+import zoomInSVG from '@plone/volto/icons/add.svg';
+import zoomOutSVG from '@plone/volto/icons/remove.svg';
+import downloadSVG from '@plone/volto/icons/move-down.svg';
+import { useCorsproxy } from '../helpers';
+
 const LoadablePDFViewer = Loadable({
-  loader: () => import('mgr-pdf-viewer-react'),
+  loader: () => import('./PDFViewer'),
   loading() {
     return <div>Loading PDF file...</div>;
   },
 });
 
-
 class PDFView extends Component {
   state = {
     scale: 1.0,
+    scale_ratio: 100,
+    currentPage: 1,
+    pageCount: 0,
+  };
+
+  increaseScale = () =>
+    this.setState(({ scale, scale_ratio }) => ({
+      scale: scale + 0.1,
+      scale_ratio: scale_ratio + 10,
+    }));
+  decreaseScale = () =>
+    this.setState(({ scale, scale_ratio }) => ({
+      scale: scale - 0.1,
+      scale_ratio: scale_ratio - 10,
+    }));
+
+  componentDidMount() {
+    const pdfWrapper = document.querySelector('.pdf-wrapper');
+    if (pdfWrapper) {
+      pdfWrapper.addEventListener('wheel', this.handleWheel);
+    }
   }
 
-  increaseScale = () => this.setState(({ scale }) => ({ scale: scale + 0.1 }))
-  decreaseScale = () => this.setState(({ scale }) => ({ scale: scale - 0.1 }))
+  componentWillUnmount() {
+    const pdfWrapper = document.querySelector('.pdf-wrapper');
+    if (pdfWrapper) {
+      pdfWrapper.addEventListener('wheel', this.handleWheel);
+    }
+  }
 
-  render () {
-    const { data, detached } = this.props;
+  handleWheel = event => {
+    let page;
+    if (event.deltaY < 0) {
+      page = Math.max(this.state.currentPage - 1, 1);
+      this.setState({
+        currentPage: page,
+      });
+    } else if (event.deltaY > 0) {
+      page = Math.min(this.state.currentPage + 1, this.state.pageCount);
+      this.setState({
+        currentPage: page,
+      });
+    }
+
+    event.preventDefault();
+  };
+
+  onDocumentComplete = ({ page, pages }) => {
+    this.setState({
+      currentPage: page,
+      pageCount: pages,
+    });
+  };
+
+  render() {
+    const { data } = this.props;
     const dataUrl =
-     (data.url &&
-       (data.url.includes(settings.apiPath)
-         ? `${flattenToAppURL(data.url)}/@@download/file`
-         : data.url)) ||
-     null;
+      (data.url &&
+        (data.url.includes(settings.apiPath)
+          ? `${flattenToAppURL(data.url)}/@@download/file`
+          : useCorsproxy(data.url))) ||
+      null;
 
     return (
-      <p
-        className={cx(
-         'block image align',
-         {
-           center: !Boolean(data.align),
-           detached,
-         },
-         data.align,
+      <div className="pdf-viewer-block">
+        {data.url && (
+          <div className="pdf-wrapper">
+            <div className="pdf-toolbar pdf-toolbar-top">
+              <div>
+                <button
+                  className="pdf-toolbar-btn"
+                  title="Zoom In"
+                  onClick={this.increaseScale}
+                >
+                  <Icon name={zoomInSVG} size="15px" />
+                </button>
+                <div className="scale-separator" />
+                <button
+                  className="pdf-toolbar-btn"
+                  title="Zoom Out"
+                  onClick={this.decreaseScale}
+                >
+                  <Icon name={zoomOutSVG} size="15px" />
+                </button>
+                <p className="scale-ratio">{this.state.scale_ratio + '%'}</p>
+              </div>
+              <div>
+                <a href={dataUrl}>
+                  <button className="pdf-toolbar-btn" title="Download">
+                    <Icon name={downloadSVG} size="15px" />
+                  </button>
+                </a>
+              </div>
+            </div>
+
+            <LoadablePDFViewer
+              document={{
+                url: dataUrl,
+              }}
+              scale={this.state.scale}
+              css="pdf-viewer"
+              navigation={CustomNavigation}
+              page={this.state.currentPage}
+              onDocumentComplete={this.onDocumentComplete}
+            />
+          </div>
         )}
-      >
-      {data.url && (
-       <>
-         {(() => {
-           const dataUrl =
-             (data.url &&
-               (data.url.includes(settings.apiPath)
-                 ? `${flattenToAppURL(data.url)}/@@download/file`
-                 : data.url)) ||
-             null;
-           return (
-             <div>
-               <button onClick={this.decreaseScale}>-</button>
-               <button onClick={this.increaseScale}>+</button>
-               <LoadablePDFViewer
-                 className={cx({ 'full-width': data.align === 'full' })}
-                 document={{
-                   url: dataUrl,
-                 }}
-                 scale={this.state.scale}
-                 css='pdf-viewer'
-                />
-             </div>
-           );
-         })()}
-       </>
-      )}
-      </p>
-    )
+      </div>
+    );
   }
 }
 

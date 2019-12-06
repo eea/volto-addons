@@ -7,21 +7,21 @@ import { Button } from 'semantic-ui-react';
 
 class Filter extends Component {
   componentDidMount() {
-    if (this.props.index_name) {
-      this.props.getIndexValues(this.props.index_name);
+    if (this.props.facetFilter) {
+      this.props.getIndexValues(this.props.facetFilter.token);
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.index_name !== prevProps.index_name) {
-      this.props.getIndexValues(this.props.index_name);
+    if (this.props.facetFilter.token !== prevProps.facetFilter.token) {
+      this.props.getIndexValues(this.props.facetFilter.token);
     }
   }
 
   computeStats() {
     const filters = this.props.filters;
     const results = this.props.results;
-    const index_name = this.props.index_name;
+    const facetFilter = this.props.facetFilter;
 
     if (!results) return [];
 
@@ -31,7 +31,10 @@ class Filter extends Component {
     });
     results.forEach(item => {
       filters.forEach(f => {
-        if (item[index_name] && item[index_name].indexOf(f) > -1) {
+        if (
+          item[facetFilter.token] &&
+          item[facetFilter.token].indexOf(f) > -1
+        ) {
           res[f] += 1;
         }
       });
@@ -42,17 +45,17 @@ class Filter extends Component {
   render() {
     const stats = this.computeStats();
     return __CLIENT__ &&
-      this.props.index_name &&
-      document.querySelector('.cols.content-cols .inPageNavigation') ? (
+      this.props.facetFilter &&
+      document.querySelector('.content-page .inPageNavigation') ? (
       <Portal
         node={
           __CLIENT__ &&
-          document.querySelector('.cols.content-cols .inPageNavigation')
+          document.querySelector('.content-page .inPageNavigation')
         }
       >
         <div className="headings_navigation">
           <h5>
-            <b>Filter by {this.props.index_name}</b>
+            <b>Filter by {this.props.facetFilter.title}</b>
           </h5>
           <Menu vertical>
             {this.props.filters.map(item => (
@@ -74,7 +77,7 @@ class Filter extends Component {
               Clear
             </Button>
           ) : (
-            ''
+            <></>
           )}
         </div>
       </Portal>

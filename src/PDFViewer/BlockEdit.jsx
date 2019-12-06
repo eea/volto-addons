@@ -8,28 +8,28 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { readAsDataURL } from 'promise-file-reader';
-import { Button, Dimmer, Input, Loader, Message, Grid, Segment, Form } from 'semantic-ui-react';
+import { Button, Input, Message, Segment } from 'semantic-ui-react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import cx from 'classnames';
 import Dropzone from 'react-dropzone';
 
 import { settings } from '~/config';
 
-import { Icon, SidebarPortal, CheckboxWidget, TextWidget } from '@plone/volto/components';
+import { Icon, SidebarPortal, TextWidget } from '@plone/volto/components';
 import { createContent } from '@plone/volto/actions';
-import { flattenToAppURL, getBaseUrl, AlignBlock } from '@plone/volto/helpers';
+import { flattenToAppURL, getBaseUrl } from '@plone/volto/helpers';
 
-import imageSVG from '@plone/volto/icons/image.svg';
+import CustomNavigation from './PDFNavigation';
+import './pdf-styling.css';
+
 import pdfSVG from './pdf-icon.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
-import downSVG from '@plone/volto/icons/down-key.svg';
 
 import Loadable from 'react-loadable';
 
 const LoadablePDFViewer = Loadable({
-  loader: () => import('mgr-pdf-viewer-react'),
+  loader: () => import('./PDFViewer'),
   loading() {
     return <div>Loading PDF file...</div>;
   },
@@ -43,10 +43,6 @@ const messages = defineMessages({
   Origin: {
     id: 'Origin',
     defaultMessage: 'Origin',
-  },
-  Align: {
-    id: 'Alignment',
-    defaultMessage: 'Alignment',
   },
   externalURL: {
     id: 'External URL',
@@ -89,6 +85,46 @@ class Edit extends Component {
   state = {
     uploading: false,
     url: '',
+    currentPage: 1,
+    pageCount: 0,
+  };
+
+  componentDidMount() {
+    const pdfWrapper = document.querySelector('.pdf-wrapper');
+    if (pdfWrapper) {
+      pdfWrapper.addEventListener('wheel', this.handleWheel);
+    }
+  }
+
+  componentWillUnmount() {
+    const pdfWrapper = document.querySelector('.pdf-wrapper');
+    if (pdfWrapper) {
+      pdfWrapper.removeEventListener('wheel', this.handleWheel);
+    }
+  }
+
+  handleWheel = event => {
+    let page;
+    if (event.deltaY < 0) {
+      page = Math.max(this.state.currentPage - 1, 1);
+      this.setState({
+        currentPage: page,
+      });
+    } else if (event.deltaY > 0) {
+      page = Math.min(this.state.currentPage + 1, this.state.pageCount);
+      this.setState({
+        currentPage: page,
+      });
+    }
+
+    event.preventDefault();
+  };
+
+  onDocumentComplete = ({ page, pages }) => {
+    this.setState({
+      currentPage: page,
+      pageCount: pages,
+    });
   };
 
   /**
@@ -138,19 +174,6 @@ class Edit extends Component {
       });
     });
   };
-
-  /**
-   * Align block handler
-   * @method onAlignBlock
-   * @param {string} align Alignment option
-   * @returns {undefined}
-   */
-  onAlignBlock(align) {
-    this.props.onChangeBlock(this.props.block, {
-      ...this.props.data,
-      align,
-    });
-  }
 
   /**
    * Change url handler
@@ -237,19 +260,11 @@ class Edit extends Component {
           ? `${flattenToAppURL(this.props.data.url)}/@@download/file`
           : this.props.data.url)) ||
       null;
-      const data = {
-        ...this.props.data,
-      };
+    const data = {
+      ...this.props.data,
+    };
     return (
-      <div
-        className={cx(
-          'block image align',
-          {
-            center: !Boolean(this.props.data.align),
-          },
-          this.props.data.align,
-        )}
-      >
+      <div>
         {this.props.selected && !!this.props.data.url && (
           <div className="toolbar">
             {this.props.appendActions && <>{this.props.appendActions}</>}
@@ -282,12 +297,15 @@ class Edit extends Component {
           )}
         {this.props.data.url ? (
           <div>
+            <div className="pdf-toolbar pdf-toolbar-top" />
             <LoadablePDFViewer
-              className={cx({ 'full-width': this.props.data.align === 'full' })}
               document={{
                 url: dataUrl,
               }}
-              css='pdf-viewer'
+              css="pdf-viewer"
+              navigation={CustomNavigation}
+              page={this.state.currentPage}
+              onDocumentComplete={this.onDocumentComplete}
             />
           </div>
         ) : (
@@ -358,6 +376,7 @@ class Edit extends Component {
               <>
                 <Segment className="sidebar-metadata-container" secondary>
                   {data.url.split('/').slice(-1)[0]}
+                  <img src={pdfSVG} alt="" />
                 </Segment>
                 <Segment className="form sidebar-image-data">
                   {data.url.includes(settings.apiPath) && (
@@ -367,19 +386,23 @@ class Edit extends Component {
                       required={false}
                       value={data.url.split('/').slice(-1)[0]}
                       icon={navTreeSVG}
-                      iconAction={() => this.props.openObjectBrowser({mode: 'link'})}
+                      iconAction={() =>
+                        this.props.openObjectBrowser({ mode: 'link' })
+                      }
                       onChange={() => {}}
                     />
                   )}
                   {!data.url.includes(settings.apiPath) && (
                     <TextWidget
                       id="external"
-                      title={this.props.intl.formatMessage(messages.externalURL)}
+                      title={this.props.intl.formatMessage(
+                        messages.externalURL,
+                      )}
                       required={false}
                       value={data.url}
                       icon={clearSVG}
-                      iconAction={() =>
-                        onChangeBlock(block, {
+                      iconAction={block =>
+                        this.props.onChangeBlock(block, {
                           ...data,
                           url: '',
                         })
@@ -387,30 +410,6 @@ class Edit extends Component {
                       onChange={() => {}}
                     />
                   )}
-                <Form.Field inline required={this.props.required}>
-                    <Grid>
-                      <Grid.Row>
-                        <Grid.Column width="4">
-                          <div className="wrapper">
-                            <label htmlFor="field-align">
-                              <FormattedMessage
-                                id="Alignment"
-                                defaultMessage="Alignment"
-                              />
-                            </label>
-                          </div>
-                        </Grid.Column>
-                        <Grid.Column width="8" className="align-tools">
-                          <AlignBlock
-                            align={data.align}
-                            onChangeBlock={this.props.onChangeBlock}
-                            data={data}
-                            block={this.props.block}
-                          />
-                        </Grid.Column>
-                      </Grid.Row>
-                    </Grid>
-                  </Form.Field>
                 </Segment>
               </>
             )}
