@@ -17,12 +17,14 @@ class BlockView extends Component {
           <Grid.Row>
             {this.props.properties.items.length === 0 && <div>No children</div>}
             {this.props.properties.items.map(item => (
-              <Grid.Column width={6} style={{margin: '1rem 0'}}>
+              <Grid.Column width={6} style={{ margin: '1rem 0' }}>
                 <Card.Group centered>
                   <Card>
-                    <Card.Content style={{textAlign: 'center'}}>
+                    <Card.Content style={{ textAlign: 'center' }}>
                       <Link key={item.url} to={this.getPath(item['@id'])}>
-                        <h3 style={{margin: 0}}>{item.title || item.Title}</h3>
+                        <h3 style={{ margin: 0 }}>
+                          {item.title || item.Title}
+                        </h3>
                       </Link>
                     </Card.Content>
                   </Card>
