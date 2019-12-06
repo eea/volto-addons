@@ -15,6 +15,8 @@ import FolderListingBlockView from './FolderListing/BlockView';
 import FolderListingBlockEdit from './FolderListing/BlockEdit';
 import ControlPanelViewlet from './ControlPanel/Viewlet';
 
+import EditSlider from './ImageSlider/Edit';
+
 import * as addonReducers from './reducers';
 
 export function applyConfig(config) {
@@ -88,5 +90,20 @@ export function installTableau(config) {
     icon: chartIcon,
     group: 'custom_addons',
   };
+  return config;
+}
+
+export function installImageSlides(config) {
+  config.addonRoutes = [
+    {
+      path: '/manage-slider',
+      component: EditSlider,
+    },
+    {
+      path: '*/**/manage-slider',
+      component: EditSlider,
+    },
+    ...(config.addonRoutes || []),
+  ];
   return config;
 }
