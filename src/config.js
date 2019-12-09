@@ -19,7 +19,42 @@ import EditSlider from './ImageSlider/Edit';
 
 import * as addonReducers from './reducers';
 
+import { CodeBlockButton, CodeButton } from 'draft-js-buttons';
+
+import {
+  Underline,
+  Strikethrough,
+  HeaderButton,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  inlineRenderers,
+  styleMap,
+} from 'volto-addons/styleConfig';
+
 export function applyConfig(config) {
+  console.log(config);
+
+  config.settings.customStyleMap = styleMap;
+  config.settings.richTextEditorInlineToolbarButtons = [
+    Underline,
+    Strikethrough,
+    CodeButton,
+    CodeBlockButton,
+    HeaderButton,
+    AlignLeft,
+    AlignCenter,
+    AlignRight,
+    ...config.settings.richTextEditorInlineToolbarButtons,
+  ];
+  config.settings.ToHTMLRenderers = {
+    ...config.settings.ToHTMLRenderers,
+    inline: {
+      ...config.settings.ToHTMLRenderers.inline,
+      ...inlineRenderers,
+    },
+  };
+
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
   config.views.contentTypesViews.Collection = CollectionView;

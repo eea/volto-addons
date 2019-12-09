@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Helmet } from '@plone/volto/helpers';;
+import { Helmet } from '@plone/volto/helpers';
 import { Link } from 'react-router-dom';
 import { Container, Image } from 'semantic-ui-react';
 import BlockView from './BlockView';
