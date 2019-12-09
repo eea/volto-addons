@@ -183,7 +183,7 @@ class Edit extends Component {
     if (__SERVER__) {
       return <div />;
     }
-
+    console.log('settings in editor', settings)
     const { InlineToolbar } = this.state.inlineToolbarPlugin;
     return (
       <div>

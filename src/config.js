@@ -29,38 +29,29 @@ import {
   styleMap,
 } from 'volto-addons/styleConfig';
 
-const customStyleMap = styleMap;
-
 export function applyConfig(config) {
-  config.settings = {
-    ...config.settings,
-    // allow_cors_origin: '*',
-    richTextEditorInlineToolbarButtons: [
-      Underline,
-      Strikethrough,
-      CodeButton,
-      CodeBlockButton,
-      HeaderButton,
-      AlignLeft,
-      AlignCenter,
-      AlignRight,
-      ...config.settings.richTextEditorInlineToolbarButtons,
-    ],
-    // extendedBlockRenderMap,
-    ToHTMLRenderers: {
-      ...config.settings.ToHTMLRenderers,
-      inline: {
-        ...config.settings.ToHTMLRenderers.inline,
-        ...inlineRenderers,
-      },
+  console.log(config);
+
+  config.settings.customStyleMap = styleMap;
+  config.settings.richTextEditorInlineToolbarButtons = [
+    Underline,
+    Strikethrough,
+    CodeButton,
+    CodeBlockButton,
+    HeaderButton,
+    AlignLeft,
+    AlignCenter,
+    AlignRight,
+    ...config.settings.richTextEditorInlineToolbarButtons,
+  ];
+  config.settings.ToHTMLRenderers = {
+    ...config.settings.ToHTMLRenderers,
+    inline: {
+      ...config.settings.ToHTMLRenderers.inline,
+      ...inlineRenderers,
     },
-    customStyleMap,
-    nonContentRoutes: [
-      // handled differently in getBaseUrl
-      ...config.settings.nonContentRoutes,
-      '/manage-slider',
-    ],
   };
+
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
   config.views.contentTypesViews.Collection = CollectionView;
