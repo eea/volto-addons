@@ -13,12 +13,15 @@ mgrpdfStyles.wrapper = {
 };
 
 class PDFViewer extends React.Component {
-  state = {
-    pages: 0,
-    page: 1,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      pages: 0,
+      page: 1,
+    };
+  }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       pages: null,
       page: this.props.page || 1,

@@ -13,6 +13,9 @@ import CollectionView from './Collection/View';
 
 import FolderListingBlockView from './FolderListing/BlockView';
 import FolderListingBlockEdit from './FolderListing/BlockEdit';
+import ControlPanelViewlet from './ControlPanel/Viewlet';
+
+import EditSlider from './ImageSlider/Edit';
 
 import * as addonReducers from './reducers';
 
@@ -55,6 +58,13 @@ export function applyConfig(config) {
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
   config.views.contentTypesViews.Collection = CollectionView;
+  config.addonViewlets = [
+    {
+      path: '/controlpanel',
+      component: ControlPanelViewlet,
+    },
+    ...(config.addonViewlets || []),
+  ];
 
   config.blocks.blocksConfig.collection_block = {
     id: 'collection_block',
@@ -115,5 +125,20 @@ export function installTableau(config) {
     icon: chartIcon,
     group: 'custom_addons',
   };
+  return config;
+}
+
+export function installImageSlides(config) {
+  config.addonRoutes = [
+    {
+      path: '/manage-slider',
+      component: EditSlider,
+    },
+    {
+      path: '*/**/manage-slider',
+      component: EditSlider,
+    },
+    ...(config.addonRoutes || []),
+  ];
   return config;
 }
