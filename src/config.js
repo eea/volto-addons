@@ -17,34 +17,48 @@ import ControlPanelViewlet from './ControlPanel/Viewlet';
 
 import EditSlider from './ImageSlider/Edit';
 
+import Edit from './customizations/components/manage/Blocks/Text/Edit';
+import View from './customizations/components/manage/Blocks/Text/View';
+
 import * as addonReducers from './reducers';
 
-import { CodeBlockButton, CodeButton } from 'draft-js-buttons';
+import { CodeBlockButton } from 'draft-js-buttons';
 
 import {
-  Underline,
   Strikethrough,
-  HeaderButton,
+  HeaderOne,
+  HeaderTwo,
+  HeaderThree,
   AlignLeft,
   AlignCenter,
   AlignRight,
   inlineRenderers,
   styleMap,
+  customBlockStyleFn,
 } from 'volto-addons/styleConfig';
 
 export function applyConfig(config) {
   console.log(config);
 
+  config.blocks.blocksConfig.text = {
+    id: 'text',
+    title: 'Text',
+    view: View,
+    edit: Edit,
+    icon: chartIcon,
+    group: 'text',
+  };
+  config.settings.blockStyleFn = customBlockStyleFn;
   config.settings.customStyleMap = styleMap;
   config.settings.richTextEditorInlineToolbarButtons = [
-    Underline,
     Strikethrough,
-    CodeButton,
     CodeBlockButton,
-    HeaderButton,
     AlignLeft,
     AlignCenter,
     AlignRight,
+    HeaderOne,
+    HeaderTwo,
+    HeaderThree,
     ...config.settings.richTextEditorInlineToolbarButtons,
   ];
   config.settings.ToHTMLRenderers = {

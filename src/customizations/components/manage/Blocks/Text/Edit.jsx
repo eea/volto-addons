@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { Button, Segment, Select } from 'semantic-ui-react';
 import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import Editor from 'draft-js-plugins-editor';
+import removeInlineStyles from 'draft-js-modifiers/removeInlineStyles';
 import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 import { defineMessages, injectIntl } from 'react-intl';
@@ -104,12 +105,6 @@ class Edit extends Component {
       this.node.focus();
     }
     document.addEventListener('mousedown', this.handleClickOutside, false);
-
-    let align = this.props.data.align;
-
-    if (this.state.align !== align) {
-      this.setState({ align });
-    }
   }
 
   /**
@@ -158,6 +153,35 @@ class Edit extends Component {
       });
     }
     this.setState({ editorState });
+
+    this.onAlignChange(editorState);
+  }
+
+  //modifies state to use only one type of Align inline style
+  onAlignChange(editorState) {
+    const rawState = convertToRaw(
+      editorState.getCurrentContent(),
+    ).blocks[0].inlineStyleRanges.slice(-1)[0];
+
+    const lastStyle = rawState ? rawState.style : '';
+
+    if (lastStyle === 'AlignBlockLeft') {
+      const notLeft = ['AlignBlockRight', 'AlignBlockCenter'];
+      let newState = removeInlineStyles(editorState, notLeft);
+      this.setState({ editorState: newState });
+    }
+
+    if (lastStyle === 'AlignBlockCenter') {
+      const notCenter = ['AlignBlockLeft', 'AlignBlockRight'];
+      let newState = removeInlineStyles(editorState, notCenter);
+      this.setState({ editorState: newState });
+    }
+
+    if (lastStyle === 'AlignBlockRight') {
+      const notRight = ['AlignBlockLeft', 'AlignBlockCenter'];
+      let newState = removeInlineStyles(editorState, notRight);
+      this.setState({ editorState: newState });
+    }
   }
 
   toggleAddNewBlock = () =>
@@ -183,7 +207,6 @@ class Edit extends Component {
     if (__SERVER__) {
       return <div />;
     }
-    console.log('settings in editor', settings)
     const { InlineToolbar } = this.state.inlineToolbarPlugin;
     return (
       <div>

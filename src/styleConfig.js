@@ -4,24 +4,28 @@ import createBlockStyleButton from 'draft-js-buttons/lib/utils/createBlockStyleB
 import Icon from '@plone/volto/components/theme/Icon/Icon';
 import underlineSVG from '@plone/volto/icons/underline.svg';
 import strickthroughSVG from '@plone/volto/icons/strickthrough.svg';
-import headingSVG from '@plone/volto/icons/heading.svg';
 import alignLeftSVG from '@plone/volto/icons/align-left.svg';
 import alignRightSVG from '@plone/volto/icons/align-right.svg';
 import alignCenterSVG from '@plone/volto/icons/align-center.svg';
-
-export const Underline = createInlineStyleButton({
-  style: 'UNDERLINE',
-  children: <Icon name={underlineSVG} size="24px" />,
-});
 
 export const Strikethrough = createInlineStyleButton({
   style: 'STRIKETHROUGH',
   children: <Icon name={strickthroughSVG} size="24px" />,
 });
 
-export const HeaderButton = createBlockStyleButton({
+export const HeaderOne = createBlockStyleButton({
   blockType: 'header-one',
-  children: <Icon name={headingSVG} size="24px" />,
+  children: <p>H1</p>,
+});
+
+export const HeaderTwo = createBlockStyleButton({
+  blockType: 'header-two',
+  children: <p>H2</p>,
+});
+
+export const HeaderThree = createBlockStyleButton({
+  blockType: 'header-three',
+  children: <p>H3</p>,
 });
 
 export const AlignLeft = createInlineStyleButton({
@@ -78,3 +82,16 @@ export const inlineRenderers = {
     </div>
   ),
 };
+
+export function customBlockStyleFn(contentBlock) {
+  const type = contentBlock.getType();
+  if (type === 'center') {
+    return 'align-center';
+  }
+  if (type === 'left') {
+    return 'align-left';
+  }
+  if (type === 'right') {
+    return 'align-right';
+  }
+}
