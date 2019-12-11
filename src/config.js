@@ -36,10 +36,9 @@ import {
   styleMap,
   customBlockStyleFn,
 } from 'volto-addons/styleConfig';
+import { HeaderFour } from './styleConfig';
 
 export function applyConfig(config) {
-  console.log(config);
-
   config.blocks.blocksConfig.text = {
     id: 'text',
     title: 'Text',
@@ -59,8 +58,10 @@ export function applyConfig(config) {
     HeaderOne,
     HeaderTwo,
     HeaderThree,
+    HeaderFour,
     ...config.settings.richTextEditorInlineToolbarButtons,
-  ];
+  ].filter((button, index) => index !== 13 && index !== 14);
+
   config.settings.ToHTMLRenderers = {
     ...config.settings.ToHTMLRenderers,
     inline: {

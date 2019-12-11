@@ -12,3 +12,33 @@
     display:flex;
     justify-content: flex-end;
 }
+
+.inline-toolbar {
+    display: flex;
+    justify-content: center;
+    position: relative !important;
+    visibility: visible !important;
+    background: #F4F4F1;
+    border-radius: 4px;
+    box-shadow: 0px 1px 3px 0px rgba(220,220,220,1);
+    transform: none !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+  
+  
+  .inline-toolbar-button{
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    margin: 2px;
+  }
+
+  .inline-toolbar-button-active{
+    border: 1px solid green;
+    
+}

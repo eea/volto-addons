@@ -81,9 +81,18 @@ class Edit extends Component {
       } else {
         editorState = EditorState.createEmpty();
       }
-
       const inlineToolbarPlugin = createInlineToolbarPlugin({
         structure: settings.richTextEditorInlineToolbarButtons,
+        theme: {
+          toolbarStyles: {
+            toolbar: 'inline-toolbar',
+          },
+          buttonStyles: {
+            button: 'inline-toolbar-button',
+            buttonWrapper: 'inline-toolbar-button-wrapper',
+            active: 'inline-toolbar-button-active',
+          },
+        },
       });
 
       this.state = {
@@ -274,7 +283,6 @@ class Edit extends Component {
           }}
         />
         <InlineToolbar />
-
         {!this.props.detached &&
           (!this.props.data.text ||
             (this.props.data.text &&
