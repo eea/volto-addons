@@ -19,7 +19,6 @@ import EditSlider from './ImageSlider/Edit';
 
 import Edit from './customizations/components/manage/Blocks/Text/Edit';
 import View from './customizations/components/manage/Blocks/Text/View';
-import SpecialSearch from './Search';
 
 import PortletManagerRenderer from './Portlets/PortletManagerRenderer';
 
@@ -103,14 +102,6 @@ export function applyConfig(config) {
     ...config.addonReducers,
     ...addonReducers,
   };
-
-  config.addonRoutes = [
-    {
-      path: '/special-search',
-      component: SpecialSearch,
-    },
-    ...(config.addonRoutes || []),
-  ];
 
   config.settings.nonContentRoutes = [
     // handled differently in getBaseUrl
