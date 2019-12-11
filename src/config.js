@@ -19,6 +19,9 @@ import EditSlider from './ImageSlider/Edit';
 
 import Edit from './customizations/components/manage/Blocks/Text/Edit';
 import View from './customizations/components/manage/Blocks/Text/View';
+import SpecialSearch from './Search';
+
+import PortletManagerRenderer from './Portlets/PortletManagerRenderer';
 
 import * as addonReducers from './reducers';
 
@@ -38,8 +41,6 @@ import {
 } from 'volto-addons/styleConfig';
 
 export function applyConfig(config) {
-  console.log(config);
-
   config.blocks.blocksConfig.text = {
     id: 'text',
     title: 'Text',
@@ -103,6 +104,20 @@ export function applyConfig(config) {
     ...addonReducers,
   };
 
+  config.addonRoutes = [
+    {
+      path: '/special-search',
+      component: SpecialSearch,
+    },
+    ...(config.addonRoutes || []),
+  ];
+
+  config.settings.nonContentRoutes = [
+    // handled differently in getBaseUrl
+    ...config.settings.nonContentRoutes,
+    '/special-search',
+  ];
+
   return config;
 }
 
@@ -154,5 +169,12 @@ export function installImageSlides(config) {
     },
     ...(config.addonRoutes || []),
   ];
+  return config;
+}
+
+export function installPortlets(config) {
+  config.portletManagers = {
+    default: PortletManagerRenderer,
+  };
   return config;
 }

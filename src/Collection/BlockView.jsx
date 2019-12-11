@@ -160,7 +160,7 @@ class BlockView extends Component {
               pageSizes={this.state.pageSizes}
               onChangePage={this.onChangePage}
               onChangePageSize={this.onChangePageSize}
-              />
+            />
           </div>
         )}
         {this.props.data.facetFilter ? (
