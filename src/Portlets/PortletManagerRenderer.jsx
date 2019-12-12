@@ -3,26 +3,30 @@ import { connect } from 'react-redux';
 import { getPortlets } from '../actions';
 
 export class PortletManagerRenderer extends Component {
-  constructor(props) {
-    super(props);
-
-    if (props.name) {
-      console.log('constructor props', props);
-      props.getPortlets(props.pathname, props.name);
-    }
-  }
+  // constructor(props) {
+  //   super(props);
+  //
+  //   // if (props.name) {
+  //   //   console.log('constructor props', props);
+  //   //   props.getPortlets(props.pathname, props.name);
+  //   // }
+  // }
 
   componentDidMount() {}
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.pathname !== this.props.pathname) {
-      console.log('compdidupdate');
+      // console.log('compdidupdate');
       this.props.getPortlets(this.props.pathname, this.props.name);
     }
   }
 
   render() {
-    return <div id={`portlets-${this.props.name}`}>Hello</div>;
+    return (
+      <div id={`portlets-${this.props.name}`}>
+        {/* portlets for ${this.props.name} */}
+      </div>
+    );
   }
 }
 
