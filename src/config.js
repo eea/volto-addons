@@ -17,8 +17,12 @@ import ControlPanelViewlet from './ControlPanel/Viewlet';
 
 import EditSlider from './ImageSlider/Edit';
 
-import Edit from './customizations/components/manage/Blocks/Text/Edit';
-import View from './customizations/components/manage/Blocks/Text/View';
+import TextEdit from './customizations/components/manage/Blocks/Text/Edit';
+import TextView from './customizations/components/manage/Blocks/Text/View';
+
+import PortletManagerRenderer from './Portlets/PortletManagerRenderer';
+
+import { View } from '@plone/volto/components';
 
 import * as addonReducers from './reducers';
 
@@ -42,8 +46,8 @@ export function applyConfig(config) {
   config.blocks.blocksConfig.text = {
     id: 'text',
     title: 'Text',
-    view: View,
-    edit: Edit,
+    view: TextView,
+    edit: TextEdit,
     icon: chartIcon,
     group: 'text',
   };
@@ -104,6 +108,8 @@ export function applyConfig(config) {
     ...addonReducers,
   };
 
+  config.views.layoutViews.compositepage_view = View;
+
   return config;
 }
 
@@ -155,5 +161,12 @@ export function installImageSlides(config) {
     },
     ...(config.addonRoutes || []),
   ];
+  return config;
+}
+
+export function installPortlets(config) {
+  config.portletManagers = {
+    default: PortletManagerRenderer,
+  };
   return config;
 }
