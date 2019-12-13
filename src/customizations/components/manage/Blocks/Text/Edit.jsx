@@ -1,6 +1,6 @@
 /**
  * Edit text block.
- * @module components/manage/Blocks/Title/Edit
+ * @module components/manage/Blocks/Text/Edit
  */
 
 import React, { Component } from 'react';
@@ -13,6 +13,7 @@ import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 import { defineMessages, injectIntl } from 'react-intl';
 import { includes, isEqual } from 'lodash';
+import { Portal } from 'react-portal';
 
 import { settings } from '~/config';
 
@@ -218,7 +219,7 @@ class Edit extends Component {
     }
     const { InlineToolbar } = this.state.inlineToolbarPlugin;
     return (
-      <div>
+      <>
         <Editor
           onChange={this.onChange}
           editorState={this.state.editorState}
@@ -282,7 +283,21 @@ class Edit extends Component {
             this.node = node;
           }}
         />
-        <InlineToolbar />
+        {this.props.selected &&
+          __CLIENT__ &&
+          document.querySelector('.editor-toolbar-wrapper') && (
+            <Portal
+              node={
+                this.props.selected &&
+                __CLIENT__ &&
+                document.querySelector('.editor-toolbar-wrapper')
+              }
+            >
+              <div className="toolbarWrapper">
+                <InlineToolbar />
+              </div>
+            </Portal>
+          )}
         {!this.props.detached &&
           (!this.props.data.text ||
             (this.props.data.text &&
@@ -304,7 +319,7 @@ class Edit extends Component {
             currentBlock={this.props.block}
           />
         )}
-      </div>
+      </>
     );
   }
 }
