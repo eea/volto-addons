@@ -11,6 +11,8 @@ import CollectionBlockView from './Collection/BlockView';
 import CollectionBlockEdit from './Collection/BlockEdit';
 import CollectionView from './Collection/View';
 
+import MapView from './Map/View';
+
 import FolderListingBlockView from './FolderListing/BlockView';
 import FolderListingBlockEdit from './FolderListing/BlockEdit';
 import ControlPanelViewlet from './ControlPanel/Viewlet';
@@ -73,7 +75,7 @@ export function applyConfig(config) {
 
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
-  config.views.contentTypesViews.Collection = CollectionView;
+
   config.addonViewlets = [
     {
       path: '/controlpanel',
@@ -105,6 +107,9 @@ export function applyConfig(config) {
     ...addonReducers,
   };
 
+  config.views.contentTypesViews.Collection = CollectionView;
+  config.views.contentTypesViews.EmbeddedMap = MapView;
+  config.views.contentTypesViews.embeddedmap = MapView;
   config.views.layoutViews.compositepage_view = View;
 
   return config;
