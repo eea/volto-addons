@@ -1,7 +1,11 @@
-.list .item.active > .content > .header {
+.list .item.active > .content > a {
   background-color: pink;
 }
 
 .list .content .list {
   padding-left: 1rem !important;
+}
+
+.in_path {
+  font-weight: bolder;
 }
