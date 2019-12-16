@@ -1,6 +1,6 @@
 /**
  * Edit text block.
- * @module components/manage/Blocks/Title/Edit
+ * @module components/manage/Blocks/Text/Edit
  */
 
 import React, { Component } from 'react';
@@ -9,10 +9,12 @@ import { Button, Segment, Select } from 'semantic-ui-react';
 import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import Editor from 'draft-js-plugins-editor';
 import removeInlineStyles from 'draft-js-modifiers/removeInlineStyles';
-import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
+import { convertFromRaw, convertToRaw, EditorState, RichUtils } from 'draft-js';
+import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 import { defineMessages, injectIntl } from 'react-intl';
 import { includes, isEqual } from 'lodash';
+import { Portal } from 'react-portal';
 
 import { settings } from '~/config';
 
@@ -81,9 +83,18 @@ class Edit extends Component {
       } else {
         editorState = EditorState.createEmpty();
       }
-
       const inlineToolbarPlugin = createInlineToolbarPlugin({
         structure: settings.richTextEditorInlineToolbarButtons,
+        theme: {
+          toolbarStyles: {
+            toolbar: 'inline-toolbar',
+          },
+          buttonStyles: {
+            button: 'inline-toolbar-button',
+            buttonWrapper: 'inline-toolbar-button-wrapper',
+            active: 'inline-toolbar-button-active',
+          },
+        },
       });
 
       this.state = {
@@ -209,7 +220,7 @@ class Edit extends Component {
     }
     const { InlineToolbar } = this.state.inlineToolbarPlugin;
     return (
-      <div>
+      <>
         <Editor
           onChange={this.onChange}
           editorState={this.state.editorState}
@@ -221,7 +232,13 @@ class Edit extends Component {
           blockRenderMap={settings.extendedBlockRenderMap}
           blockStyleFn={settings.blockStyleFn}
           placeholder={this.props.intl.formatMessage(messages.text)}
-          handleReturn={() => {
+          handleReturn={e => {
+            if (isSoftNewlineEvent(e)) {
+              this.onChange(
+                RichUtils.insertSoftNewline(this.state.editorState),
+              );
+              return 'handled';
+            }
             if (!this.props.detached) {
               const selectionState = this.state.editorState.getSelection();
               const anchorKey = selectionState.getAnchorKey();
@@ -273,8 +290,21 @@ class Edit extends Component {
             this.node = node;
           }}
         />
-        <InlineToolbar />
-
+        {this.props.selected &&
+          __CLIENT__ &&
+          document.querySelector('.editor-toolbar-wrapper') && (
+            <Portal
+              node={
+                this.props.selected &&
+                __CLIENT__ &&
+                document.querySelector('.editor-toolbar-wrapper')
+              }
+            >
+              <div className="toolbarWrapper">
+                <InlineToolbar />
+              </div>
+            </Portal>
+          )}
         {!this.props.detached &&
           (!this.props.data.text ||
             (this.props.data.text &&
@@ -296,7 +326,7 @@ class Edit extends Component {
             currentBlock={this.props.block}
           />
         )}
-      </div>
+      </>
     );
   }
 }
