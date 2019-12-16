@@ -22,7 +22,7 @@ import EditSlider from './ImageSlider/Edit';
 import TextEdit from './customizations/components/manage/Blocks/Text/Edit';
 import TextView from './customizations/components/manage/Blocks/Text/View';
 
-import PortletManagerRenderer from './Portlets/PortletManagerRenderer';
+import { NavigationPortlet, PortletManagerRenderer } from './Portlets';
 
 import { View } from '@plone/volto/components';
 
@@ -167,8 +167,14 @@ export function installImageSlides(config) {
 }
 
 export function installPortlets(config) {
-  config.portletManagers = {
-    default: PortletManagerRenderer,
+  config.portlets = {
+    managers: {
+      ...config.portlets?.managers,
+      default: PortletManagerRenderer,
+    },
+    renderers: {
+      'portlets.Navigation': NavigationPortlet,
+    },
   };
   return config;
 }
