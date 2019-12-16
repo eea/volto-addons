@@ -41,6 +41,7 @@ import {
 import { HeaderFour } from './styleConfig';
 
 export function applyConfig(config) {
+
   config.settings.blockStyleFn = customBlockStyleFn;
   config.settings.customStyleMap = styleMap;
   config.settings.richTextEditorInlineToolbarButtons = [
