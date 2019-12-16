@@ -28,6 +28,11 @@ export const HeaderThree = createBlockStyleButton({
   children: <p>H3</p>,
 });
 
+export const HeaderFour = createBlockStyleButton({
+  blockType: 'header-four',
+  children: <p>H4</p>,
+});
+
 export const AlignLeft = createInlineStyleButton({
   style: 'AlignBlockLeft',
   children: <Icon name={alignLeftSVG} size="24px" />,

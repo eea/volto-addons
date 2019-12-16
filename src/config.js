@@ -19,8 +19,6 @@ import ControlPanelViewlet from './ControlPanel/Viewlet';
 
 import EditSlider from './ImageSlider/Edit';
 
-import TextEdit from './customizations/components/manage/Blocks/Text/Edit';
-import TextView from './customizations/components/manage/Blocks/Text/View';
 
 import PortletManagerRenderer from './Portlets/PortletManagerRenderer';
 
@@ -42,16 +40,10 @@ import {
   styleMap,
   customBlockStyleFn,
 } from 'volto-addons/styleConfig';
+import { HeaderFour } from './styleConfig';
 
 export function applyConfig(config) {
-  config.blocks.blocksConfig.text = {
-    id: 'text',
-    title: 'Text',
-    view: TextView,
-    edit: TextEdit,
-    icon: chartIcon,
-    group: 'text',
-  };
+
   config.settings.blockStyleFn = customBlockStyleFn;
   config.settings.customStyleMap = styleMap;
   config.settings.richTextEditorInlineToolbarButtons = [
@@ -63,8 +55,10 @@ export function applyConfig(config) {
     HeaderOne,
     HeaderTwo,
     HeaderThree,
+    HeaderFour,
     ...config.settings.richTextEditorInlineToolbarButtons,
-  ];
+  ].filter((button, index) => index !== 13 && index !== 14);
+
   config.settings.ToHTMLRenderers = {
     ...config.settings.ToHTMLRenderers,
     inline: {
@@ -72,7 +66,6 @@ export function applyConfig(config) {
       ...inlineRenderers,
     },
   };
-
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
 
