@@ -2,6 +2,7 @@ import React from 'react';
 import { List, Image } from 'semantic-ui-react';
 import { Link as RouterLink } from 'react-router-dom';
 import { settings } from '~/config';
+import cx from 'classnames';
 
 import './styles.css';
 
@@ -18,7 +19,9 @@ function renderNode(node) {
         <RouterLink
           to={cleanUrl(node.href)}
           title={node.description}
-          className={node.is_in_path ? 'in_path' : ''}
+          className={cx(`contenttype-${node.type}`, {
+            in_path: node.is_in_path,
+          })}
         >
           {node.thumb ? <Image src={cleanUrl(node.thumb)} /> : ''}
           {node.title}
