@@ -17,6 +17,5 @@
     "react-pdf-js": "^5.1.0",
     "draft-js-alignment-plugin": "^2.0.6",
     "draft-js-modifiers": "^0.2.2",
-    "draft-js-static-toolbar-plugin": "^3.0.1"
   }
 }
