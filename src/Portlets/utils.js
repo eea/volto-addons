@@ -1,3 +1,5 @@
+// TODO: rename as helpers.jsx
+
 import React from 'react';
 
 import { portlets } from '~/config';

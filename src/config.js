@@ -19,13 +19,15 @@ import ControlPanelViewlet from './ControlPanel/Viewlet';
 
 import EditSlider from './ImageSlider/Edit';
 
-import { NavigationPortlet, PortletManagerRenderer } from './Portlets';
-
 import { View } from '@plone/volto/components';
 
 import * as addonReducers from './reducers';
 
-import { CodeBlockButton } from 'draft-js-buttons';
+import {
+  NavigationPortlet,
+  DefaultPortlet,
+  PortletManagerRenderer,
+} from './Portlets';
 
 import {
   Strikethrough,
@@ -39,6 +41,7 @@ import {
   styleMap,
   customBlockStyleFn,
 } from 'volto-addons/styleConfig';
+import { CodeBlockButton } from 'draft-js-buttons';
 import { HeaderFour } from './styleConfig';
 
 export function applyConfig(config) {
@@ -165,6 +168,7 @@ export function installPortlets(config) {
     },
     renderers: {
       'portlets.Navigation': NavigationPortlet,
+      default: DefaultPortlet,
     },
   };
   return config;
