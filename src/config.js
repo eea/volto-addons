@@ -1,5 +1,7 @@
 import chartIcon from '@plone/volto/icons/world.svg';
 import HiddenWidget from './Widgets/Hidden';
+import CollectionYears from './Widgets/CollectionYears';
+
 
 import PDFBlockView from './PDFViewer/BlockView';
 import PDFBlockEdit from './PDFViewer/BlockEdit';
@@ -64,6 +66,10 @@ export function applyConfig(config) {
       ...inlineRenderers,
     },
   };
+
+  config.widgets.id.collection_years = CollectionYears
+  config.widgets.id.collection_years_layout = CollectionYears
+
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
 
