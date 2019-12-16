@@ -19,7 +19,6 @@ import ControlPanelViewlet from './ControlPanel/Viewlet';
 
 import EditSlider from './ImageSlider/Edit';
 
-
 import { NavigationPortlet, PortletManagerRenderer } from './Portlets';
 
 import { View } from '@plone/volto/components';
@@ -43,7 +42,6 @@ import {
 import { HeaderFour } from './styleConfig';
 
 export function applyConfig(config) {
-
   config.settings.blockStyleFn = customBlockStyleFn;
   config.settings.customStyleMap = styleMap;
   config.settings.richTextEditorInlineToolbarButtons = [
