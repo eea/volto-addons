@@ -26,7 +26,6 @@ export class PortletManagerRenderer extends Component {
     const portlets = this.props.portletmanagers[this.props.name] || [];
     return (
       <div id={`portlets-${this.props.name}`}>
-        portlets for {this.props.name}
         {portlets.map(portlet => (
           <div key={portlet['@id']}>{portlet['@id']}</div>
         ))}
