@@ -113,6 +113,7 @@ export function getPortlets(path, name) {
   // console.log('get portlets ', url, arguments);
   return {
     type: GET_PORTLETS,
+    subrequest: name,
     request: {
       op: 'get',
       path: url,

@@ -15,16 +15,21 @@ export class PortletManagerRenderer extends Component {
   componentDidMount() {}
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.pathname !== this.props.pathname) {
+    if (this.props.pathname && prevProps.pathname !== this.props.pathname) {
       // console.log('compdidupdate');
       this.props.getPortlets(this.props.pathname, this.props.name);
     }
   }
 
   render() {
+    console.log('portlet props', this.props);
+    const portlets = this.props.portletmanagers[this.props.name] || [];
     return (
       <div id={`portlets-${this.props.name}`}>
-        {/* portlets for ${this.props.name} */}
+        portlets for {this.props.name}
+        {portlets.map(portlet => (
+          <div key={portlet['@id']}>{portlet['@id']}</div>
+        ))}
       </div>
     );
   }
@@ -32,7 +37,7 @@ export class PortletManagerRenderer extends Component {
 
 export default connect(
   (state, props) => ({
-    portlets: state.portlets.items || [],
+    portletmanagers: state.portlets.managers,
   }),
   {
     getPortlets,

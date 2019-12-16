@@ -2,7 +2,7 @@ import { GET_PORTLETS } from '../constants';
 
 const initialState = {
   error: null,
-  items: [],
+  managers: {},
   loaded: false,
   loading: false,
 };
@@ -24,10 +24,17 @@ export default function portlets(state = initialState, action = {}) {
         loading: true,
       };
     case `${GET_PORTLETS}_SUCCESS`:
+      console.log('get portlets', action);
+      const managers = {
+        ...state.managers,
+      };
+      if (action.subrequest) {
+        managers[action.subrequest] = action.result.portlets || [];
+      }
       return {
         ...state,
         error: null,
-        items: action.result || [],
+        managers,
         loaded: true,
         loading: false,
       };
@@ -35,7 +42,8 @@ export default function portlets(state = initialState, action = {}) {
       return {
         ...state,
         error: action.error,
-        items: [],
+        // items: [],
+        // portlets: {},
         loaded: false,
         loading: false,
       };
