@@ -1,0 +1,7 @@
+.list .item.active > .content > .header {
+  background-color: pink;
+}
+
+.list .content .list {
+  padding-left: 1rem !important;
+}
