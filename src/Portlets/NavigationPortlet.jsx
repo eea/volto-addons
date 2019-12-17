@@ -3,13 +3,15 @@ import { List, Image } from 'semantic-ui-react';
 import { Link as RouterLink } from 'react-router-dom';
 import cx from 'classnames';
 import { cleanUrl } from './helpers';
+import { Icon } from '@plone/volto/components';
+
+import leftIcon from '@plone/volto/icons/left-key.svg';
 
 import './styles.css';
 
 function renderNode(node) {
   return (
     <List.Item key={node['@id']} active={node.is_current}>
-      {node.is_current ? <List.Content floated="right">&lt;</List.Content> : ''}
       <List.Content>
         <RouterLink
           to={cleanUrl(node.href)}
@@ -20,7 +22,15 @@ function renderNode(node) {
         >
           {node.thumb ? <Image src={cleanUrl(node.thumb)} /> : ''}
           {node.title}
+          {node.is_current ? (
+            <List.Content className="active-indicator">
+              <Icon name={leftIcon} size="30px" />
+            </List.Content>
+          ) : (
+            ''
+          )}
         </RouterLink>
+
         {(node.items.length && (
           <List.List>{node.items.map(renderNode)}</List.List>
         )) ||

@@ -1,13 +1,19 @@
-.list .item.active>.content>a {
-  background-color: pink;
-}
 
-.list .content .list {
-  padding-left: 1rem !important;
+
+.list .content .list a{
+  padding-left: 2rem !important;
 }
 
 .in_path {
   font-weight: bolder;
+}
+
+.list .content .list {
+  padding-top: 0!important;
+  padding-bottom: 0!important;
+
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 .navigation-portlet {
@@ -23,15 +29,16 @@
 }
 
 .navigation-portlet .item a {
-  padding    : 1rem;
+  padding    : .6rem 1rem;
   font-size  : 1rem;
   font-weight: 500;
   display    : block;
-
-
+  position: relative;
+  color: #444;
+  font-weight: 400;
 }
 
-.navigation-portlet .item:hover a {
+.navigation-portlet .item a:hover {
   background: #cc4400 !important;
   color     : white !important;
 }
@@ -43,4 +50,25 @@
   font-weight: 500;
   padding    : 1rem;
   box-shadow : 0px 4px 19px rgba(0, 0, 1, 0.07);
+  border-bottom: 3px solid #cc4400;
+}
+.nav-portlet-header a {
+  color: #444;
+    font-size: 1.3rem;
+    font-weight: 100;
+}
+
+.navigation-portlet .active-indicator {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #cc4400;
+    font-weight: bold;
+}
+
+
+
+.navigation-portlet .item a:hover .active-indicator {
+  color     : white !important;
 }
