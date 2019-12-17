@@ -27,6 +27,7 @@ import {
   NavigationPortlet,
   DefaultPortlet,
   PortletManagerRenderer,
+  ClassicPortlet,
 } from './Portlets';
 
 import {
@@ -168,6 +169,7 @@ export function installPortlets(config) {
     },
     renderers: {
       'portlets.Navigation': NavigationPortlet,
+      'portlets.Classic': ClassicPortlet,
       default: DefaultPortlet,
     },
   };

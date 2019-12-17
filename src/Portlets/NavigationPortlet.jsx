@@ -1,15 +1,10 @@
 import React from 'react';
 import { List, Image } from 'semantic-ui-react';
 import { Link as RouterLink } from 'react-router-dom';
-import { settings } from '~/config';
 import cx from 'classnames';
+import { cleanUrl } from './helpers';
 
 import './styles.css';
-
-const cleanUrl = url =>
-  (url &&
-    url.replace(settings.apiPath, '').replace(settings.internalApiPath, '')) ||
-  '';
 
 function renderNode(node) {
   return (
@@ -43,7 +38,7 @@ export default ({ portlet }) => {
     <div className="navigation-portlet">
       {portlet.navigationportlet?.has_custom_name ? (
         <div className="nav-portlet-header">
-          <RouterLink href={cleanUrl(portlet.navigationportlet?.url || '')}>
+          <RouterLink to={cleanUrl(portlet.navigationportlet?.url || '')}>
             {portlet.navigationportlet.title}
           </RouterLink>
         </div>
