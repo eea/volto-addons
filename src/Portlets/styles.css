@@ -1,4 +1,4 @@
-.list .item.active > .content > a {
+.list .item.active>.content>a {
   background-color: pink;
 }
 
@@ -8,4 +8,39 @@
 
 .in_path {
   font-weight: bolder;
+}
+
+.navigation-portlet {
+  margin-right: 1rem;;
+  background     : white;
+  padding        : 0;
+  max-width      : 410px;
+  box-shadow     : 0px 0px 12px rgba(0, 0, 0, 0.2);
+  list-style-type: none;
+  border-radius  : 4px;
+  overflow       : hidden;
+
+}
+
+.navigation-portlet .item a {
+  padding    : 1rem;
+  font-size  : 1rem;
+  font-weight: 500;
+  display    : block;
+
+
+}
+
+.navigation-portlet .item:hover a {
+  background: #cc4400 !important;
+  color     : white !important;
+}
+
+
+.nav-portlet-header {
+  color      : #333;
+  font-size  : 16px;
+  font-weight: 500;
+  padding    : 1rem;
+  box-shadow : 0px 4px 19px rgba(0, 0, 1, 0.07);
 }

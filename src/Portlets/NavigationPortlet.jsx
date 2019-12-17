@@ -34,7 +34,7 @@ export default ({ portlet }) => {
   const items =
     (portlet && portlet.navigationportlet && portlet.navigationportlet.items) ||
     [];
-  return (
+  return items.length ? (
     <div className="navigation-portlet">
       {portlet.navigationportlet?.has_custom_name ? (
         <div className="nav-portlet-header">
@@ -47,5 +47,7 @@ export default ({ portlet }) => {
       )}
       <List>{items.map(renderNode)}</List>
     </div>
+  ) : (
+    ''
   );
 };
