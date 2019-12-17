@@ -1,14 +1,15 @@
 /**
- * TextWidget component.
- * @module components/manage/Widgets/TextWidget
+ * CollectionYears component.
+ * @module components/manage/Widgets/CollectionYears
  */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Grid, Input, Label, Icon as IconOld } from 'semantic-ui-react';
+import { Form, Grid, Input, Label, Icon as IconOld, Dropdown } from 'semantic-ui-react';
 import { map } from 'lodash';
 import { defineMessages, injectIntl } from 'react-intl';
 import { Icon } from '@plone/volto/components';
+import { years } from './utils/constants';
 
 const messages = defineMessages({
     default: {
@@ -37,12 +38,13 @@ const messages = defineMessages({
     },
 });
 
+
 /**
- * TextWidget component class.
- * @class TextWidget
+ * CollectionYears component class.
+ * @class CollectionYears
  * @extends Component
  */
-class TextWidget extends Component {
+class CollectionYears extends Component {
     /**
      * Property types.
      * @property {Object} propTypes Property types.
@@ -85,6 +87,7 @@ class TextWidget extends Component {
         iconAction: null,
     };
 
+
     /**
      * Component did mount lifecycle method
      * @method componentDidMount
@@ -97,10 +100,10 @@ class TextWidget extends Component {
     }
 
     /**
-     * Render method.
-     * @method render
-     * @returns {string} Markup for the component.
-     */
+ * Render method.
+ * @method render
+ * @returns {string} Markup for the component.
+ */
     render() {
         const {
             id,
@@ -190,19 +193,23 @@ class TextWidget extends Component {
                                     </button>
                                 </div>
                             )}
-                            asta e widgetul nostru
-                            <Input
-                                id={`field-${id}`}
-                                name={id}
-                                value={value || ''}
-                                disabled={onEdit !== null}
-                                icon={icon || null}
-                                onChange={({ target }) =>
-                                    onChange(id, target.value === '' ? undefined : target.value)
-                                }
-                                ref={node => {
-                                    this.node = node;
-                                }}
+
+                            <Dropdown
+                                placeholder='Start Year'
+                                search
+                                selection
+                                options={years}
+                                value={value.start_year}
+                                onChange={(e, data) => this.props.onChange(id, { "end_year": value.end_year, "start_year": data.value })}
+                            />
+
+                            <Dropdown
+                                placeholder='End Year'
+                                search
+                                selection
+                                options={years}
+                                value={value.end_year}
+                                onChange={(e, data) => this.props.onChange(id, { "end_year": data.value, "start_year": value.start_year })}
                             />
                             {map(error, message => (
                                 <Label key={message} basic color="red" pointing>
@@ -229,4 +236,4 @@ class TextWidget extends Component {
     }
 }
 
-export default injectIntl(TextWidget);
+export default injectIntl(CollectionYears);
