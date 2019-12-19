@@ -37,7 +37,7 @@ class TableauReport extends React.Component {
     };
 
     if (!__SERVER__) {
-      // this.api = require('./../../../../thirdparty/tableau-2.3.0');
+      this.api = require('./tableau-2.3.0');
     } else {
       // this.api = null;
     }
