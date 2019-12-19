@@ -52,7 +52,7 @@ class StackedBarChart extends Component {
       ...this.props.data,
       tableauData: this.state.tableauData,
     });
-    this.props.handleClose();
+    // this.props.handleClose();
   }
 
   saveCallback(saveData) {
@@ -83,7 +83,7 @@ class StackedBarChart extends Component {
   render() {
     if (__SERVER__) return '';
     // const TableauReport = require('tableau-react');
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <div className="block chartWrapperEdit">
         <div className="block-inner-wrapper">
