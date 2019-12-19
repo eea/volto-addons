@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import trashSVG from '@plone/volto/icons/delete.svg';
 import { Button } from 'semantic-ui-react';
+import { Icon } from '@plone/volto/components';
 
 import { ResponsiveContainer } from 'recharts';
 
 import TableauReport from './TableauReport';
 
+// import clearSVG from '@plone/volto/icons/clear.svg';
+// import PropTypes from 'prop-types';
 // const url = 'http://public.tableau.com/views/RegionalSampleWorkbook/Storms';
 
 class StackedBarChart extends Component {
@@ -88,7 +91,20 @@ class StackedBarChart extends Component {
       <div className="block chartWrapperEdit">
         <div className="block-inner-wrapper">
           {this.state.show && this.state.url ? (
-            <div className="image-add">
+            <div class="image-add">
+              <div className="toolbar">
+                <Button.Group>
+                  <Button
+                    icon
+                    basic
+                    onClick={() => this.props.onDeleteBlock(this.props.block)}
+                  >
+                    {' '}
+                    <Icon name={trashSVG} size="24px" color="#e40166" />
+                  </Button>
+                </Button.Group>
+              </div>
+
               <ResponsiveContainer>
                 <TableauReport
                   url={this.state.url}
