@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import clearSVG from '@plone/volto/icons/clear.svg';
-import { Button } from 'semantic-ui-react';
+import { Button, Input} from 'semantic-ui-react';
 import { Icon } from '@plone/volto/components';
 import trashSVG from '@plone/volto/icons/delete.svg';
 
@@ -15,24 +15,29 @@ class StackedBarChart extends Component {
   constructor(props) {
     super(props);
 
-    const data = this.props.data.tableauData || {};
+    const data = this.props.data.tableauData;
     let show = !__SERVER__ && data ? true : false;
 
     let filters =
-      data.filters && data.sheetname ? data.filters[data.sheetname] : {};
+    data && data.filters && data.sheetname ? data.filters[data.sheetname] : {};
 
     this.state = {
       show,
-      tableauData: data,
-      url: data.url || '',
+      tableauData: data || '',
+      url: data && data.url || '',
       filters,
-      sheetname: data.sheetname || '',
+      sheetname: data && data.sheetname || '',
+      error: false
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.getChartData = this.getChartData.bind(this);
     this.saveCallback = this.saveCallback.bind(this);
+  }
+  componentDidCatch(e){
+    console.log(e)
+    this.setState({error: this.state.url, url: '', show: false})
   }
 
   handleChange(e) {
@@ -42,8 +47,8 @@ class StackedBarChart extends Component {
       this.setState(
         {
           url: data,
+          error: false
         },
-        // this.onSubmit,
       );
     } catch {
       console.warning('Invalid JSON data: ', data);
@@ -79,7 +84,6 @@ class StackedBarChart extends Component {
         tableauData = {};
       }
     }
-    console.log(tableauData);
     return tableauData;
   }
 
@@ -88,21 +92,8 @@ class StackedBarChart extends Component {
     // const TableauReport = require('tableau-react');
     // console.log(this.state);
     //
-    //                <Button
-    //                  icon
-    //                  basic
-    //                  onClick={() =>
-    //                    this.props.onChangeBlock(this.props.block, {
-    //                      ...this.props.data,
-    //                      tableauData: '',
-    //                      filters: '',
-    //                      url: '',
-    //                      sheetname: '',
-    //                    })
-    //                  }
-    //                >
-    //                  <Icon name={clearSVG} size="24px" color="#e40166" />
-    //                </Button>
+
+    console.log('showValue', this.state)
     return (
       <div className="block chartWrapperEdit">
         <div className="block-inner-wrapper">
@@ -117,6 +108,23 @@ class StackedBarChart extends Component {
                   >
                     <Icon name={trashSVG} size="24px" color="#e40166" />
                   </Button>
+                  <Button
+                     icon
+                     basic
+                     onClick={() =>{
+                       this.setState({url: '', show: false})
+                       this.props.onChangeBlock(this.props.block, {
+                         ...this.props.data,
+                         tableauData: '',
+                         filters: '',
+                         url: '',
+                         sheetname: '',
+                        })
+                      }
+                    }
+                   >
+                     <Icon name={clearSVG} size="24px" color="#e40166" />
+                   </Button>
                 </Button.Group>
               </div>
 
@@ -132,6 +140,8 @@ class StackedBarChart extends Component {
           ) : (
             <div className="image-add">
               <div class="ui segment">
+                {this.state.error && <h2 style={{color: 'red', fontWeight: 'bold'}}>The url "{this.state.error}" is not a valid tableau url</h2>}
+
                 <div class="ui placeholder">
                   <div class="image header">
                     <div class="line" />
@@ -145,18 +155,20 @@ class StackedBarChart extends Component {
               </div>
             </div>
           )}
-          <div>
-            <label>Enter JSON data</label>
-            <input
+          <div
+            onKeyPress={(event) => { if (event.key === 'Enter') this.setState({show: true}) }}
+            style={{fontWeight: 'bold', textAlign: 'center', fontSize: '1.3rem', boxShadow: '0px 1px 2px 0 rgba(34, 36, 38, 0.15)', border: '1px solid rgba(34, 36, 38, 0.15)', background: '#fafafa'}}
+          >
+            <label>{this.state.show && this.state.url ? 'Change' : 'Add'} tableau URL: &nbsp;</label>
+            <Input
               type="text"
+              className="remove-all-border-radius"
               defaultValue={this.state.url}
-              placeholder="Enter tableau URL"
+              value={this.state.url}
+              placeholder="Tableau URL"
               onChange={this.handleChange}
             />
-            <Button onClick={() => this.setState({ show: true })}>
-              Show dashboard
-            </Button>
-            <Button onClick={this.onSubmit}>Save</Button>
+            &nbsp; and press ENTER
           </div>
         </div>
       </div>
