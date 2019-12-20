@@ -5,17 +5,30 @@ import { Icon } from '@plone/volto/components';
 import trashSVG from '@plone/volto/icons/delete.svg';
 
 import { ResponsiveContainer } from 'recharts';
+import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 
 import TableauReport from './TableauReport';
 
-// import PropTypes from 'prop-types';
-// const url = 'http://public.tableau.com/views/RegionalSampleWorkbook/Storms';
+import { toast } from 'react-toastify';
+import { Toast } from '@plone/volto/components';
+
+const messages = defineMessages({
+  readyForSave: {
+    id: 'readyForSave',
+    defaultMessage: 'Tableau is ready to be saved',
+  },
+  modifiedAndReadyForSave: {
+    id: 'modifiedAndReadyForSave',
+    defaultMessage: 'Your modifications are ready to be saved',
+  },
+});
+
 
 class StackedBarChart extends Component {
   constructor(props) {
     super(props);
 
-    const data = this.props.data.tableauData;
+    const data = this.props.data;
     let show = !__SERVER__ && data ? true : false;
 
     let filters =
@@ -23,7 +36,6 @@ class StackedBarChart extends Component {
 
     this.state = {
       show,
-      tableauData: data || '',
       url: data && data.url || '',
       filters,
       sheetname: data && data.sheetname || '',
@@ -32,7 +44,6 @@ class StackedBarChart extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.getChartData = this.getChartData.bind(this);
     this.saveCallback = this.saveCallback.bind(this);
   }
   componentDidCatch(e){
@@ -58,36 +69,37 @@ class StackedBarChart extends Component {
   onSubmit() {
     this.props.onChangeBlock(this.props.block, {
       ...this.props.data,
-      tableauData: this.state.tableauData,
       filters: this.state.filters,
       url: this.state.url,
       sheetname: this.state.sheetname,
     });
     // this.props.handleClose();
+    toast.success(
+      <Toast
+        sucess
+        title={this.props.intl.formatMessage(messages.readyForSave)}
+        // content={this.props.intl.formatMessage(messages.readyForSaveContent)}
+      />,
+      { autoClose: true, toastId: 'readyForSave' },
+    );
   }
 
   saveCallback(saveData) {
     console.log('Received save data', saveData);
-    let stateData = JSON.parse(JSON.stringify(this.state));
     this.setState(
       {
-        tableauData: saveData,
+        ...saveData
       },
       this.onSubmit,
     );
-  }
-
-  getChartData() {
-    let tableauData = this.state.tableauData;
-    if (typeof tableauData == 'string') {
-      try {
-        tableauData = tableauData;
-      } catch (error) {
-        console.log(error);
-        tableauData = {};
-      }
-    }
-    return tableauData;
+    toast.success(
+      <Toast
+        sucess
+        title={this.props.intl.formatMessage(messages.modifiedAndReadyForSave)}
+        // content={this.props.intl.formatMessage(messages.readyForSaveContent)}
+      />,
+      { autoClose: true, toastId: 'modifiedAndReadyForSave' },
+    );
   }
 
   render() {
@@ -118,7 +130,6 @@ class StackedBarChart extends Component {
                        this.setState({url: '', show: false})
                        this.props.onChangeBlock(this.props.block, {
                          ...this.props.data,
-                         tableauData: '',
                          filters: '',
                          url: '',
                          sheetname: '',
