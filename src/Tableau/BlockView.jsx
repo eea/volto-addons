@@ -9,7 +9,7 @@ class TableauBlockView extends Component {
     let filters =
       data.filters && data.sheetname ? data.filters[data.sheetname] : {};
     this.state = {
-      show: __SERVER__ ? false : true,
+      show: true,
       url: data.url || '',
       sheetname: data.sheetname || '',
       filters: filters,
