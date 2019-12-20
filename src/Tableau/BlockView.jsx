@@ -19,7 +19,8 @@ class TableauBlockView extends Component {
   render() {
     if (__SERVER__) return '';
     return (
-      <div className="chartWrapperView">
+      <div className="chartWrapperView" style={{    width: '100%',
+        overflowX: 'auto'}}>
         {this.state.show && this.state.url ? (
           <TableauReport
             url={this.state.url}

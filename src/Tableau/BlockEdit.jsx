@@ -131,7 +131,9 @@ class StackedBarChart extends Component {
                 </Button.Group>
               </div>
 
-              <ResponsiveContainer>
+              <ResponsiveContainer
+              style={{    width: '100%',
+              overflowX: 'auto'}}>
                 <TableauReport
                   url={this.state.url}
                   filters={this.state.filters}
