@@ -59,6 +59,9 @@ class StackedBarChart extends Component {
     this.props.onChangeBlock(this.props.block, {
       ...this.props.data,
       tableauData: this.state.tableauData,
+      filters: this.state.filters,
+      url: this.state.url,
+      sheetname: this.state.sheetname,
     });
     // this.props.handleClose();
   }
@@ -156,7 +159,7 @@ class StackedBarChart extends Component {
             </div>
           )}
           <div
-            onKeyPress={(event) => { if (event.key === 'Enter') this.setState({show: true}) }}
+            onKeyPress={(event) => { if (event.key === 'Enter') { this.setState({show: true}); this.onSubmit()} }}
             style={{fontWeight: 'bold', textAlign: 'center', fontSize: '1.3rem', boxShadow: '0px 1px 2px 0 rgba(34, 36, 38, 0.15)', border: '1px solid rgba(34, 36, 38, 0.15)', background: '#fafafa'}}
           >
             <label>{this.state.show && this.state.url ? 'Change' : 'Add'} tableau URL: &nbsp;</label>
