@@ -7,7 +7,6 @@ import {
   DELETE_ATTACHMENT,
   UPDATE_ATTACHMENT,
   GET_PORTLETS,
-  GET_DATA_QUERYSTRING,
 } from './constants';
 import { GET_CONTENT } from '@plone/volto/constants/ActionTypes';
 import { dataToQueryString } from './helpers';
