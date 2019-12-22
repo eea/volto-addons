@@ -120,13 +120,3 @@ export function getPortlets(path, name) {
     },
   };
 }
-
-export function getDataQuerystring(path) {
-  return {
-    type: GET_DATA_QUERYSTRING,
-    request: {
-      op: 'get',
-      path: '/@dataquerystring',
-    },
-  };
-}
