@@ -5,11 +5,10 @@ class TableauBlockView extends Component {
   constructor(props) {
     super(props);
 
-    let data = this.props.data.tableauData || {};
+    let data = this.props.data || {};
     let filters =
       data.filters && data.sheetname ? data.filters[data.sheetname] : {};
     this.state = {
-      show: true,
       url: data.url || '',
       sheetname: data.sheetname || '',
       filters: filters,
@@ -21,7 +20,7 @@ class TableauBlockView extends Component {
     return (
       <div className="chartWrapperView" style={{    width: '100%',
         overflowX: 'auto'}}>
-        {this.state.show && this.state.url ? (
+        {this.state.url ? (
           <TableauReport
             url={this.state.url}
             filters={this.state.filters}
