@@ -71,12 +71,12 @@ export function applyConfig(config) {
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
 
-  config.addonViewlets = [
+  config.viewlets = [
     {
       path: '/controlpanel',
       component: ControlPanelViewlet,
     },
-    ...(config.addonViewlets || []),
+    ...(config.viewlets || []),
   ];
 
   config.blocks.blocksConfig.collection_block = {
