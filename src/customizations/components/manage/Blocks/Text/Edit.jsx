@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Segment, Select } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import Editor from 'draft-js-plugins-editor';
 import removeInlineStyles from 'draft-js-modifiers/removeInlineStyles';
@@ -18,7 +18,7 @@ import { Portal } from 'react-portal';
 
 import { settings } from '~/config';
 
-import { Icon, BlockChooser, SidebarPortal } from '@plone/volto/components';
+import { Icon, BlockChooser } from '@plone/volto/components';
 import addSVG from '@plone/volto/icons/circle-plus.svg';
 
 import './style.css';
