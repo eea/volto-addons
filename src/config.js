@@ -45,7 +45,26 @@ import {
 import { CodeBlockButton } from 'draft-js-buttons';
 import { HeaderFour } from './styleConfig';
 
+function addCustomGroup(config) {
+  const hasCustomGroup = config.blocks.groupBlocksOrder.filter(
+    el => el.id === 'custom_addons',
+  );
+  if (!hasCustomGroup.length) {
+    config.blocks.groupBlocksOrder.push({
+      id: 'custom_addons',
+      title: 'Custom addons',
+    });
+  }
+}
+
 export function applyConfig(config) {
+  addCustomGroup(config);
+
+  config.views.contentTypesViews.Collection = CollectionView;
+  config.views.contentTypesViews.EmbeddedMap = MapView;
+  config.views.contentTypesViews.embeddedmap = MapView;
+  config.views.layoutViews.compositepage_view = View;
+
   config.settings.blockStyleFn = customBlockStyleFn;
   config.settings.customStyleMap = styleMap;
   config.settings.richTextEditorInlineToolbarButtons = [
@@ -60,7 +79,6 @@ export function applyConfig(config) {
     HeaderFour,
     ...config.settings.richTextEditorInlineToolbarButtons,
   ].filter((button, index) => index !== 13 && index !== 14);
-
   config.settings.ToHTMLRenderers = {
     ...config.settings.ToHTMLRenderers,
     inline: {
@@ -68,16 +86,9 @@ export function applyConfig(config) {
       ...inlineRenderers,
     },
   };
+
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
-
-  config.viewlets = [
-    {
-      path: '/controlpanel',
-      component: ControlPanelViewlet,
-    },
-    ...(config.viewlets || []),
-  ];
 
   config.blocks.blocksConfig.collection_block = {
     id: 'collection_block',
@@ -87,7 +98,6 @@ export function applyConfig(config) {
     icon: chartIcon,
     group: 'custom_addons',
   };
-
   config.blocks.blocksConfig.pdf_viewer = {
     id: 'pdf_viewer',
     title: 'PDF Viewer',
@@ -102,26 +112,17 @@ export function applyConfig(config) {
     ...addonReducers,
   };
 
-  config.views.contentTypesViews.Collection = CollectionView;
-  config.views.contentTypesViews.EmbeddedMap = MapView;
-  config.views.contentTypesViews.embeddedmap = MapView;
-  config.views.layoutViews.compositepage_view = View;
+  config.viewlets = [
+    {
+      path: '/controlpanel',
+      component: ControlPanelViewlet,
+    },
+    ...(config.viewlets || []),
+  ];
 
   return config;
 }
 
-export function installCustomAddonGroup(config) {
-  const hasCustomGroup = config.blocks.groupBlocksOrder.filter(
-    el => el.id === 'custom_addons',
-  );
-  if (!hasCustomGroup.length) {
-    config.blocks.groupBlocksOrder.push({
-      id: 'custom_addons',
-      title: 'Custom addons',
-    });
-  }
-  return config;
-}
 export function installFolderListing(config) {
   config.blocks.blocksConfig.folder_contents_block = {
     id: 'folder_contents_block',
