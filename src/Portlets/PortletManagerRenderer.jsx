@@ -19,7 +19,6 @@ class PortletManagerRenderer extends Component {
 
   render() {
     const portlets = this.props.portletmanagers[this.props.name] || [];
-    // console.log('portlets', portlets)
     return (
       <div id={`portlets-${normalize(this.props.name)}`}>
         {portlets.map(portlet => (

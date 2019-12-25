@@ -24,7 +24,6 @@ export default function portlets(state = initialState, action = {}) {
         loading: true,
       };
     case `${GET_PORTLETS}_SUCCESS`:
-      console.log('get portlets', action);
       const managers = {
         ...state.managers,
       };

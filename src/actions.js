@@ -86,7 +86,6 @@ export function getAttachments(path, _type) {
 }
 
 export function deleteAttachment(path) {
-  // console.log('deleting attachment action', path);
   return {
     type: DELETE_ATTACHMENT,
     request: {
@@ -97,7 +96,6 @@ export function deleteAttachment(path) {
 }
 
 export function updateAttachment(path, data) {
-  // console.log('action updateAttachment', path, data);
   return {
     type: UPDATE_ATTACHMENT,
     request: {
@@ -110,7 +108,6 @@ export function updateAttachment(path, data) {
 
 export function getPortlets(path, name) {
   const url = name ? `${path}/@portlets/${name}` : `${path}/@portlets`;
-  // console.log('get portlets ', url, arguments);
   return {
     type: GET_PORTLETS,
     subrequest: name,
