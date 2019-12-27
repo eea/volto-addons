@@ -57,14 +57,7 @@ function addCustomGroup(config) {
   }
 }
 
-export function applyConfig(config) {
-  addCustomGroup(config);
-
-  config.views.contentTypesViews.Collection = CollectionView;
-  config.views.contentTypesViews.EmbeddedMap = MapView;
-  config.views.contentTypesViews.embeddedmap = MapView;
-  config.views.layoutViews.compositepage_view = View;
-
+export function installDraftEditor(config) {
   config.settings.blockStyleFn = customBlockStyleFn;
   config.settings.customStyleMap = styleMap;
   config.settings.richTextEditorInlineToolbarButtons = [
@@ -79,6 +72,9 @@ export function applyConfig(config) {
     HeaderFour,
     ...config.settings.richTextEditorInlineToolbarButtons,
   ].filter((button, index) => index !== 13 && index !== 14);
+  // TODO: this is not good practice, should find a better way to test buttons
+  // to remove
+  //
   config.settings.ToHTMLRenderers = {
     ...config.settings.ToHTMLRenderers,
     inline: {
@@ -86,6 +82,18 @@ export function applyConfig(config) {
       ...inlineRenderers,
     },
   };
+
+  return config;
+}
+
+export function applyConfig(config) {
+  addCustomGroup(config);
+  installDraftEditor(config); // BBB
+
+  config.views.contentTypesViews.Collection = CollectionView;
+  config.views.contentTypesViews.EmbeddedMap = MapView;
+  config.views.contentTypesViews.embeddedmap = MapView;
+  config.views.layoutViews.compositepage_view = View;
 
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;

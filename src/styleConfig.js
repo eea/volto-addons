@@ -70,6 +70,7 @@ export const styleMap = {
     display: 'block',
   },
 };
+
 export const inlineRenderers = {
   AlignBlockCenter: (children, { key }) => (
     <div className="align-center" key={key}>
