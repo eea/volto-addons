@@ -1,7 +1,8 @@
+import React from 'react';
 import decorateComponentWithProps from 'decorate-component-with-props';
 import AddButton from './Button';
 import ColorBlock from './ColorBlock';
-import { ColorBlockToHTML } from './HTML';
+// import { ColorBlockToHTML } from './HTML';
 import * as types from './types';
 
 export function makeColorBlockPlugin(config = {}) {
@@ -22,22 +23,22 @@ export function makeColorBlockPlugin(config = {}) {
     }),
 
     blockRendererFn: (block, { getEditorState }) => {
-      // console.log('blockrenderfn', block);
       if (block.getType() === types.ATOMIC) {
         // TODO subject to change for draft-js next release
         const contentState = getEditorState().getCurrentContent();
         const entity = contentState.getEntity(block.getEntityAt(0));
         const type = entity.getType();
         const { width } = entity.getData();
-        // if (type === types.COLORBLOCK) {
-        //   return {
-        //     component: ColorBlock,
-        //     editable: false,
-        //     props: {
-        //       width,
-        //     },
-        //   };
-        // }
+
+        if (type === types.COLORBLOCK) {
+          return {
+            component: ColorBlock,
+            editable: false,
+            props: {
+              width,
+            },
+          };
+        }
       }
     },
   };
@@ -52,16 +53,24 @@ export default function applyConfig(config) {
   ];
   config.settings.richTextEditorInlineToolbarButtons.push(plugin.AddButton);
 
-  // config.settings.ToHTMLRenderers.entities['COLORBLOCK'] = ColorBlockToHTML;
+  config.settings.ToHTMLRenderers.entities = {
+    ...config.settings.ToHTMLRenderers.entities,
+    COLORBLOCK: (children, entity, { key }) => {
+      console.log('color block', children, entity, key);
+      return (
+        <a href="/bla" key={key} src={entity.src} alt={entity.alt}>
+          blabla
+        </a>
+      );
+    },
+    'draft-js-video-plugin-video': (children, entity, { key }) => {
+      console.log('video block', children, entity, key);
+      return (
+        <a href="/bla" key={key} src={entity.src} alt={entity.alt}>
+          blabla
+        </a>
+      );
+    },
+  };
+  return config;
 }
-
-// AddButton: decorateComponentWithProps(ColorBlockButton, {
-//   ownTheme: colorBlockStyles,
-//   placeholder,
-// }),
-// import ColorBlockButton from './Button';
-// import colorBlockStyles from './css/colorBlockStyles.module.css';
-// const placeholder = '-color block placeholder-';
-// initialize() {
-//   console.log('initialize', arguments);
-// },

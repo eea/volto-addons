@@ -21,7 +21,8 @@
     "draft-js-resizeable-plugin": "^2.0.9",
     "draft-js-static-toolbar-plugin": "^3.0.1",
     "draft-js-video-plugin": "^2.0.2",
-    "react-pdf-js": "^5.1.0"
+    "react-pdf-js": "^5.1.0",
+    "redraft": "^0.10.2"
   },
   "voltoCustomizationPath": "src/customizations"
 }

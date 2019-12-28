@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import { CodeBlockButton } from 'draft-js-buttons';
 import {
   Strikethrough,
@@ -13,8 +13,10 @@ import {
   customBlockStyleFn,
   HeaderFour,
 } from 'volto-addons/drafteditor/styleConfig';
-// import installColorBlockPlugin from './colorblock';
+
+import installColorBlockPlugin from './colorblock';
 import installVideoPlugin from './video';
+// import AtomicBlock from './AtomicBlock';
 
 export default function applyConfig(config) {
   config.settings.blockStyleFn = customBlockStyleFn;
@@ -36,6 +38,14 @@ export default function applyConfig(config) {
     // buttons to remove
   ]; // .filter((button, index) => index !== 13 && index !== 14);
 
+  // console.log('buttons', config.settings.richTextEditorInlineToolbarButtons);
+
+  // const getAtomic = (children, { data, keys }) =>
+  //   data.map((item, i) => {
+  //     console.log('atomic iterate', item, data);
+  //     return <AtomicBlock key={keys[i]} {...data[i]} />;
+  //   });
+
   config.settings.ToHTMLRenderers = {
     ...config.settings.ToHTMLRenderers,
     inline: {
@@ -44,17 +54,11 @@ export default function applyConfig(config) {
     },
     blocks: {
       ...config.settings.ToHTMLRenderers.blocks,
-      // atomic: (children, { data, keys }) => {
-      //   console.log('atomic TOHTMLRender', data, keys);
-      //   return data.map((item, i) => <div key={keys[i]} {...data[i]} />);
-      // },
+      atomic: (children, { data, keys }) => children,
     },
-    // entities: {
-    //   ...config.settings.ToHTMLRenderers.entities,
-    // },
   };
 
-  // installColorBlockPlugin(config);
+  installColorBlockPlugin(config);
   installVideoPlugin(config);
   return config;
 }

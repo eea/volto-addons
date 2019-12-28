@@ -8,7 +8,7 @@ export function addColorBlock(editorState, { width }) {
   const contentState = editorState.getCurrentContent();
   const contentStateWithEntity = contentState.createEntity(
     types.COLORBLOCK,
-    'IMMUTABLE',
+    'MUTABLE',
     { width },
   );
 
@@ -23,6 +23,5 @@ export function addColorBlock(editorState, { width }) {
     entityKey,
     ' ',
   );
-  console.log('created block', entityKey, res);
   return res;
 }

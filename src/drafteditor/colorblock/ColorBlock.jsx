@@ -9,15 +9,21 @@ const propTypes = {
 };
 
 const ColorBlock = props => {
-  console.log('rendering colorblock', props);
+  // console.log('rendering colorblock', props);
 
   const { blockProps, className } = props;
   const width = blockProps.width;
 
   return (
-    <div style={{ width }} className={className} rel="noopener noreferrer">
-      - COLORBLOCK -
-    </div>
+    <span
+      style={{
+        width,
+        display: 'inline-block',
+        backgroundColor: 'red',
+        height: '30px',
+      }}
+      className={className}
+    />
   );
 };
 
