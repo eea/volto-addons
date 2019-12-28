@@ -1,0 +1,29 @@
+export const matchesEntityType = type => type === 'COLORBLOCK';
+
+/**
+ *
+ *
+ * @export strategy
+ * @param {*} contentBlock contentBlock
+ * @param {*} cb cb
+ * @param {*} contentState contentState
+ * @returns {*} string
+ */
+export default function strategy(contentBlock, cb, contentState) {
+  if (!contentState) return;
+  console.log('strategy', contentBlock);
+  contentBlock.findEntityRanges(character => {
+    const entityKey = character.getEntity();
+
+    console.log(
+      'viziting',
+      entityKey,
+      entityKey !== null && contentState.getEntity(entityKey).getType(),
+    );
+
+    return (
+      entityKey !== null &&
+      matchesEntityType(contentState.getEntity(entityKey).getType())
+    );
+  }, cb);
+}

@@ -14,10 +14,14 @@
   "author": "Tiberiu Ichim",
   "license": "ISC",
   "dependencies": {
-    "react-pdf-js": "^5.1.0",
     "draft-js-alignment-plugin": "^2.0.6",
+    "draft-js-focus-plugin": "^3.0.1",
     "draft-js-modifiers": "^0.2.2",
-    "draft-js-static-toolbar-plugin": "^3.0.1"
+    "draft-js-plugins-editor": "^3.0.0",
+    "draft-js-resizeable-plugin": "^2.0.9",
+    "draft-js-static-toolbar-plugin": "^3.0.1",
+    "draft-js-video-plugin": "^2.0.2",
+    "react-pdf-js": "^5.1.0"
   },
   "voltoCustomizationPath": "src/customizations"
 }

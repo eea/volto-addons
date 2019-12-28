@@ -22,6 +22,7 @@ import EditSlider from './ImageSlider/Edit';
 import { View } from '@plone/volto/components';
 
 import * as addonReducers from './reducers';
+import installDraftEditor from './drafteditor';
 
 import {
   NavigationPortlet,
@@ -29,21 +30,6 @@ import {
   PortletManagerRenderer,
   ClassicPortlet,
 } from './Portlets';
-
-import {
-  Strikethrough,
-  HeaderOne,
-  HeaderTwo,
-  HeaderThree,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  inlineRenderers,
-  styleMap,
-  customBlockStyleFn,
-} from 'volto-addons/styleConfig';
-import { CodeBlockButton } from 'draft-js-buttons';
-import { HeaderFour } from './styleConfig';
 
 function addCustomGroup(config) {
   const hasCustomGroup = config.blocks.groupBlocksOrder.filter(
@@ -55,35 +41,6 @@ function addCustomGroup(config) {
       title: 'Custom addons',
     });
   }
-}
-
-export function installDraftEditor(config) {
-  config.settings.blockStyleFn = customBlockStyleFn;
-  config.settings.customStyleMap = styleMap;
-  config.settings.richTextEditorInlineToolbarButtons = [
-    Strikethrough,
-    CodeBlockButton,
-    AlignLeft,
-    AlignCenter,
-    AlignRight,
-    HeaderOne,
-    HeaderTwo,
-    HeaderThree,
-    HeaderFour,
-    ...config.settings.richTextEditorInlineToolbarButtons,
-  ].filter((button, index) => index !== 13 && index !== 14);
-  // TODO: this is not good practice, should find a better way to test buttons
-  // to remove
-  //
-  config.settings.ToHTMLRenderers = {
-    ...config.settings.ToHTMLRenderers,
-    inline: {
-      ...config.settings.ToHTMLRenderers.inline,
-      ...inlineRenderers,
-    },
-  };
-
-  return config;
 }
 
 export function applyConfig(config) {

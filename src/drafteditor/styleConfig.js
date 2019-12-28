@@ -1,12 +1,14 @@
 import React from 'react';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
+
 import createInlineStyleButton from 'draft-js-buttons/lib/utils/createInlineStyleButton';
 import createBlockStyleButton from 'draft-js-buttons/lib/utils/createBlockStyleButton';
-import Icon from '@plone/volto/components/theme/Icon/Icon';
-import underlineSVG from '@plone/volto/icons/underline.svg';
+
 import strickthroughSVG from '@plone/volto/icons/strickthrough.svg';
 import alignLeftSVG from '@plone/volto/icons/align-left.svg';
 import alignRightSVG from '@plone/volto/icons/align-right.svg';
 import alignCenterSVG from '@plone/volto/icons/align-center.svg';
+// import underlineSVG from '@plone/volto/icons/underline.svg';
 
 export const Strikethrough = createInlineStyleButton({
   style: 'STRIKETHROUGH',
@@ -99,5 +101,8 @@ export function customBlockStyleFn(contentBlock) {
   }
   if (type === 'right') {
     return 'align-right';
+  }
+  if (type === 'callout') {
+    return 'callout';
   }
 }
