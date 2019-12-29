@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import unionClassNames from 'union-class-names';
 import EditorUtils from 'draft-js-plugins-utils';
 import Icon from '@plone/volto/components/theme/Icon/Icon';
-import { convertToRaw } from 'draft-js';
 
 import linkSVG from '@plone/volto/icons/link.svg';
 import unlinkSVG from '@plone/volto/icons/unlink.svg';
 import { addColorBlock } from './modifiers';
+import cx from 'classnames';
+import { removeEntityOfSelection } from 'volto-addons/drafteditor/utils';
+
+// import { convertToRaw } from 'draft-js';
 
 class ColorBlockButton extends Component {
   static propTypes = {
     placeholder: PropTypes.string,
     store: PropTypes.shape({}).isRequired,
-    theme: PropTypes.shape({}).isRequired,
-    ownTheme: PropTypes.shape({}).isRequired,
-    onRemoveColorBlockAtSelection: PropTypes.func.isRequired,
+    // theme: PropTypes.shape({}).isRequired,
+    // ownTheme: PropTypes.shape({}).isRequired,
+    // onRemoveColorBlockAtSelection: PropTypes.func.isRequired,
     onOverrideContent: PropTypes.func.isRequired,
   };
 
@@ -30,24 +32,31 @@ class ColorBlockButton extends Component {
     const { getEditorState, setEditorState } = this.props.store;
     const editorState = getEditorState();
     const newState = addColorBlock(editorState, { width: '100px' });
-    const newContent = newState.getCurrentContent();
-    console.log('constructed new state', newState, newContent);
 
-    console.log('new content raw', convertToRaw(newContent));
+    // const newContent = newState.getCurrentContent();
+    // console.log('constructed new state', newState, newContent);
+    // console.log('new content raw', convertToRaw(newContent));
+
     setEditorState(newState);
   };
 
+  onRemoveBlockAtSelection = e => {
+    console.log('remove block');
+    e.preventDefault();
+    e.stopPropagation();
+    const { getEditorState, setEditorState } = this.props.store;
+    setEditorState(removeEntityOfSelection(getEditorState()));
+  };
+
   render() {
-    const { theme, onRemoveColorBlockAtSelection, getEditorState } = this.props;
+    const { theme, getEditorState } = this.props;
 
     // TODO: this needs to be adjusted
     const hasBlockSelected = EditorUtils.hasEntity(
       getEditorState(),
       'COLORBLOCK',
     );
-    const className = hasBlockSelected
-      ? unionClassNames(theme.button, theme.active)
-      : theme.button;
+    const className = cx(theme.button, { [theme.active]: hasBlockSelected });
 
     return (
       <div
@@ -59,7 +68,7 @@ class ColorBlockButton extends Component {
           className={className}
           onClick={
             hasBlockSelected
-              ? onRemoveColorBlockAtSelection
+              ? this.onRemoveBlockAtSelection
               : this.onButtonClick
           }
           type="button"
@@ -76,16 +85,3 @@ class ColorBlockButton extends Component {
 }
 
 export default ColorBlockButton;
-
-// const { ownTheme, placeholder, onOverrideContent } = this.props;
-//  <AddLinkForm {...props} placeholder={placeholder} theme={ownTheme} />
-// const content = props => <div>adder form</div>;
-// onOverrideContent(content);
-// import BlockUtils from './utils';
-// const editorState = BlockUtils.createColorBlockAtSelection(
-//   getEditorState(),
-//   100,
-// );
-// console.log('new state', editorState);
-// // const contentState = state.getCurrentContent();
-// setEditorState(editorState);

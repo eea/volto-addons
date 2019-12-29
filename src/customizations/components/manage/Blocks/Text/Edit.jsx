@@ -218,10 +218,18 @@ class Edit extends Component {
     if (__SERVER__) {
       return <div />;
     }
+
+    // NOTE: defaultKeyCommands=true deactivates the default
+    // draft-js-plugins-editor handleKeyCommands plugin. For some reason, that
+    // plugin doesn't receive the {setEditorState} prop, but it could be
+    // rewritten with a closure-based store, just like the plugins in
+    // volto-addons/drafteditor
+
     const { InlineToolbar } = this.state.inlineToolbarPlugin;
     return (
       <>
         <Editor
+          defaultKeyCommands={false}
           onChange={this.onChange}
           editorState={this.state.editorState}
           plugins={[

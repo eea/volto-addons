@@ -16,7 +16,6 @@ import {
 
 import installColorBlockPlugin from './colorblock';
 import installVideoPlugin from './video';
-// import AtomicBlock from './AtomicBlock';
 
 export default function applyConfig(config) {
   config.settings.blockStyleFn = customBlockStyleFn;
@@ -38,14 +37,6 @@ export default function applyConfig(config) {
     // buttons to remove
   ]; // .filter((button, index) => index !== 13 && index !== 14);
 
-  console.log('buttons', config.settings.richTextEditorInlineToolbarButtons);
-
-  // const getAtomic = (children, { data, keys }) =>
-  //   data.map((item, i) => {
-  //     console.log('atomic iterate', item, data);
-  //     return <AtomicBlock key={keys[i]} {...data[i]} />;
-  //   });
-
   config.settings.ToHTMLRenderers = {
     ...config.settings.ToHTMLRenderers,
     inline: {
@@ -56,7 +47,6 @@ export default function applyConfig(config) {
       ...config.settings.ToHTMLRenderers.blocks,
       // this function needs attention
       atomic: (children, { data, keys }) => {
-        console.log('Atomic block', children, data, keys);
         return <div className="atomic-block">{children}</div>;
       },
     },
