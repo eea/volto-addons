@@ -38,7 +38,7 @@ export default function applyConfig(config) {
     // buttons to remove
   ]; // .filter((button, index) => index !== 13 && index !== 14);
 
-  // console.log('buttons', config.settings.richTextEditorInlineToolbarButtons);
+  console.log('buttons', config.settings.richTextEditorInlineToolbarButtons);
 
   // const getAtomic = (children, { data, keys }) =>
   //   data.map((item, i) => {
@@ -54,11 +54,16 @@ export default function applyConfig(config) {
     },
     blocks: {
       ...config.settings.ToHTMLRenderers.blocks,
-      atomic: (children, { data, keys }) => children,
+      // this function needs attention
+      atomic: (children, { data, keys }) => {
+        console.log('Atomic block', children, data, keys);
+        return <div className="atomic-block">{children}</div>;
+      },
     },
   };
 
   installColorBlockPlugin(config);
   installVideoPlugin(config);
+
   return config;
 }

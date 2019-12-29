@@ -55,20 +55,11 @@ export default function applyConfig(config) {
 
   config.settings.ToHTMLRenderers.entities = {
     ...config.settings.ToHTMLRenderers.entities,
-    COLORBLOCK: (children, entity, { key }) => {
-      console.log('color block', children, entity, key);
+    COLORBLOCK: (children, blockProps, { key }) => {
       return (
-        <a href="/bla" key={key} src={entity.src} alt={entity.alt}>
-          blabla
-        </a>
-      );
-    },
-    'draft-js-video-plugin-video': (children, entity, { key }) => {
-      console.log('video block', children, entity, key);
-      return (
-        <a href="/bla" key={key} src={entity.src} alt={entity.alt}>
-          blabla
-        </a>
+        <ColorBlock blockProps={blockProps} key={key}>
+          {children}
+        </ColorBlock>
       );
     },
   };

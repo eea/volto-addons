@@ -9,8 +9,6 @@ const propTypes = {
 };
 
 const ColorBlock = props => {
-  // console.log('rendering colorblock', props);
-
   const { blockProps, className } = props;
   const width = blockProps.width;
 
@@ -23,7 +21,9 @@ const ColorBlock = props => {
         height: '30px',
       }}
       className={className}
-    />
+    >
+      {props.children}
+    </span>
   );
 };
 
@@ -33,4 +33,5 @@ ColorBlock.defaultProps = {
   entityKey: null,
   target: null,
 };
+
 export default ColorBlock;
