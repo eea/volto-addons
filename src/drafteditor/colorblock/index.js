@@ -1,8 +1,11 @@
 import React from 'react';
+
+import { composeDecorators } from 'draft-js-plugins-editor';
+import createFocusPlugin from 'draft-js-focus-plugin';
+
 import decorateComponentWithProps from 'decorate-component-with-props';
 import AddButton from './Button';
 import ColorBlock from './ColorBlock';
-// import { ColorBlockToHTML } from './HTML';
 import * as types from './types';
 
 export function makeColorBlockPlugin(config = {}) {
@@ -10,6 +13,10 @@ export function makeColorBlockPlugin(config = {}) {
     getEditorState: undefined,
     setEditorState: undefined,
   };
+
+  const component = config.decorator
+    ? config.decorator(ColorBlock)
+    : ColorBlock;
 
   return {
     initialize: ({ getEditorState, setEditorState }) => {
@@ -32,7 +39,7 @@ export function makeColorBlockPlugin(config = {}) {
 
         if (type === types.COLORBLOCK) {
           return {
-            component: ColorBlock,
+            component,
             editable: false,
             props: {
               width,
@@ -45,13 +52,19 @@ export function makeColorBlockPlugin(config = {}) {
 }
 
 export default function applyConfig(config) {
-  const plugin = makeColorBlockPlugin();
+  const focusPlugin = createFocusPlugin();
+  const decorator = composeDecorators(focusPlugin.decorator);
+  const colorBlockPlugin = makeColorBlockPlugin({ decorator });
 
   config.settings.richTextEditorPlugins = [
-    plugin,
+    focusPlugin,
+    colorBlockPlugin,
     ...(config.settings.richTextEditorPlugins || []),
   ];
-  config.settings.richTextEditorInlineToolbarButtons.push(plugin.AddButton);
+
+  config.settings.richTextEditorInlineToolbarButtons.push(
+    colorBlockPlugin.AddButton,
+  );
 
   config.settings.ToHTMLRenderers.entities = {
     ...config.settings.ToHTMLRenderers.entities,

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import 'draft-js-focus-plugin/lib/plugin.css';
 
 const propTypes = {
   blockProps: PropTypes.object.isRequired,
