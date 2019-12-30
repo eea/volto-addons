@@ -97,6 +97,9 @@ export default function applyConfig(config) {
 
     UnorderedListButton,
     OrderedListButton,
+
+    Separator,
+
     BlockquoteButton,
     CalloutButton,
     CodeBlockButton,

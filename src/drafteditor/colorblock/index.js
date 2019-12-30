@@ -1,11 +1,8 @@
 import React from 'react';
-
-import { composeDecorators } from 'draft-js-plugins-editor';
-import createFocusPlugin from 'draft-js-focus-plugin';
-
 import decorateComponentWithProps from 'decorate-component-with-props';
 import AddButton from './Button';
 import ColorBlock from './ColorBlock';
+// import { ColorBlockToHTML } from './HTML';
 import * as types from './types';
 
 export function makeColorBlockPlugin(config = {}) {
@@ -14,10 +11,6 @@ export function makeColorBlockPlugin(config = {}) {
     setEditorState: undefined,
   };
 
-  const component = config.decorator
-    ? config.decorator(ColorBlock)
-    : ColorBlock;
-
   return {
     initialize: ({ getEditorState, setEditorState }) => {
       store.getEditorState = getEditorState;
@@ -25,6 +18,8 @@ export function makeColorBlockPlugin(config = {}) {
     },
     AddButton: decorateComponentWithProps(AddButton, {
       store,
+      // onRemoveLinkAtSelection: () =>
+      //   store.setEditorState(removeEntity(store.getEditorState())),
     }),
 
     blockRendererFn: (block, { getEditorState }) => {
@@ -37,8 +32,8 @@ export function makeColorBlockPlugin(config = {}) {
 
         if (type === types.COLORBLOCK) {
           return {
-            component,
-            editable: true,
+            component: ColorBlock,
+            editable: false,
             props: {
               width,
             },
@@ -50,19 +45,13 @@ export function makeColorBlockPlugin(config = {}) {
 }
 
 export default function applyConfig(config) {
-  const focusPlugin = createFocusPlugin();
-  const decorator = composeDecorators(focusPlugin.decorator);
-  const colorBlockPlugin = makeColorBlockPlugin({ decorator });
+  const plugin = makeColorBlockPlugin();
 
   config.settings.richTextEditorPlugins = [
-    focusPlugin,
-    colorBlockPlugin,
+    plugin,
     ...(config.settings.richTextEditorPlugins || []),
   ];
-
-  config.settings.richTextEditorInlineToolbarButtons.push(
-    colorBlockPlugin.AddButton,
-  );
+  config.settings.richTextEditorInlineToolbarButtons.push(plugin.AddButton);
 
   config.settings.ToHTMLRenderers.entities = {
     ...config.settings.ToHTMLRenderers.entities,
