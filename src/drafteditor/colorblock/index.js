@@ -25,8 +25,6 @@ export function makeColorBlockPlugin(config = {}) {
     },
     AddButton: decorateComponentWithProps(AddButton, {
       store,
-      // onRemoveLinkAtSelection: () =>
-      //   store.setEditorState(removeEntity(store.getEditorState())),
     }),
 
     blockRendererFn: (block, { getEditorState }) => {
@@ -40,7 +38,7 @@ export function makeColorBlockPlugin(config = {}) {
         if (type === types.COLORBLOCK) {
           return {
             component,
-            editable: false,
+            editable: true,
             props: {
               width,
             },

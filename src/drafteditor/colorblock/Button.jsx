@@ -42,8 +42,10 @@ class ColorBlockButton extends Component {
 
   onRemoveBlockAtSelection = e => {
     console.log('remove block');
+
     e.preventDefault();
     e.stopPropagation();
+
     const { getEditorState, setEditorState } = this.props.store;
     setEditorState(removeEntityOfSelection(getEditorState()));
   };
