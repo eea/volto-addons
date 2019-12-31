@@ -13,7 +13,7 @@ import {
   AlignRight,
   inlineRenderers,
   styleMap,
-  customBlockStyleFn,
+  // customBlockStyleFn,
   HeaderFour,
 } from './styleConfig';
 import {
@@ -67,8 +67,21 @@ export default function applyConfig(config) {
   //
   // customStyleMap: Optionally define a function to transform inline styles to
   // CSS objects that are applied to spans of text.
+  //
 
-  config.settings.blockStyleFn = customBlockStyleFn;
+  config.settings.blockStyleMap = {
+    ...config.settings.blockStyleMap,
+    center: 'align-center',
+    left: 'align-left',
+    right: 'align-right',
+    callout: 'callout',
+  };
+
+  config.settings.blockStyleFn = contentBlock => {
+    const type = contentBlock.getType();
+
+    return config.settings.blockStyleMap[type] || null;
+  };
 
   config.settings.customStyleMap = styleMap;
 

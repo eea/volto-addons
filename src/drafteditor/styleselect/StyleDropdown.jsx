@@ -37,7 +37,7 @@ export default class StyleDropdown extends Component {
     return type === blockType;
   };
 
-  toggleBlockStyle = (event, blockType) => {
+  toggleBlockType = (event, blockType) => {
     event.preventDefault();
     this.props.setEditorState(
       RichUtils.toggleBlockType(this.props.getEditorState(), blockType),
@@ -61,7 +61,7 @@ export default class StyleDropdown extends Component {
           <Dropdown.Item
             text="Red block"
             onClick={(ev, data) => {
-              this.toggleBlockStyle(ev, 'BLOCK-BG-RED');
+              this.toggleBlockType(ev, 'BLOCK-BG-RED');
             }}
             icon={
               this.blockTypeIsActive('BLOCK-BG-RED') ? this.checkIcon : null

@@ -1,11 +1,8 @@
-// import React from 'react';
+import React from 'react';
 import decorateComponentWithProps from 'decorate-component-with-props';
 import DefaultStyleDropdown from './StyleDropdown';
 
-// import AddButton from './Button';
-// import ColorBlock from './ColorBlock';
-// import { ColorBlockToHTML } from './HTML';
-// import * as types from './types';
+import './styles.css';
 
 export function makeStyleDropdown(config = {}) {
   const store = {
@@ -21,8 +18,6 @@ export function makeStyleDropdown(config = {}) {
 
     StyleDropdown: decorateComponentWithProps(DefaultStyleDropdown, {
       store,
-      // onRemoveLinkAtSelection: () =>
-      //   store.setEditorState(removeEntity(store.getEditorState())),
     }),
 
     // blockRendererFn: (block, { getEditorState }) => {
@@ -59,6 +54,7 @@ export default function applyConfig(config) {
     ...config.settings.richTextEditorInlineToolbarButtons,
   ];
 
+  // used by draft-js editor to apply custom styles to inline styles
   config.settings.customStyleMap = {
     ...config.settings.customStyleMap,
 
@@ -67,6 +63,39 @@ export default function applyConfig(config) {
       padding: '0.3rem',
     },
   };
+
+  // used by the custom blockStyleFn to map block types to class names
+  config.settings.blockStyleMap = {
+    ...config.settings.blockStyleMap,
+    'BLOCK-BG-RED': 'block-bg-red',
+  };
+
+  // redraft configuration, converts draftjs raw to html render
+  config.settings.ToHTMLRenderers = {
+    ...config.settings.ToHTMLRenderers,
+    blocks: {
+      ...config.settings.ToHTMLRenderers.blocks,
+
+      'BLOCK-BG-RED': (children, { data, keys }) => (
+        <div className="block-bg-red">{children}</div>
+      ),
+    },
+    inline: {
+      ...config.settings.ToHTMLRenderers.inline,
+      'BG-RED': (children, { key }) => (
+        <span className="bg-red" key={key}>
+          {children}
+        </span>
+      ),
+    },
+  };
+
+  // config.settings.extendedBlockRenderMap = {
+  //   ...config.settings.extendedBlockRenderMap,
+  //   'BLOCK-BG-RED': {
+  //     element: 'div',
+  //   },
+  // };
 
   return config;
 }

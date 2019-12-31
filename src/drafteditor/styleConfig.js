@@ -90,19 +90,3 @@ export const inlineRenderers = {
     </div>
   ),
 };
-
-export function customBlockStyleFn(contentBlock) {
-  const type = contentBlock.getType();
-  if (type === 'center') {
-    return 'align-center';
-  }
-  if (type === 'left') {
-    return 'align-left';
-  }
-  if (type === 'right') {
-    return 'align-right';
-  }
-  if (type === 'callout') {
-    return 'callout';
-  }
-}
