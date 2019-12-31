@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './css/styles.css';
+import videoSVG from '@plone/volto/icons/video.svg';
+import { Icon } from '@plone/volto/components';
 
 export default class VideoAdd extends Component {
   // Start the popover closed
@@ -55,18 +57,18 @@ export default class VideoAdd extends Component {
     const popoverClassName = this.state.open
       ? 'addVideoPopover'
       : 'addVideoClosedPopover';
-    const buttonClassName = this.state.open
-      ? 'addVideoPressedButton'
-      : 'addVideoButton';
+    // const buttonClassName = this.state.open
+    //   ? 'addVideoPressedButton'
+    //   : 'addVideoButton';
 
     return (
-      <div className={'addVideo'}>
+      <div className="inline-toolbar-button-wrapper">
         <button
-          className={buttonClassName}
+          className="inline-toolbar-button"
           onMouseUp={this.openPopover}
           type="button"
         >
-          +
+          <Icon name={videoSVG} size="24px" />
         </button>
         <div
           className={popoverClassName}

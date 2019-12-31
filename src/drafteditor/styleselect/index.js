@@ -1,6 +1,10 @@
 import React from 'react';
 import decorateComponentWithProps from 'decorate-component-with-props';
 import DefaultStyleDropdown from './StyleDropdown';
+import {
+  // addBreaklines,
+  unstyledRenderChildren,
+} from 'volto-addons/drafteditor/utils';
 
 import './styles.css';
 
@@ -77,25 +81,27 @@ export default function applyConfig(config) {
       ...config.settings.ToHTMLRenderers.blocks,
 
       'BLOCK-BG-RED': (children, { data, keys }) => (
-        <div className="block-bg-red">{children}</div>
+        <div className="block-bg-red" key={keys[0]}>
+          {children}
+        </div>
       ),
     },
     inline: {
       ...config.settings.ToHTMLRenderers.inline,
       'BG-RED': (children, { key }) => (
         <span className="bg-red" key={key}>
-          {children}
+          {unstyledRenderChildren(children, { keys: [key] })}
         </span>
       ),
     },
   };
 
-  // config.settings.extendedBlockRenderMap = {
-  //   ...config.settings.extendedBlockRenderMap,
-  //   'BLOCK-BG-RED': {
-  //     element: 'div',
-  //   },
-  // };
+  config.settings.extendedBlockRenderMap = {
+    ...config.settings.extendedBlockRenderMap,
+    'BLOCK-BG-RED': {
+      element: 'pre',
+    },
+  };
 
   return config;
 }

@@ -1,8 +1,12 @@
 .block-bg-red {
   background-color: pink;
   padding: 0.3rem;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 
 .bg-red {
   background-color: red;
+  /* white-space: pre-wrap; */
+  /* overflow-wrap: break-word; */
 }

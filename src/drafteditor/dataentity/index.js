@@ -1,10 +1,10 @@
 import React from 'react';
 import decorateComponentWithProps from 'decorate-component-with-props';
 import AddButton from './Button';
-import ColorBlock from './ColorBlock';
-import * as types from './types';
+// import ColorBlock from './ColorBlock';
+// import * as types from './types';
 
-export function makeColorBlockPlugin(config = {}) {
+export function makeDataEntityPlugin(config = {}) {
   const store = {
     getEditorState: undefined,
     setEditorState: undefined,

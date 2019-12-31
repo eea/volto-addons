@@ -15,7 +15,7 @@ import './style.css';
  * @extends Component
  */
 const View = ({ data }) => {
-  // console.log('draft state', data);
+  console.log('draft state', data);
   return (
     <div>
       {data.text

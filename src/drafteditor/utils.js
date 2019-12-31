@@ -1,6 +1,39 @@
 import { EditorState, Modifier } from 'draft-js';
 import EditorUtils from 'draft-js-plugins-utils';
 
+import React from 'react';
+
+export const addBreaklines = children => children.map(child => [child, <br />]);
+
+/*
+ * Based on block unstyled render, to properly render softlines
+ */
+export const unstyledRenderChildren = (children, { keys }) => {
+  console.log('children', children);
+  const processedChildren = children.map(child => {
+    if (Array.isArray(child)) {
+      return child.map((subchild, index) => {
+        if (typeof subchild === 'string') {
+          const last = subchild.split('\n').length - 1;
+          return subchild.split('\n').map((item, index) => (
+            <React.Fragment key={index}>
+              {item}
+              {index !== last && <br />}
+            </React.Fragment>
+          ));
+        } else {
+          return subchild;
+        }
+      });
+    } else {
+      return child;
+    }
+  });
+  return processedChildren.map(
+    (chunk, ix) => chunk && <span key={ix}>{chunk}</span>,
+  );
+};
+
 export function removeEntityOfSelection(editorState) {
   const entityKey = EditorUtils.getCurrentEntityKey(editorState);
   const entity = EditorUtils.getCurrentEntity(editorState);

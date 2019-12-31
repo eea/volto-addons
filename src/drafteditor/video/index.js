@@ -33,6 +33,9 @@ export default function applyConfig(config) {
   config.settings.ToHTMLRenderers.entities = {
     ...config.settings.ToHTMLRenderers.entities,
     'draft-js-video-plugin-video': (children, blockProps, { key }) => {
+      // TODO: needs to be properly rendered. I'd like to reuse the component
+      // from draft-js-video-plugin, but for some reason I can't import it.
+      // It might work with a webpack resolve alias
       return <div blockProps={blockProps}>Video block</div>;
     },
   };

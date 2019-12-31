@@ -135,11 +135,41 @@ export default function applyConfig(config) {
     },
     blocks: {
       ...config.settings.ToHTMLRenderers.blocks,
+
       // this function needs attention. See
       // https://github.com/plone/volto/issues/1084
       atomic: (children, { data, keys }) => {
         return <div className="atomic-block">{children}</div>;
       },
+
+      unstyled: (children, { keys }) => {
+        // console.log('unstyle children', children);
+        const processedChildren = children.map(chunks =>
+          chunks.map(child => {
+            if (Array.isArray(child)) {
+              return child.map((subchild, index) => {
+                if (typeof subchild === 'string') {
+                  const last = subchild.split('\n').length - 1;
+                  return subchild.split('\n').map((item, index) => (
+                    <React.Fragment key={index}>
+                      {item}
+                      {index !== last && <br />}
+                    </React.Fragment>
+                  ));
+                } else {
+                  return subchild;
+                }
+              });
+            } else {
+              return child;
+            }
+          }),
+        );
+        return processedChildren.map(
+          chunk => chunk && <p key={keys[0]}>{chunk}</p>,
+        );
+      },
+      //
     },
   };
 
