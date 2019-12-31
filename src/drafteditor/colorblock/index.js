@@ -48,8 +48,8 @@ export default function applyConfig(config) {
   const plugin = makeColorBlockPlugin();
 
   config.settings.richTextEditorPlugins = [
-    plugin,
     ...(config.settings.richTextEditorPlugins || []),
+    plugin,
   ];
   config.settings.richTextEditorInlineToolbarButtons.push(plugin.AddButton);
 

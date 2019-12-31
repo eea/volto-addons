@@ -15,20 +15,21 @@ import {
   styleMap,
   customBlockStyleFn,
   HeaderFour,
-} from 'volto-addons/drafteditor/styleConfig';
+} from './styleConfig';
 import {
   BlockquoteButton,
   BoldButton,
   CalloutButton,
   ItalicButton,
-  HeadlineTwoButton,
-  HeadlineThreeButton,
+  // HeadlineTwoButton,
+  // HeadlineThreeButton,
   OrderedListButton,
   UnorderedListButton,
 } from '@plone/volto/config/RichTextEditor/Styles';
 
 import installColorBlockPlugin from './colorblock';
 import installVideoPlugin from './video';
+import installStyleDropdownPlugin from './styleselect';
 
 const breakOutOptions = {
   doubleBreakoutBlocks: [
@@ -80,7 +81,7 @@ export default function applyConfig(config) {
 
     Separator,
 
-    // HeaderOne,
+    HeaderOne, // this header style should probably not be available
     HeaderTwo,
     HeaderThree,
     HeaderFour,
@@ -131,6 +132,7 @@ export default function applyConfig(config) {
 
   installColorBlockPlugin(config);
   installVideoPlugin(config);
+  installStyleDropdownPlugin(config);
 
   return config;
 }

@@ -12,6 +12,7 @@ import removeInlineStyles from 'draft-js-modifiers/removeInlineStyles';
 import { convertFromRaw, convertToRaw, EditorState, RichUtils } from 'draft-js';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
+// import createStaticToolbarPlugin from 'draft-js-static-toolbar-plugin';
 import { defineMessages, injectIntl } from 'react-intl';
 import { includes, isEqual } from 'lodash';
 import { Portal } from 'react-portal';
