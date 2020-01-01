@@ -20,6 +20,16 @@ class DataButton extends Component {
     onOverrideContent: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+
+    // TODO: State is only temporarily used, needs to be refactored as
+    // controlled input
+    this.state = {
+      url: '',
+    };
+  }
+
   onMouseDown = event => {
     event.preventDefault();
   };
@@ -49,6 +59,19 @@ class DataButton extends Component {
     setEditorState(removeEntityOfSelection(getEditorState()));
   };
 
+  onChangeBlock = (block, { href }) => {
+    this.setState({ url: href });
+    console.log('on change block', block, href);
+
+    // const editorState = getEditorState();
+    // const { getEditorState, setEditorState } = this.props.store;
+    // ContentState.mergeEntityData(key, data)
+    // ContentState.getEntity(key)
+    //
+    // const entityKey = EditorUtils.getCurrentEntityKey(editorState);
+    // const entity = EditorUtils.getCurrentEntity(editorState);
+  };
+
   render() {
     const { theme, getEditorState } = this.props;
 
@@ -76,7 +99,15 @@ class DataButton extends Component {
           )}
         </button>
 
-        {isSelected ? <EditForm /> : ''}
+        {isSelected ? (
+          <EditForm
+            onChangeBlock={this.onChangeBlock}
+            block="data-entity"
+            data={{ url: this.state.url }}
+          />
+        ) : (
+          ''
+        )}
       </div>
     );
   }

@@ -62,7 +62,7 @@ export default function applyConfig(config) {
     },
   };
 
-  console.log('entity renderers', config.settings.ToHTMLRenderers.entities);
+  // console.log('entity renderers', config.settings.ToHTMLRenderers.entities);
 
   return config;
 }
