@@ -1,8 +1,10 @@
 import React from 'react';
 import decorateComponentWithProps from 'decorate-component-with-props';
 import AddButton from './Button';
-// import ColorBlock from './ColorBlock';
-// import * as types from './types';
+import DataEntity from './DataEntity';
+import * as types from './types';
+
+import './styles.css';
 
 export function makeDataEntityPlugin(config = {}) {
   const store = {
@@ -25,15 +27,13 @@ export function makeDataEntityPlugin(config = {}) {
         const contentState = getEditorState().getCurrentContent();
         const entity = contentState.getEntity(block.getEntityAt(0));
         const type = entity.getType();
-        const { width } = entity.getData();
+        const props = entity.getData();
 
-        if (type === types.COLORBLOCK) {
+        if (type === types.DATAENTITY) {
           return {
-            component: ColorBlock,
+            component: DataEntity,
             editable: false,
-            props: {
-              width,
-            },
+            props,
           };
         }
       }
@@ -42,7 +42,7 @@ export function makeDataEntityPlugin(config = {}) {
 }
 
 export default function applyConfig(config) {
-  const plugin = makeColorBlockPlugin();
+  const plugin = makeDataEntityPlugin();
 
   config.settings.richTextEditorPlugins = [
     ...(config.settings.richTextEditorPlugins || []),
@@ -50,15 +50,19 @@ export default function applyConfig(config) {
   ];
   config.settings.richTextEditorInlineToolbarButtons.push(plugin.AddButton);
 
+  // redraft final rendering for View.jsx
   config.settings.ToHTMLRenderers.entities = {
     ...config.settings.ToHTMLRenderers.entities,
-    COLORBLOCK: (children, blockProps, { key }) => {
+    [types.DATAENTITY]: (children, blockProps, { key }) => {
       return (
-        <ColorBlock blockProps={blockProps} key={key}>
+        <DataEntity blockProps={blockProps} key={key}>
           {children}
-        </ColorBlock>
+        </DataEntity>
       );
     },
   };
+
+  console.log('entity renderers', config.settings.ToHTMLRenderers.entities);
+
   return config;
 }

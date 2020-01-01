@@ -1,7 +1,5 @@
-import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin';
-import createLinkPlugin from '@plone/volto/components/manage/AnchorPlugin';
-import { Separator } from 'draft-js-inline-toolbar-plugin';
 import React from 'react';
+import { Separator } from 'draft-js-inline-toolbar-plugin';
 import { CodeBlockButton } from 'draft-js-buttons';
 import {
   Strikethrough,
@@ -13,23 +11,27 @@ import {
   AlignRight,
   inlineRenderers,
   styleMap,
-  // customBlockStyleFn,
   HeaderFour,
+  // customBlockStyleFn,
 } from './styleConfig';
 import {
   BlockquoteButton,
   BoldButton,
   CalloutButton,
   ItalicButton,
-  // HeadlineTwoButton,
-  // HeadlineThreeButton,
   OrderedListButton,
   UnorderedListButton,
+  // HeadlineTwoButton,
+  // HeadlineThreeButton,
 } from '@plone/volto/config/RichTextEditor/Styles';
+
+import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin';
+import createLinkPlugin from '@plone/volto/components/manage/AnchorPlugin';
 
 import installColorBlockPlugin from './colorblock';
 import installVideoPlugin from './video';
 import installStyleDropdownPlugin from './styleselect';
+import installDataEntityPlugin from './dataentity';
 
 const breakOutOptions = {
   doubleBreakoutBlocks: [
@@ -46,9 +48,6 @@ const breakOutOptions = {
     'callout',
   ],
 };
-
-const blockBreakoutPlugin = createBlockBreakoutPlugin(breakOutOptions);
-const linkPlugin = createLinkPlugin();
 
 export default function applyConfig(config) {
   // draftjs editor accepted paramters:
@@ -85,44 +84,47 @@ export default function applyConfig(config) {
 
   config.settings.customStyleMap = styleMap;
 
+  const blockBreakoutPlugin = createBlockBreakoutPlugin(breakOutOptions);
+  const linkPlugin = createLinkPlugin();
+
   // TODO: we need a better way to make this extensible
   config.settings.richTextEditorInlineToolbarButtons = [
-    BoldButton,
-    ItalicButton,
-    Strikethrough,
-    linkPlugin.LinkButton,
-
-    Separator,
-
-    HeaderOne, // this header style should probably not be available
-    HeaderTwo,
-    HeaderThree,
-    HeaderFour,
-    // HeadlineTwoButton,
-    // HeadlineThreeButton,
-
-    Separator,
-
-    AlignLeft,
-    AlignCenter,
-    AlignRight,
-
-    Separator,
-
-    UnorderedListButton,
-    OrderedListButton,
-
-    Separator,
-
-    BlockquoteButton,
-    CalloutButton,
-    CodeBlockButton,
-
-    Separator,
-
-    // ...config.settings.richTextEditorInlineToolbarButtons,
-    // TODO: this is not good practice, should find a better way to test
-    // buttons to remove
+    // BoldButton,
+    // ItalicButton,
+    // Strikethrough,
+    // linkPlugin.LinkButton,
+    //
+    // Separator,
+    //
+    // HeaderOne, // this header style should probably not be available
+    // HeaderTwo,
+    // HeaderThree,
+    // HeaderFour,
+    // // HeadlineTwoButton,
+    // // HeadlineThreeButton,
+    //
+    // Separator,
+    //
+    // AlignLeft,
+    // AlignCenter,
+    // AlignRight,
+    //
+    // Separator,
+    //
+    // UnorderedListButton,
+    // OrderedListButton,
+    //
+    // Separator,
+    //
+    // BlockquoteButton,
+    // CalloutButton,
+    // CodeBlockButton,
+    //
+    // Separator,
+    //
+    // // ...config.settings.richTextEditorInlineToolbarButtons,
+    // // TODO: this is not good practice, should find a better way to test
+    // // buttons to remove
   ]; // .filter((button, index) => index !== 13 && index !== 14);
 
   config.settings.richTextEditorPlugins = [linkPlugin, blockBreakoutPlugin];
@@ -139,43 +141,48 @@ export default function applyConfig(config) {
       // this function needs attention. See
       // https://github.com/plone/volto/issues/1084
       atomic: (children, { data, keys }) => {
-        return <div className="atomic-block">{children}</div>;
+        return (
+          <div key={keys[0]} className="atomic-block">
+            {children}
+          </div>
+        );
       },
 
-      unstyled: (children, { keys }) => {
-        // console.log('unstyle children', children);
-        const processedChildren = children.map(chunks =>
-          chunks.map(child => {
-            if (Array.isArray(child)) {
-              return child.map((subchild, index) => {
-                if (typeof subchild === 'string') {
-                  const last = subchild.split('\n').length - 1;
-                  return subchild.split('\n').map((item, index) => (
-                    <React.Fragment key={index}>
-                      {item}
-                      {index !== last && <br />}
-                    </React.Fragment>
-                  ));
-                } else {
-                  return subchild;
-                }
-              });
-            } else {
-              return child;
-            }
-          }),
-        );
-        return processedChildren.map(
-          chunk => chunk && <p key={keys[0]}>{chunk}</p>,
-        );
-      },
+      // unstyled: (children, { keys }) => {
+      //   // console.log('unstyle children', children);
+      //   const processedChildren = children.map(chunks =>
+      //     chunks.map(child => {
+      //       if (Array.isArray(child)) {
+      //         return child.map((subchild, index) => {
+      //           if (typeof subchild === 'string') {
+      //             const last = subchild.split('\n').length - 1;
+      //             return subchild.split('\n').map((item, index) => (
+      //               <React.Fragment key={index}>
+      //                 {item}
+      //                 {index !== last && <br />}
+      //               </React.Fragment>
+      //             ));
+      //           } else {
+      //             return subchild;
+      //           }
+      //         });
+      //       } else {
+      //         return child;
+      //       }
+      //     }),
+      //   );
+      //   return processedChildren.map(
+      //     chunk => chunk && <p key={keys[0]}>{chunk}</p>,
+      //   );
+      // },
       //
     },
   };
 
-  installColorBlockPlugin(config);
-  installVideoPlugin(config);
-  installStyleDropdownPlugin(config);
+  // installColorBlockPlugin(config);
+  // installVideoPlugin(config);
+  // installStyleDropdownPlugin(config);
+  installDataEntityPlugin(config);
 
   return config;
 }
