@@ -31,7 +31,7 @@ import createLinkPlugin from '@plone/volto/components/manage/AnchorPlugin';
 import installColorBlockPlugin from './colorblock';
 import installVideoPlugin from './video';
 import installStyleDropdownPlugin from './styleselect';
-import installDataEntityPlugin from './dataentity';
+// import installDataEntityPlugin from './dataentity';
 
 const breakOutOptions = {
   doubleBreakoutBlocks: [
@@ -182,7 +182,7 @@ export default function applyConfig(config) {
   // installColorBlockPlugin(config);
   // installVideoPlugin(config);
   // installStyleDropdownPlugin(config);
-  installDataEntityPlugin(config);
+  // installDataEntityPlugin(config);
 
   return config;
 }
