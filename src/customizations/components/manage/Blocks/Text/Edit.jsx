@@ -153,6 +153,7 @@ class Edit extends Component {
    * @returns {undefined}
    */
   onChange(editorState) {
+    console.log('onChange called in Edit.jsx');
     if (
       !isEqual(
         convertToRaw(editorState.getCurrentContent()),

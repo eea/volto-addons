@@ -13,9 +13,10 @@ export function makeDataEntityPlugin(config = {}) {
   };
 
   return {
-    initialize: ({ getEditorState, setEditorState }) => {
+    initialize: ({ getEditorState, setEditorState, getEditorRef }) => {
       store.getEditorState = getEditorState;
       store.setEditorState = setEditorState;
+      store.getEditorRef = getEditorRef;
     },
     AddButton: decorateComponentWithProps(AddButton, {
       store,

@@ -67,8 +67,7 @@ class DataButton extends Component {
   }
 
   onChangeEntityData = (entityKey, { url }) => {
-    console.log(entityKey, url);
-    this.setState({ url });
+    // console.log(entityKey, url);
 
     const data = { url };
 
@@ -81,7 +80,24 @@ class DataButton extends Component {
       newContentState,
       'change-dataentity',
     );
-    setEditorState(newEditorState);
+
+    // all kind of hacks to force the editor to rerender the component
+    // const emptyState = EditorState.createEmpty();
+    // setEditorState(emptyState);
+
+    // const editor = getEditorRef();
+    // editor.focus();
+    //
+    // editor.update(newEditorState);
+    // editor.setMode('render');
+    // editor.setMode('edit');
+    // editor.focus();
+    const focusedState = EditorState.moveFocusToEnd(newEditorState);
+    setEditorState(focusedState);
+
+    this.setState({ url });
+
+    // console.log('setEditorState triggered in onChangeEntityData');
   };
 
   render() {
@@ -96,7 +112,7 @@ class DataButton extends Component {
     const currentEntityKey = EditorUtils.getCurrentEntityKey(editorState);
     const currentEntity = EditorUtils.getCurrentEntity(editorState);
 
-    console.log('current entity', currentEntityKey, currentEntity);
+    // console.log('current entity', currentEntityKey, currentEntity);
     // entity has type, mutability, data
 
     const className = cx(theme.button, { [theme.active]: isSelected });

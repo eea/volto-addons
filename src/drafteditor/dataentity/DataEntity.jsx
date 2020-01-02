@@ -11,6 +11,7 @@ const propTypes = {
 
 const DataEntity = props => {
   const { blockProps, className } = props;
+  console.log('rendering dataentity', props);
 
   return (
     <span
