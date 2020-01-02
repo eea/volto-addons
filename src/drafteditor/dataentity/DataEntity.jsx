@@ -11,7 +11,6 @@ const propTypes = {
 
 const DataEntity = props => {
   const { blockProps, className } = props;
-  // const width = blockProps.width;
 
   return (
     <span
@@ -19,11 +18,12 @@ const DataEntity = props => {
         display: 'inline-block',
         backgroundColor: 'red',
         height: '30px',
-        width: '30px',
+        width: '300px',
       }}
       className={className}
     >
       {props.children}
+      {blockProps.url}
     </span>
   );
 };

@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import EditorUtils from 'draft-js-plugins-utils';
 import Icon from '@plone/volto/components/theme/Icon/Icon';
 
 import linkSVG from '@plone/volto/icons/add-on.svg';
 import unlinkSVG from '@plone/volto/icons/add-user.svg';
 import { addDataEntity } from './modifiers';
 import cx from 'classnames';
+
+import EditorUtils from 'draft-js-plugins-utils';
 import { removeEntityOfSelection } from 'volto-addons/drafteditor/utils';
+import { EditorState } from 'draft-js';
 
 import EditForm from './EditForm';
+import * as types from './types';
 
 // import { convertToRaw } from 'draft-js';
 
@@ -20,15 +23,15 @@ class DataButton extends Component {
     onOverrideContent: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-
-    // TODO: State is only temporarily used, needs to be refactored as
-    // controlled input
-    this.state = {
-      url: '',
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //
+  //   // TODO: State is only temporarily used, needs to be refactored as
+  //   // controlled input
+  //   // this.state = {
+  //   //   url: '',
+  //   // };
+  // }
 
   onMouseDown = event => {
     event.preventDefault();
@@ -59,24 +62,43 @@ class DataButton extends Component {
     setEditorState(removeEntityOfSelection(getEditorState()));
   };
 
-  onChangeBlock = (block, { href }) => {
-    this.setState({ url: href });
-    console.log('on change block', block, href);
+  onChangeBlock() {
+    console.log('on change block', arguments);
+  }
 
-    // const editorState = getEditorState();
-    // const { getEditorState, setEditorState } = this.props.store;
-    // ContentState.mergeEntityData(key, data)
-    // ContentState.getEntity(key)
-    //
-    // const entityKey = EditorUtils.getCurrentEntityKey(editorState);
-    // const entity = EditorUtils.getCurrentEntity(editorState);
+  onChangeEntityData = (entityKey, { url }) => {
+    console.log(entityKey, url);
+    this.setState({ url });
+
+    const data = { url };
+
+    const { getEditorState, setEditorState } = this.props.store;
+    const editorState = getEditorState();
+    const contentState = editorState.getCurrentContent();
+    const newContentState = contentState.mergeEntityData(entityKey, data);
+    const newEditorState = EditorState.push(
+      editorState,
+      newContentState,
+      'change-dataentity',
+    );
+    setEditorState(newEditorState);
   };
 
   render() {
     const { theme, getEditorState } = this.props;
 
-    // TODO: this needs to be adjusted
-    const isSelected = EditorUtils.hasEntity(getEditorState(), 'DATAENTITY');
+    const isSelected = EditorUtils.hasEntity(
+      getEditorState(),
+      types.DATAENTITY,
+    );
+
+    const editorState = getEditorState();
+    const currentEntityKey = EditorUtils.getCurrentEntityKey(editorState);
+    const currentEntity = EditorUtils.getCurrentEntity(editorState);
+
+    console.log('current entity', currentEntityKey, currentEntity);
+    // entity has type, mutability, data
+
     const className = cx(theme.button, { [theme.active]: isSelected });
 
     return (
@@ -102,8 +124,10 @@ class DataButton extends Component {
         {isSelected ? (
           <EditForm
             onChangeBlock={this.onChangeBlock}
+            onChangeEntityData={this.onChangeEntityData}
             block="data-entity"
-            data={{ url: this.state.url }}
+            entityKey={currentEntityKey}
+            data={currentEntity.data}
           />
         ) : (
           ''
