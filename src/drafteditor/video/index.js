@@ -1,8 +1,7 @@
 import React from 'react';
 import createVideoPlugin from 'draft-js-video-plugin';
 import VideoAdd from './VideoAdd';
-// import VideoBlock from 'draft-js-video-plugin/video/components/DefaultVideoComponent';
-// const draft = require('draft-js-video-plugin/video/components/DefaultVideoComponent');
+import VideoBlock from 'draft-js-video-plugin/lib/video/components/DefaultVideoComponent';
 
 export default function applyConfig(config) {
   const store = {
@@ -33,10 +32,11 @@ export default function applyConfig(config) {
   config.settings.ToHTMLRenderers.entities = {
     ...config.settings.ToHTMLRenderers.entities,
     'draft-js-video-plugin-video': (children, blockProps, { key }) => {
-      // TODO: needs to be properly rendered. I'd like to reuse the component
-      // from draft-js-video-plugin, but for some reason I can't import it.
-      // It might work with a webpack resolve alias
-      return <div blockProps={blockProps}>Video block</div>;
+      return (
+        <VideoBlock blockProps={blockProps} theme={{ iframe: null }}>
+          Video block
+        </VideoBlock>
+      );
     },
   };
 
