@@ -127,6 +127,7 @@ class Edit extends Component {
    */
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.selected && nextProps.selected) {
+      console.log('will receive props and focusing');
       this.node.focus();
       this.setState({
         editorState: EditorState.moveFocusToEnd(this.state.editorState),
@@ -153,20 +154,20 @@ class Edit extends Component {
    * @returns {undefined}
    */
   onChange(editorState) {
-    console.log('onChange called in Edit.jsx');
-    if (
-      !isEqual(
-        convertToRaw(editorState.getCurrentContent()),
-        convertToRaw(this.state.editorState.getCurrentContent()),
-      )
-    ) {
+    const oldState = convertToRaw(this.state.editorState.getCurrentContent());
+    const newState = convertToRaw(editorState.getCurrentContent());
+    const updated = !isEqual(oldState, newState);
+
+    console.log('onChange in Edit.jsx:', updated);
+
+    if (updated) {
+      console.log('saving', convertToRaw(editorState.getCurrentContent()));
       this.props.onChangeBlock(this.props.block, {
         ...this.props.data,
         text: convertToRaw(editorState.getCurrentContent()),
       });
     }
     this.setState({ editorState });
-
     this.onAlignChange(editorState);
   }
 
@@ -231,6 +232,7 @@ class Edit extends Component {
     return (
       <>
         <Editor
+          stripPastedStyles
           defaultKeyCommands={false}
           onChange={this.onChange}
           editorState={this.state.editorState}

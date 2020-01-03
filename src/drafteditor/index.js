@@ -13,7 +13,7 @@ import {
   styleMap,
   HeaderFour,
   // customBlockStyleFn,
-} from './styleConfig';
+} from './toolbar';
 import {
   BlockquoteButton,
   BoldButton,
@@ -142,9 +142,9 @@ export default function applyConfig(config) {
       // https://github.com/plone/volto/issues/1084
       atomic: (children, { data, keys }) => {
         return (
-          <div key={keys[0]} className="atomic-block">
+          <span key={keys[0]} className="atomic-block">
             {children}
-          </div>
+          </span>
         );
       },
 
