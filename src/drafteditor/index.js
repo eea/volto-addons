@@ -1,18 +1,21 @@
+// import MultiDecorator from 'draft-js-plugins-editor/lib/Editor/MultiDecorator';
 import React from 'react';
 import {
   inlineRenderers,
   styleMap,
   defaultToolbarButtons,
+  // linkPlugin,
   // customBlockStyleFn,
 } from './toolbar';
+// import { CompositeDecorator } from 'draft-js';
 
-import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin';
-import createLinkPlugin from '@plone/volto/components/manage/AnchorPlugin';
-
+// import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin';
+// import createLinkPlugin from '@plone/volto/components/manage/AnchorPlugin';
 // import installColorBlockPlugin from './colorblock';
 // import installVideoPlugin from './video';
 // import installStyleDropdownPlugin from './styleselect';
 
+// TODO: put these back
 const breakOutOptions = {
   doubleBreakoutBlocks: [
     'unordered-list-item',
@@ -46,7 +49,6 @@ export default function applyConfig(config) {
   //
   // customStyleMap: Optionally define a function to transform inline styles to
   // CSS objects that are applied to spans of text.
-  //
 
   config.settings.blockStyleMap = {
     ...config.settings.blockStyleMap,
@@ -55,6 +57,10 @@ export default function applyConfig(config) {
     right: 'align-right',
     callout: 'callout',
   };
+
+  // config.settings.draftjsDecorator = new MultiDecorator([
+  //   new CompositeDecorator(linkPlugin.decorators),
+  // ]);
 
   config.settings.blockStyleFn = contentBlock => {
     const type = contentBlock.getType();

@@ -82,7 +82,7 @@ class Edit extends Component {
           convertFromRaw(props.data.text),
         );
       } else {
-        editorState = EditorState.createEmpty();
+        editorState = EditorState.createEmpty(); //decorator
       }
       const inlineToolbarPlugin = createInlineToolbarPlugin({
         structure: settings.richTextEditorInlineToolbarButtons,
@@ -102,6 +102,7 @@ class Edit extends Component {
         editorState,
         inlineToolbarPlugin,
         addNewBlockOpened: false,
+        decorator: null, // this is a workaround for a bug somewhere
       };
     }
     this.onChange = this.onChange.bind(this);
@@ -127,7 +128,7 @@ class Edit extends Component {
    */
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.selected && nextProps.selected) {
-      console.log('will receive props and focusing');
+      // console.log('will receive props and focusing');
       this.node.focus();
       this.setState({
         editorState: EditorState.moveFocusToEnd(this.state.editorState),
@@ -158,16 +159,45 @@ class Edit extends Component {
     const newState = convertToRaw(editorState.getCurrentContent());
     const updated = !isEqual(oldState, newState);
 
-    console.log('onChange in Edit.jsx:', updated);
+    // const oldDecorator = this.state.editorState.getDecorator();
+    const newDecorator = editorState.getDecorator();
+
+    const hasNewDecorator = !(
+      typeof newDecorator === 'undefined' || newDecorator === null
+    );
+
+    if (this.state.decorator && !hasNewDecorator) {
+      // console.log('had to reset the decorator', this.state.decorator);
+      editorState = EditorState.set(editorState, {
+        decorator: this.state.decorator,
+      });
+    }
+
+    // console.log(
+    //   'onChange in Edit.jsx:',
+    //   this.props.block,
+    //   updated,
+    //   oldDecorator,
+    //   newDecorator,
+    // );
 
     if (updated) {
-      console.log('saving', convertToRaw(editorState.getCurrentContent()));
+      // console.log('saving', convertToRaw(editorState.getCurrentContent()));
       this.props.onChangeBlock(this.props.block, {
         ...this.props.data,
         text: convertToRaw(editorState.getCurrentContent()),
       });
     }
-    this.setState({ editorState });
+
+    const state = {
+      editorState,
+    };
+
+    if (hasNewDecorator) {
+      state.decorator = newDecorator;
+    }
+
+    this.setState(state);
     this.onAlignChange(editorState);
   }
 
@@ -244,7 +274,6 @@ class Edit extends Component {
           customStyleMap={settings.customStyleMap}
           blockRenderMap={settings.extendedBlockRenderMap}
           blockStyleFn={settings.blockStyleFn}
-          decorator={settings.draftjsDecorator}
           placeholder={this.props.intl.formatMessage(messages.text)}
           handleReturn={e => {
             if (isSoftNewlineEvent(e)) {

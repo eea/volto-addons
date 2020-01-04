@@ -114,7 +114,7 @@ export const inlineRenderers = {
   ),
 };
 
-const linkPlugin = plugins[0];
+export const linkPlugin = plugins[0];
 
 export const defaultToolbarButtons = [
   BoldButton,
