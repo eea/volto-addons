@@ -5,10 +5,9 @@ import { RichUtils } from 'draft-js';
 import { Dropdown } from 'semantic-ui-react';
 import { Icon } from '@plone/volto/components';
 import checkSVG from '@plone/volto/icons/check.svg';
+// import { convertToRaw } from 'draft-js';
 
 export default class StyleDropdown extends Component {
-  // this.store.getEditorState
-
   inlineStyleIsActive = style =>
     this.props.getEditorState &&
     this.props
@@ -18,9 +17,12 @@ export default class StyleDropdown extends Component {
 
   toggleInlineStyle = (event, style) => {
     event.preventDefault();
-    this.props.setEditorState(
-      RichUtils.toggleInlineStyle(this.props.getEditorState(), style),
+    const newState = RichUtils.toggleInlineStyle(
+      this.props.getEditorState(),
+      style,
     );
+    // console.log('toggle inline style', newState);
+    this.props.setEditorState(newState);
   };
 
   blockTypeIsActive = blockType => {
@@ -44,11 +46,20 @@ export default class StyleDropdown extends Component {
     );
   };
 
+  focusEditor = () => {
+    const getRef = this.props.store.getEditorRef;
+    const editor = getRef && getRef();
+    console.log('focusing', editor);
+    editor.focus();
+    // console.log('focus props', this.props);
+    // this.props.getEditorRef().focus();
+  };
+
   checkIcon = <Icon name={checkSVG} size="24px" color="#b8c6c8" />;
 
   render() {
     return (
-      <Dropdown text="Format">
+      <Dropdown text="Format" onClick={this.focusEditor} closeOnBlur={false}>
         <Dropdown.Menu>
           <Dropdown.Item
             text="Bold"

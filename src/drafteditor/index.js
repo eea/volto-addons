@@ -13,7 +13,7 @@ import {
 // import createLinkPlugin from '@plone/volto/components/manage/AnchorPlugin';
 // import installColorBlockPlugin from './colorblock';
 // import installVideoPlugin from './video';
-// import installStyleDropdownPlugin from './styleselect';
+import installStyleDropdownPlugin from './styleselect';
 
 // TODO: put these back
 console.warn(
@@ -132,7 +132,7 @@ export default function applyConfig(config) {
 
   // installColorBlockPlugin(config);
   // installVideoPlugin(config);
-  // installStyleDropdownPlugin(config);
+  installStyleDropdownPlugin(config);
 
   return config;
 }

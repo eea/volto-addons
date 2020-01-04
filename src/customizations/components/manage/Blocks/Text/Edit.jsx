@@ -128,7 +128,6 @@ class Edit extends Component {
    */
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.selected && nextProps.selected) {
-      // console.log('will receive props and focusing');
       this.node.focus();
       this.setState({
         editorState: EditorState.moveFocusToEnd(this.state.editorState),
@@ -159,7 +158,6 @@ class Edit extends Component {
     const newState = convertToRaw(editorState.getCurrentContent());
     const updated = !isEqual(oldState, newState);
 
-    // const oldDecorator = this.state.editorState.getDecorator();
     const newDecorator = editorState.getDecorator();
 
     const hasNewDecorator = !(
@@ -167,22 +165,16 @@ class Edit extends Component {
     );
 
     if (this.state.decorator && !hasNewDecorator) {
-      // console.log('had to reset the decorator', this.state.decorator);
       editorState = EditorState.set(editorState, {
         decorator: this.state.decorator,
       });
     }
-
-    // console.log(
-    //   'onChange in Edit.jsx:',
-    //   this.props.block,
-    //   updated,
-    //   oldDecorator,
-    //   newDecorator,
-    // );
-
     if (updated) {
-      // console.log('saving', convertToRaw(editorState.getCurrentContent()));
+      console.log(
+        'saving',
+        editorState.toJS(),
+        convertToRaw(editorState.getCurrentContent()),
+      );
       this.props.onChangeBlock(this.props.block, {
         ...this.props.data,
         text: convertToRaw(editorState.getCurrentContent()),

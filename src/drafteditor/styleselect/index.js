@@ -12,12 +12,14 @@ export function makeStyleDropdown(config = {}) {
   const store = {
     getEditorState: undefined,
     setEditorState: undefined,
+    getEditorRef: undefined,
   };
 
   return {
-    initialize: ({ getEditorState, setEditorState }) => {
+    initialize: ({ getEditorState, setEditorState, getEditorRef }) => {
       store.getEditorState = getEditorState;
       store.setEditorState = setEditorState;
+      store.getEditorRef = getEditorRef;
     },
 
     StyleDropdown: decorateComponentWithProps(DefaultStyleDropdown, {
