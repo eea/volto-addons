@@ -229,6 +229,7 @@ class Edit extends Component {
     // volto-addons/drafteditor
 
     const { InlineToolbar } = this.state.inlineToolbarPlugin;
+    // console.log('The editor', Editor);
     return (
       <>
         <Editor

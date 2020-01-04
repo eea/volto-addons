@@ -28,10 +28,9 @@ import {
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin';
 import createLinkPlugin from '@plone/volto/components/manage/AnchorPlugin';
 
-import installColorBlockPlugin from './colorblock';
-import installVideoPlugin from './video';
-import installStyleDropdownPlugin from './styleselect';
-// import installDataEntityPlugin from './dataentity';
+// import installColorBlockPlugin from './colorblock';
+// import installVideoPlugin from './video';
+// import installStyleDropdownPlugin from './styleselect';
 
 const breakOutOptions = {
   doubleBreakoutBlocks: [
@@ -89,42 +88,42 @@ export default function applyConfig(config) {
 
   // TODO: we need a better way to make this extensible
   config.settings.richTextEditorInlineToolbarButtons = [
-    // BoldButton,
-    // ItalicButton,
-    // Strikethrough,
-    // linkPlugin.LinkButton,
-    //
-    // Separator,
-    //
-    // HeaderOne, // this header style should probably not be available
-    // HeaderTwo,
-    // HeaderThree,
-    // HeaderFour,
-    // // HeadlineTwoButton,
-    // // HeadlineThreeButton,
-    //
-    // Separator,
-    //
-    // AlignLeft,
-    // AlignCenter,
-    // AlignRight,
-    //
-    // Separator,
-    //
-    // UnorderedListButton,
-    // OrderedListButton,
-    //
-    // Separator,
-    //
-    // BlockquoteButton,
-    // CalloutButton,
-    // CodeBlockButton,
-    //
-    // Separator,
-    //
-    // // ...config.settings.richTextEditorInlineToolbarButtons,
-    // // TODO: this is not good practice, should find a better way to test
-    // // buttons to remove
+    BoldButton,
+    ItalicButton,
+    Strikethrough,
+    linkPlugin.LinkButton,
+
+    Separator,
+
+    HeaderOne, // this header style should probably not be available
+    HeaderTwo,
+    HeaderThree,
+    HeaderFour,
+    // HeadlineTwoButton,
+    // HeadlineThreeButton,
+
+    Separator,
+
+    AlignLeft,
+    AlignCenter,
+    AlignRight,
+
+    Separator,
+
+    UnorderedListButton,
+    OrderedListButton,
+
+    Separator,
+
+    BlockquoteButton,
+    CalloutButton,
+    CodeBlockButton,
+
+    Separator,
+
+    // ...config.settings.richTextEditorInlineToolbarButtons,
+    // TODO: this is not good practice, should find a better way to test
+    // buttons to remove
   ]; // .filter((button, index) => index !== 13 && index !== 14);
 
   config.settings.richTextEditorPlugins = [linkPlugin, blockBreakoutPlugin];
@@ -175,14 +174,12 @@ export default function applyConfig(config) {
       //     chunk => chunk && <p key={keys[0]}>{chunk}</p>,
       //   );
       // },
-      //
     },
   };
 
   // installColorBlockPlugin(config);
   // installVideoPlugin(config);
   // installStyleDropdownPlugin(config);
-  // installDataEntityPlugin(config);
 
   return config;
 }
