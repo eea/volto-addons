@@ -63,13 +63,6 @@ export default class StyleDropdown extends Component {
   render() {
     return (
       <div>
-        <button
-          onClick={(ev, data) => {
-            this.toggleInlineStyle(ev, 'BOLD');
-          }}
-        >
-          Bold
-        </button>
         <Dropdown
           text="Format"
           onMouseDown={this.focusEditor}
