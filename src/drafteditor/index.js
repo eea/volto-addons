@@ -16,6 +16,9 @@ import {
 // import installStyleDropdownPlugin from './styleselect';
 
 // TODO: put these back
+console.warn(
+  'Need to put breakOutOptions back, in volto-addons/drafteditor/index.js',
+);
 const breakOutOptions = {
   doubleBreakoutBlocks: [
     'unordered-list-item',
