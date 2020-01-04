@@ -127,6 +127,7 @@ class Edit extends Component {
    * @returns {undefined}
    */
   UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log('text editor component will receive props');
     if (!this.props.selected && nextProps.selected) {
       this.node.focus();
       this.setState({
@@ -169,10 +170,11 @@ class Edit extends Component {
         decorator: this.state.decorator,
       });
     }
+
     if (updated) {
       console.log(
         'saving',
-        editorState.toJS(),
+        // editorState.toJS(),
         convertToRaw(editorState.getCurrentContent()),
       );
       this.props.onChangeBlock(this.props.block, {
@@ -189,8 +191,12 @@ class Edit extends Component {
       state.decorator = newDecorator;
     }
 
+    // console.log(
+    //   'setstate in onChange',
+    //   state.editorState && convertToRaw(state.editorState.getCurrentContent()),
+    // );
     this.setState(state);
-    this.onAlignChange(editorState);
+    // this.onAlignChange(editorState);
   }
 
   //modifies state to use only one type of Align inline style

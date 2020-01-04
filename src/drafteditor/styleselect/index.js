@@ -56,8 +56,8 @@ export default function applyConfig(config) {
     plugin,
   ];
   config.settings.richTextEditorInlineToolbarButtons = [
-    plugin.StyleDropdown,
     ...config.settings.richTextEditorInlineToolbarButtons,
+    plugin.StyleDropdown,
   ];
 
   // used by draft-js editor to apply custom styles to inline styles
