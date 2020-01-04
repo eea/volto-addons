@@ -4,15 +4,38 @@ import Icon from '@plone/volto/components/theme/Icon/Icon';
 import createInlineStyleButton from 'draft-js-buttons/lib/utils/createInlineStyleButton';
 import createBlockStyleButton from 'draft-js-buttons/lib/utils/createBlockStyleButton';
 
+import { Separator } from 'draft-js-inline-toolbar-plugin';
+// import { CodeBlockButton } from 'draft-js-buttons';
+
+import {
+  BlockquoteButton,
+  BoldButton,
+  CalloutButton,
+  ItalicButton,
+  OrderedListButton,
+  UnorderedListButton,
+  // HeadlineTwoButton,
+  // HeadlineThreeButton,
+} from '@plone/volto/config/RichTextEditor/Styles';
+
 import strickthroughSVG from '@plone/volto/icons/strickthrough.svg';
 import alignLeftSVG from '@plone/volto/icons/align-left.svg';
 import alignRightSVG from '@plone/volto/icons/align-right.svg';
 import alignCenterSVG from '@plone/volto/icons/align-center.svg';
+import underlineSVG from '@plone/volto/icons/underline.svg';
+
+import plugins from '@plone/volto/config/RichTextEditor/Plugins';
+
 // import underlineSVG from '@plone/volto/icons/underline.svg';
 
 export const Strikethrough = createInlineStyleButton({
   style: 'STRIKETHROUGH',
   children: <Icon name={strickthroughSVG} size="24px" />,
+});
+
+export const Underline = createInlineStyleButton({
+  style: 'UNDERLINE',
+  children: <Icon name={underlineSVG} size="24px" />,
 });
 
 export const HeaderOne = createBlockStyleButton({
@@ -90,3 +113,45 @@ export const inlineRenderers = {
     </div>
   ),
 };
+
+const linkPlugin = plugins[0];
+
+export const defaultToolbarButtons = [
+  BoldButton,
+  ItalicButton,
+  Underline,
+  Strikethrough,
+  linkPlugin.LinkButton,
+
+  Separator,
+
+  // HeaderOne, // this header style should probably not be available
+  HeaderTwo,
+  HeaderThree,
+  HeaderFour,
+  // HeadlineTwoButton,
+  // HeadlineThreeButton,
+
+  Separator,
+
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+
+  Separator,
+
+  UnorderedListButton,
+  OrderedListButton,
+
+  Separator,
+
+  BlockquoteButton,
+  CalloutButton,
+  // CodeBlockButton,
+
+  Separator,
+
+  // ...config.settings.richTextEditorInlineToolbarButtons,
+  // TODO: this is not good practice, should find a better way to test
+  // buttons to remove
+];

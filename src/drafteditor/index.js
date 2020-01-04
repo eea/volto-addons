@@ -1,29 +1,10 @@
 import React from 'react';
-import { Separator } from 'draft-js-inline-toolbar-plugin';
-import { CodeBlockButton } from 'draft-js-buttons';
 import {
-  Strikethrough,
-  HeaderOne,
-  HeaderTwo,
-  HeaderThree,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
   inlineRenderers,
   styleMap,
-  HeaderFour,
+  defaultToolbarButtons,
   // customBlockStyleFn,
 } from './toolbar';
-import {
-  BlockquoteButton,
-  BoldButton,
-  CalloutButton,
-  ItalicButton,
-  OrderedListButton,
-  UnorderedListButton,
-  // HeadlineTwoButton,
-  // HeadlineThreeButton,
-} from '@plone/volto/config/RichTextEditor/Styles';
 
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin';
 import createLinkPlugin from '@plone/volto/components/manage/AnchorPlugin';
@@ -83,50 +64,13 @@ export default function applyConfig(config) {
 
   config.settings.customStyleMap = styleMap;
 
-  const blockBreakoutPlugin = createBlockBreakoutPlugin(breakOutOptions);
-  const linkPlugin = createLinkPlugin();
+  // const blockBreakoutPlugin = createBlockBreakoutPlugin(breakOutOptions);
+  // const linkPlugin = createLinkPlugin();
 
   // TODO: we need a better way to make this extensible
-  config.settings.richTextEditorInlineToolbarButtons = [
-    BoldButton,
-    ItalicButton,
-    Strikethrough,
-    linkPlugin.LinkButton,
+  config.settings.richTextEditorInlineToolbarButtons = defaultToolbarButtons; // .filter((button, index) => index !== 13 && index !== 14);
 
-    Separator,
-
-    HeaderOne, // this header style should probably not be available
-    HeaderTwo,
-    HeaderThree,
-    HeaderFour,
-    // HeadlineTwoButton,
-    // HeadlineThreeButton,
-
-    Separator,
-
-    AlignLeft,
-    AlignCenter,
-    AlignRight,
-
-    Separator,
-
-    UnorderedListButton,
-    OrderedListButton,
-
-    Separator,
-
-    BlockquoteButton,
-    CalloutButton,
-    CodeBlockButton,
-
-    Separator,
-
-    // ...config.settings.richTextEditorInlineToolbarButtons,
-    // TODO: this is not good practice, should find a better way to test
-    // buttons to remove
-  ]; // .filter((button, index) => index !== 13 && index !== 14);
-
-  config.settings.richTextEditorPlugins = [linkPlugin, blockBreakoutPlugin];
+  // config.settings.richTextEditorPlugins = [linkPlugin, blockBreakoutPlugin];
 
   config.settings.ToHTMLRenderers = {
     ...config.settings.ToHTMLRenderers,

@@ -244,6 +244,7 @@ class Edit extends Component {
           customStyleMap={settings.customStyleMap}
           blockRenderMap={settings.extendedBlockRenderMap}
           blockStyleFn={settings.blockStyleFn}
+          decorator={settings.draftjsDecorator}
           placeholder={this.props.intl.formatMessage(messages.text)}
           handleReturn={e => {
             if (isSoftNewlineEvent(e)) {
