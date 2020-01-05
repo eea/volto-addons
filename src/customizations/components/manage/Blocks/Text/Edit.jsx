@@ -3,6 +3,9 @@
  * @module components/manage/Blocks/Text/Edit
  */
 
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
@@ -127,7 +130,7 @@ class Edit extends Component {
    * @returns {undefined}
    */
   UNSAFE_componentWillReceiveProps(nextProps) {
-    console.log('text editor component will receive props');
+    // console.log('text editor component will receive props');
     if (!this.props.selected && nextProps.selected) {
       this.node.focus();
       this.setState({
@@ -269,6 +272,7 @@ class Edit extends Component {
             this.state.inlineToolbarPlugin,
             ...settings.richTextEditorPlugins,
           ]}
+          key={this.props.draftEditorKey}
           customStyleMap={settings.customStyleMap}
           blockRenderMap={settings.extendedBlockRenderMap}
           blockStyleFn={settings.blockStyleFn}
@@ -371,4 +375,12 @@ class Edit extends Component {
     );
   }
 }
-export default injectIntl(Edit);
+export default compose(
+  injectIntl,
+  connect(
+    (state, props) => ({
+      draftEditorKey: state.draftKey,
+    }),
+    {},
+  ),
+)(Edit);

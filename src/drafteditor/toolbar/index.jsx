@@ -119,8 +119,8 @@ export const linkPlugin = plugins[0];
 export const defaultToolbarButtons = [
   BoldButton,
   ItalicButton,
-  Underline,
-  Strikethrough,
+  // Underline,
+  // Strikethrough,
   linkPlugin.LinkButton,
 
   Separator,
@@ -143,13 +143,13 @@ export const defaultToolbarButtons = [
   UnorderedListButton,
   OrderedListButton,
 
-  Separator,
-
-  BlockquoteButton,
-  CalloutButton,
-  // CodeBlockButton,
-
-  Separator,
+  // Separator,
+  //
+  // BlockquoteButton,
+  // CalloutButton,
+  // // CodeBlockButton,
+  //
+  // Separator,
 
   // ...config.settings.richTextEditorInlineToolbarButtons,
   // TODO: this is not good practice, should find a better way to test

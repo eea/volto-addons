@@ -46,8 +46,8 @@ export default class StyleDropdown extends Component {
   };
 
   focusEditor = event => {
-    // NOTE: the code here is needed to prevent a bug in draftjs
-    // See more here:
+    // NOTE: the code here (and the use of onMouseDown as trigger) is needed to
+    // prevent a bug in draftjs. See more here:
     // https://github.com/facebook/draft-js/pull/2022
     // https://github.com/facebook/draft-js/issues/2092
     // https://github.com/facebook/draft-js/pull/1176

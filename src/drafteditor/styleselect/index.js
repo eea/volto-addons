@@ -65,7 +65,7 @@ export default function applyConfig(config) {
     ...config.settings.customStyleMap,
 
     'BG-RED': {
-      'background-color': 'red',
+      backgroundColor: 'yellow',
       padding: '0.3rem',
     },
   };

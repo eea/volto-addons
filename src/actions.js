@@ -7,6 +7,7 @@ import {
   DELETE_ATTACHMENT,
   UPDATE_ATTACHMENT,
   GET_PORTLETS,
+  FORCE_DRAFT_EDITOR_REFRESH,
 } from './constants';
 import { GET_CONTENT } from '@plone/volto/constants/ActionTypes';
 import { dataToQueryString } from './helpers';
@@ -115,5 +116,11 @@ export function getPortlets(path, name) {
       op: 'get',
       path: url,
     },
+  };
+}
+
+export function forceDraftEditorRefresh() {
+  return {
+    type: FORCE_DRAFT_EDITOR_REFRESH,
   };
 }
