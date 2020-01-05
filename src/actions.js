@@ -119,8 +119,9 @@ export function getPortlets(path, name) {
   };
 }
 
-export function forceDraftEditorRefresh() {
+export function forceDraftEditorRefresh(key) {
   return {
     type: FORCE_DRAFT_EDITOR_REFRESH,
+    editorKey: key,
   };
 }
