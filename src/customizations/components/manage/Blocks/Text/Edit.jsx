@@ -336,7 +336,20 @@ class Edit extends Component {
         />
         {this.props.selected &&
           __CLIENT__ &&
-          document.querySelector('.editor-toolbar-wrapper') && (
+          document.querySelector('.editor-toolbar-wrapper') &&
+          (document.querySelector('.modal .editor-toolbar-wrapper') ? (
+            <Portal
+              node={
+                this.props.selected &&
+                __CLIENT__ &&
+                document.querySelector('.modal .editor-toolbar-wrapper')
+              }
+            >
+              <div className="toolbarWrapper">
+                <InlineToolbar />
+              </div>
+            </Portal>
+          ) : (
             <Portal
               node={
                 this.props.selected &&
@@ -348,7 +361,7 @@ class Edit extends Component {
                 <InlineToolbar />
               </div>
             </Portal>
-          )}
+          ))}
         {!this.props.detached &&
           (!this.props.data.text ||
             (this.props.data.text &&
