@@ -65,7 +65,7 @@ export default function applyConfig(config) {
     ...config.settings.customStyleMap,
 
     'BG-RED': {
-      backgroundColor: 'yellow',
+      backgroundColor: 'lightblue',
       padding: '0.3rem',
     },
   };
@@ -74,6 +74,14 @@ export default function applyConfig(config) {
   config.settings.blockStyleMap = {
     ...config.settings.blockStyleMap,
     'BLOCK-BG-RED': 'block-bg-red',
+  };
+
+  // TODO: explain what this is
+  config.settings.extendedBlockRenderMap = {
+    ...config.settings.extendedBlockRenderMap,
+    'BLOCK-BG-RED': {
+      element: 'pre',
+    },
   };
 
   // redraft configuration, converts draftjs raw to html render
@@ -95,13 +103,6 @@ export default function applyConfig(config) {
           {unstyledRenderChildren(children, { keys: [key] })}
         </span>
       ),
-    },
-  };
-
-  config.settings.extendedBlockRenderMap = {
-    ...config.settings.extendedBlockRenderMap,
-    'BLOCK-BG-RED': {
-      element: 'pre',
     },
   };
 
