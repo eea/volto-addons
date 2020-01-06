@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import clearSVG from '@plone/volto/icons/clear.svg';
+
 import { Button, Input } from 'semantic-ui-react';
-import { Icon } from '@plone/volto/components';
-import trashSVG from '@plone/volto/icons/delete.svg';
 import { defineMessages } from 'react-intl';
+import { toast } from 'react-toastify';
 
 import TableauReport from './TableauReport';
 
-import { toast } from 'react-toastify';
-import { Toast } from '@plone/volto/components';
+// import clearSVG from '@plone/volto/icons/clear.svg';
+// import { Icon } from '@plone/volto/components';
+// import trashSVG from '@plone/volto/icons/delete.svg';
+// import { Toast } from '@plone/volto/components';
 //
 // import { ResponsiveContainer } from 'recharts';
 //FormattedMessage, , injectIntl
