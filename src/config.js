@@ -33,10 +33,12 @@ import {
 } from './Portlets';
 
 function addCustomGroup(config) {
-  const hasCustomGroup = config.blocks.groupBlocksOrder.filter(
-    el => el.id === 'custom_addons',
-  );
-  if (!hasCustomGroup.length) {
+  console.log(config.blocks);
+  const hasCustomGroup = config.blocks.groupBlocksOrder.filter(el => {
+    return el.id === 'custom_addons';
+  });
+  console.log('hasCustomGroup', hasCustomGroup);
+  if (hasCustomGroup.length === 0) {
     config.blocks.groupBlocksOrder.push({
       id: 'custom_addons',
       title: 'Custom addons',
