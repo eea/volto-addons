@@ -17,3 +17,5 @@ render() {
 <ViewletsRender {...this.props}
 ...
 }
+
+Example of viewlet: ``volto-datablocks/Viewlets/ConnectedDataParameterWatcher.jsx``.

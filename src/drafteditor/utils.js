@@ -9,7 +9,7 @@ export const addBreaklines = children => children.map(child => [child, <br />]);
  * Based on block unstyled render, to properly render softlines
  */
 export const unstyledRenderChildren = (children, { keys }) => {
-  console.log('children', children);
+  // console.log('children', children);
   const processedChildren = children.map(child => {
     if (Array.isArray(child)) {
       return child.map((subchild, index) => {
