@@ -6,10 +6,10 @@ import { toast } from 'react-toastify';
 
 import TableauReport from './TableauReport';
 
-// import clearSVG from '@plone/volto/icons/clear.svg';
-// import { Icon } from '@plone/volto/components';
-// import trashSVG from '@plone/volto/icons/delete.svg';
-// import { Toast } from '@plone/volto/components';
+import clearSVG from '@plone/volto/icons/clear.svg';
+import { Icon } from '@plone/volto/components';
+import trashSVG from '@plone/volto/icons/delete.svg';
+import { Toast } from '@plone/volto/components';
 //
 // import { ResponsiveContainer } from 'recharts';
 //FormattedMessage, , injectIntl
