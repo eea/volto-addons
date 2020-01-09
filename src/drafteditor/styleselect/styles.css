@@ -10,3 +10,15 @@
   /* white-space: pre-wrap; */
   /* overflow-wrap: break-word; */
 }
+
+.toolbar-format {
+  position: relative;
+  top: 5px;
+  margin-right: 1.3em;
+}
+
+.toolbar-format svg {
+  position: relative;
+  top: 5px;
+  left: -3px;
+}

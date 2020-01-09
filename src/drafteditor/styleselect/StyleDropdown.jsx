@@ -5,8 +5,10 @@ import { RichUtils } from 'draft-js';
 import { Dropdown } from 'semantic-ui-react';
 import { Icon } from '@plone/volto/components';
 import checkSVG from '@plone/volto/icons/check.svg';
-import formatSVG from '@plone/volto/icons/tiny.svg';
+import downSVG from '@plone/volto/icons/down-key.svg';
 // import { convertToRaw } from 'draft-js';
+
+import './styles.css';
 
 export default class StyleDropdown extends Component {
   inlineStyleIsActive = style =>
@@ -63,9 +65,9 @@ export default class StyleDropdown extends Component {
 
   render() {
     const trigger = (
-      <button className="inline-toolbar-button" title="Format">
-        <Icon name={formatSVG} />
-      </button>
+      <span className="toolbar-format">
+        Format <Icon name={downSVG} size="21px"/>
+      </span>
     )
     return (
       <div>
@@ -74,6 +76,7 @@ export default class StyleDropdown extends Component {
           onMouseDown={this.focusEditor}
           closeOnBlur={false}
           icon={null}
+          pointing='top left'
           >
           <Dropdown.Menu>
             <Dropdown.Item
