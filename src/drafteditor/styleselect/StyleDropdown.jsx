@@ -61,12 +61,12 @@ export default class StyleDropdown extends Component {
     editor.focus();
   };
 
-  checkIcon = <Icon name={checkSVG} size="24px" color="#b8c6c8" />;
+  checkIcon = <Icon name={checkSVG} size="15px" color="#b8c6c8" />;
 
   render() {
     const trigger = (
       <span className="toolbar-format">
-        Format <Icon name={downSVG} size="21px"/>
+        Formats <Icon name={downSVG} size="21px"/>
       </span>
     )
     return (
@@ -88,14 +88,72 @@ export default class StyleDropdown extends Component {
             />
 
             <Dropdown.Item
-              text="Red block"
+              text="Grey background block"
               onClick={(ev, data) => {
-                this.toggleBlockType(ev, 'BLOCK-BG-RED');
+                this.toggleBlockType(ev, 'BLOCK-BG-GREY');
               }}
               icon={
-                this.blockTypeIsActive('BLOCK-BG-RED') ? this.checkIcon : null
+                this.blockTypeIsActive('BLOCK-BG-GREY') ? this.checkIcon : null
               }
             />
+
+            <Dropdown.Item
+              text="Block-level element"
+              onClick={(ev, data) => {
+                this.toggleInlineStyle(ev, 'BLOCK-ELEMENT');
+              }}
+              icon={this.inlineStyleIsActive('BLOCK-ELEMENT') ? this.checkIcon : null}
+            />
+
+            <Dropdown.Item
+              text="Centered inline-block element"
+              onClick={(ev, data) => {
+                this.toggleInlineStyle(ev, 'INLINE-CENTERED');
+              }}
+              icon={
+                this.inlineStyleIsActive('INLINE-CENTERED') ? this.checkIcon : null
+              }
+            />
+
+            <Dropdown.Item
+              text="Large block of text"
+              onClick={(ev, data) => {
+                this.toggleInlineStyle(ev, 'LARGE-TEXT');
+              }}
+              icon={this.inlineStyleIsActive('LARGE-TEXT') ? this.checkIcon : null}
+            />
+
+            <Dropdown item simple text="Text color">
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  text="Green"
+                  onClick={(ev, data) => {
+                    this.toggleInlineStyle(ev, 'GREEN-COLOR');
+                  }}
+                  icon={
+                    this.inlineStyleIsActive('GREEN-COLOR') ? this.checkIcon : null
+                  }
+                />
+                <Dropdown.Item
+                  text="Blue"
+                  onClick={(ev, data) => {
+                    this.toggleInlineStyle(ev, 'BLUE-COLOR');
+                  }}
+                  icon={
+                    this.inlineStyleIsActive('BLUE-COLOR') ? this.checkIcon : null
+                  }
+                />
+                <Dropdown.Item
+                  text="Brown"
+                  onClick={(ev, data) => {
+                    this.toggleInlineStyle(ev, 'BROWN-COLOR');
+                  }}
+                  icon={
+                    this.inlineStyleIsActive('BROWN-COLOR') ? this.checkIcon : null
+                  }
+                />
+              </Dropdown.Menu>
+            </Dropdown>
 
             <Dropdown.Item
               text="Red inline"
