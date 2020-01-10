@@ -64,19 +64,24 @@ export default function applyConfig(config) {
   config.settings.customStyleMap = {
     ...config.settings.customStyleMap,
 
-    'BG-RED': {
-      backgroundColor: 'lightblue',
-      padding: '0.3rem',
-    },
     'BLOCK-ELEMENT': {
       display: 'block',
     },
-    'INLINE-CENTERED': {
-      display: 'inline-block',
-      verticalAlign: 'middle',
+    'BLOCK-TITLE': {
+      color: '#543',
+      textTransform: 'uppercase',
+      fontWeight: '700',
+    },
+    'DISCREET': {
+      color: '#999',
+      fontSize: '12px',
     },
     'LARGE-TEXT': {
       fontSize: '50px',
+      verticalAlign: 'middle',
+      float: 'left',
+      lineHeight: '50px',
+      marginRight: '0.3em',
     },
     'GREEN-COLOR': {
       color: '#251',
@@ -118,18 +123,18 @@ export default function applyConfig(config) {
     inline: {
       ...config.settings.ToHTMLRenderers.inline,
 
-      'BG-RED': (children, { key }) => (
-        <span className="bg-red" key={key}>
-          {unstyledRenderChildren(children, { keys: [key] })}
-        </span>
-      ),
       'BLOCK-ELEMENT': (children, { key }) => (
-        <span className="block-element" key={key}>
+        <div className="block-element" key={key}>
+          {unstyledRenderChildren(children, { keys: [key] })}
+        </div>
+      ),
+      'BLOCK-TITLE': (children, { key }) => (
+        <span className="block-title" key={key}>
           {unstyledRenderChildren(children, { keys: [key] })}
         </span>
       ),
-      'INLINE-CENTERED': (children, { key }) => (
-        <span className="inline-centered" key={key}>
+      'DISCREET': (children, { key }) => (
+        <span className="discreet" key={key}>
           {unstyledRenderChildren(children, { keys: [key] })}
         </span>
       ),

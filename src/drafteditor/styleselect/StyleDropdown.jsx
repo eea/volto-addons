@@ -106,13 +106,19 @@ export default class StyleDropdown extends Component {
             />
 
             <Dropdown.Item
-              text="Centered inline-block element"
+              text="Block title"
               onClick={(ev, data) => {
-                this.toggleInlineStyle(ev, 'INLINE-CENTERED');
+                this.toggleInlineStyle(ev, 'BLOCK-TITLE');
               }}
-              icon={
-                this.inlineStyleIsActive('INLINE-CENTERED') ? this.checkIcon : null
-              }
+              icon={this.inlineStyleIsActive('BLOCK-TITLE') ? this.checkIcon : null}
+            />
+
+            <Dropdown.Item
+              text="Discreet text"
+              onClick={(ev, data) => {
+                this.toggleInlineStyle(ev, 'DISCREET');
+              }}
+              icon={this.inlineStyleIsActive('DISCREET') ? this.checkIcon : null}
             />
 
             <Dropdown.Item
@@ -154,14 +160,6 @@ export default class StyleDropdown extends Component {
                 />
               </Dropdown.Menu>
             </Dropdown>
-
-            <Dropdown.Item
-              text="Red inline"
-              onClick={(ev, data) => {
-                this.toggleInlineStyle(ev, 'BG-RED');
-              }}
-              icon={this.inlineStyleIsActive('BG-RED') ? this.checkIcon : null}
-            />
           </Dropdown.Menu>
         </Dropdown>
       </div>

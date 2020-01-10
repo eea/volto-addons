@@ -4,26 +4,13 @@
   padding: 1em 1.5em;
   white-space: pre-wrap;
   overflow-wrap: break-word;
-  display: inline-block;
-  /* display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-  align-items: center; */
+  margin: 0.5em 0;
+  /* overflow: auto; */
 }
 
-.bg-red {
-  background-color: green;
-  /* white-space: pre-wrap; */
-  /* overflow-wrap: break-word; */
+.block-bg-grey > div {
+  /* overflow: auto; */
 }
-
-/* .pull-left {
-  float: left;
-}
-
-.pull-right {
-  float: right;
-} */
 
 .block-element {
   display: block;
@@ -31,7 +18,10 @@
 
 .large-text {
   font-size: 50px;
-  vertical-align: middle;
+  vertical-align:middle;
+  float:left;
+  line-height: 50px;
+  margin-right: 0.3em;
 }
 
 .inline-centered {
@@ -49,6 +39,17 @@
 
 .brown-color {
   color: #543;
+}
+
+.block-title {
+  color: #543;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.discreet {
+  color: #999;
+  font-size: 12px;
 }
 
 .toolbar-format {
