@@ -8,7 +8,7 @@ import { compose } from 'redux';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'semantic-ui-react';
+import { Button, Segment } from 'semantic-ui-react';
 import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import Editor from 'draft-js-plugins-editor';
 import removeInlineStyles from 'draft-js-modifiers/removeInlineStyles';
@@ -22,7 +22,7 @@ import { Portal } from 'react-portal';
 
 import { settings } from '~/config';
 
-import { Icon, BlockChooser } from '@plone/volto/components';
+import { Icon, BlockChooser, SidebarPortal } from '@plone/volto/components';
 import addSVG from '@plone/volto/icons/circle-plus.svg';
 
 import './style.css';
@@ -262,6 +262,11 @@ class Edit extends Component {
     const { InlineToolbar } = this.state.inlineToolbarPlugin;
     return (
       <>
+        <SidebarPortal selected={this.props.selected}>
+          <Segment>
+            No advanced text controls available.
+          </Segment>
+        </SidebarPortal>
         <Editor
           stripPastedStyles
           defaultKeyCommands={false}
