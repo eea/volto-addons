@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { Button, Segment } from 'semantic-ui-react';
 import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import removeInlineStyles from 'draft-js-modifiers/removeInlineStyles';
-// import { convertFromRaw, convertToRaw, EditorState, RichUtils } from 'draft-js';
+import { convertFromRaw, convertToRaw, EditorState, RichUtils } from 'draft-js';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
 // import createStaticToolbarPlugin from 'draft-js-static-toolbar-plugin';
 import { defineMessages, injectIntl } from 'react-intl';
@@ -40,15 +40,6 @@ const Editor = Loadable({
     return <div>Loading...</div>;
   },
 });
-
-const draftJS = Loadable({
-  loader: () => import('draft-js'),
-  loading() {
-    return <div>Loading...</div>;
-  },
-});
-
-const { convertFromRaw, convertToRaw, EditorState, RichUtils } = draftJS;
 
 const messages = defineMessages({
   text: {

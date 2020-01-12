@@ -8,18 +8,18 @@ import 'draft-js-alignment-plugin/lib/plugin.css';
 import { settings } from '~/config';
 import './style.css';
 
-import Loadable from 'react-loadable';
+// import Loadable from 'react-loadable';
 
-const redraft = Loadable({
-  loader: () => import('redraft'),
-  loading() {
-    return <div>Loading...</div>;
-  },
-});
+// const redraft = Loadable({
+//   loader: () => import('redraft'),
+//   loading() {
+//     return <div>Loading...</div>;
+//   },
+// });
 
+import redraft from 'redraft';
 
 const View = ({ data }) => {
-  console.log('draft state', data);
   return (
     <div>
       {data.text
