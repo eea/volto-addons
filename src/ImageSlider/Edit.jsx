@@ -17,11 +17,29 @@ import {
 import { flattenToAppURL, getBaseUrl } from '@plone/volto/helpers';
 import { settings } from '~/config';
 import { withRouter } from 'react-router-dom';
-import { convertToRaw } from 'draft-js';
-import { stateFromHTML } from 'draft-js-import-html';
 
 import clearIcon from '@plone/volto/icons/clear.svg';
 import penIcon from '@plone/volto/icons/pen.svg';
+
+import Loadable from 'react-loadable';
+
+const draftjs = Loadable({
+  loader: () => import('draft-js'),
+  loading() {
+    return <div>Loading...</div>;
+  },
+});
+
+const { convertToRaw } = draftjs;
+
+const draftjsimporthtml = Loadable({
+  loader: () => import('draft-js-import-html'),
+  loading() {
+    return <div>Loading...</div>;
+  },
+});
+
+const { stateFromHTML } = draftjsimporthtml;
 
 const CONTAINER = 'slider-images';
 

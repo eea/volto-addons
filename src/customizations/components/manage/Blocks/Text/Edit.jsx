@@ -10,11 +10,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Segment } from 'semantic-ui-react';
 import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
-import Editor from 'draft-js-plugins-editor';
 import removeInlineStyles from 'draft-js-modifiers/removeInlineStyles';
-import { convertFromRaw, convertToRaw, EditorState, RichUtils } from 'draft-js';
+// import { convertFromRaw, convertToRaw, EditorState, RichUtils } from 'draft-js';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
-import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 // import createStaticToolbarPlugin from 'draft-js-static-toolbar-plugin';
 import { defineMessages, injectIntl } from 'react-intl';
 import { includes, isEqual } from 'lodash';
@@ -26,6 +24,31 @@ import { Icon, BlockChooser, SidebarPortal } from '@plone/volto/components';
 import addSVG from '@plone/volto/icons/circle-plus.svg';
 
 import './style.css';
+
+import Loadable from 'react-loadable';
+
+const createInlineToolbarPlugin = Loadable({
+  loader: () => import('draft-js-inline-toolbar-plugin'),
+  loading() {
+    return <div>Loading...</div>;
+  },
+});
+
+const Editor = Loadable({
+  loader: () => import('draft-js-plugins-editor'),
+  loading() {
+    return <div>Loading...</div>;
+  },
+});
+
+const draftJS = Loadable({
+  loader: () => import('draft-js'),
+  loading() {
+    return <div>Loading...</div>;
+  },
+});
+
+const { convertFromRaw, convertToRaw, EditorState, RichUtils } = draftJS;
 
 const messages = defineMessages({
   text: {

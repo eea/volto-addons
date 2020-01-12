@@ -4,16 +4,20 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import redraft from 'redraft';
 import 'draft-js-alignment-plugin/lib/plugin.css';
 import { settings } from '~/config';
 import './style.css';
 
-/**
- * View text block class.
- * @class View
- * @extends Component
- */
+import Loadable from 'react-loadable';
+
+const redraft = Loadable({
+  loader: () => import('redraft'),
+  loading() {
+    return <div>Loading...</div>;
+  },
+});
+
+
 const View = ({ data }) => {
   console.log('draft state', data);
   return (

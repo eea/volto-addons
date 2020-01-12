@@ -4,6 +4,7 @@ import url from 'url';
 // import { Promise } from 'es6-promise';
 import shallowequal from 'shallowequal';
 import tokenizeUrl from './tokenizeUrl';
+import Loadable from 'react-loadable';
 
 const propTypes = {
   filters: PropTypes.object,
@@ -38,6 +39,13 @@ class TableauReport extends React.Component {
 
     if (!__SERVER__) {
       this.api = require('./tableau-2.3.0');
+
+      this.api = Loadable({
+        loader: () => import('./tableau-2.3.0'),
+        loading() {
+          return <div>Loading PDF file...</div>;
+        },
+      });
     } else {
       // this.api = null;
     }

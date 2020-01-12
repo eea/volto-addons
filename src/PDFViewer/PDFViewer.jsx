@@ -1,6 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PDF from 'react-pdf-js';
+
+import Loadable from 'react-loadable';
+
+const PDF = Loadable({
+  loader: () => import('react-pdf-js'),
+  loading() {
+    return <div>Loading PDF file...</div>;
+  },
+});
 
 // import Navigation from './Navigation';
 // Based on
