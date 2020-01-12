@@ -13,7 +13,7 @@ import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import removeInlineStyles from 'draft-js-modifiers/removeInlineStyles';
 import { convertFromRaw, convertToRaw, EditorState, RichUtils } from 'draft-js';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
-// import createStaticToolbarPlugin from 'draft-js-static-toolbar-plugin';
+import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 import { defineMessages, injectIntl } from 'react-intl';
 import { includes, isEqual } from 'lodash';
 import { Portal } from 'react-portal';
@@ -24,22 +24,7 @@ import { Icon, BlockChooser, SidebarPortal } from '@plone/volto/components';
 import addSVG from '@plone/volto/icons/circle-plus.svg';
 
 import './style.css';
-
-import Loadable from 'react-loadable';
-
-const createInlineToolbarPlugin = Loadable({
-  loader: () => import('draft-js-inline-toolbar-plugin'),
-  loading() {
-    return <div>Loading...</div>;
-  },
-});
-
-const Editor = Loadable({
-  loader: () => import('draft-js-plugins-editor'),
-  loading() {
-    return <div>Loading...</div>;
-  },
-});
+import Editor from 'draft-js-plugins-editor';
 
 const messages = defineMessages({
   text: {
