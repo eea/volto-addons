@@ -25,6 +25,7 @@ import addSVG from '@plone/volto/icons/circle-plus.svg';
 
 import './style.css';
 import Editor from 'draft-js-plugins-editor';
+import { v4 as uuid } from 'uuid';
 
 const messages = defineMessages({
   text: {
@@ -262,9 +263,7 @@ class Edit extends Component {
     return (
       <>
         <SidebarPortal selected={this.props.selected}>
-          <Segment>
-            No advanced text controls available.
-          </Segment>
+          <Segment>No advanced text controls available.</Segment>
         </SidebarPortal>
         <Editor
           stripPastedStyles
@@ -349,7 +348,10 @@ class Edit extends Component {
                 document.querySelector('.modal .editor-toolbar-wrapper')
               }
             >
-              <div className="toolbarWrapper">
+              <div
+                id={this.props.toolbarId || uuid()}
+                className="toolbarWrapper"
+              >
                 <InlineToolbar />
               </div>
             </Portal>
@@ -361,7 +363,10 @@ class Edit extends Component {
                 document.querySelector('.editor-toolbar-wrapper')
               }
             >
-              <div className="toolbarWrapper">
+              <div
+                id={this.props.toolbarId || uuid()}
+                className="toolbarWrapper"
+              >
                 <InlineToolbar />
               </div>
             </Portal>
