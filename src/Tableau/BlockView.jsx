@@ -15,11 +15,20 @@ class TableauBlockView extends Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if(prevProps.data?.url !== this.props.data?.url) {
+      this.setState({...this.props.data})
+    }
+  }
+
   render() {
     if (__SERVER__) return '';
+    console.log('state in tableau', this.state);
     return (
-      <div className="chartWrapperView" style={{    width: '100%',
-        overflowX: 'auto'}}>
+      <div
+        className="chartWrapperView"
+        style={{ width: '100%', overflowX: 'auto' }}
+      >
         {this.state.url ? (
           <TableauReport
             url={this.state.url}

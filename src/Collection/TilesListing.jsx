@@ -13,21 +13,58 @@ class TilesListing extends Component {
   }
 
   render() {
-    const { items } = this.props;
+    // const { items } = this.props;
+    const searchItems = this.props.items?.sort(
+      (a, b) => new Date(b.ModificationDate) - new Date(a.ModificationDate),
+    );
 
-    return (
-      <div>
-        <div className="tile-listing">
-          <Item.Group>
-            {items.length ? (
-              items.map(item => (
-                <Item key={item['@id']}>
-                  <Item.Content>
-                    <Item.Header as="a" href={item.url}>
-                      <h3 className="tile-title">{item.Title || item.title}</h3>
-                    </Item.Header>
+    return searchItems.length ? (
+      <Item.Group>
+        {searchItems.map(item => (
+          <Item className="item search-item" key={item['@id']}>
+            {item.lead_image ? (
+              <Item.Image
+                size="tiny"
+                src={`${item['@id']
+                  .replace(settings.apiPath, '')
+                  .replace(settings.internalApiPath, '')}/@@images/image/thumb`}
+              />
+            ) : (
+              ''
+            )}
+            <Item.Content>
+              <Item.Header>
+                <Link to={item.url}>
+                  <h3 className="item-title">{item.Title || item.title}</h3>
+                </Link>
+              </Item.Header>
+
+              <Item.Description>
+                <div className="descriptionBody">{item.description}</div>
+                <div className="searchMetadata">
+                  {item.topics && (
+                    <div>
+                      <span className="searchLabel black">Topic:</span>{' '}
+                      {item.topics?.join(', ')}
+                    </div>
+                  )}
+                  <div>
+                    <span className="searchLabel black">Content type:</span>{' '}
+                    {item['@type']}
+                  </div>
+                  <div>
+                    <span className="searchLabel black">Updated:</span>{' '}
+                    <FormattedDate
+                      value={item.ModificationDate}
+                      day="2-digit"
+                      month="long"
+                      year="numeric"
+                    />
+                  </div>
+                  <div>
+                    <span className="searchLabel black">Location:</span>{' '}
                     {item['@components'] && item['@components'].breadcrumbs && (
-                      <Breadcrumb>
+                      <Breadcrumb style={{ display: 'inline' }}>
                         {item['@components'].breadcrumbs.items
                           .slice(0, -1)
                           .map((item, index, items) => [
@@ -56,36 +93,26 @@ class TilesListing extends Component {
                           ])}
                       </Breadcrumb>
                     )}
-                    <Item.Description>{item.description}</Item.Description>
-                    <Item.Extra>
-                      <span className="muted">Updated:</span>
-                      <FormattedDate
-                        value={item.ModificationDate}
-                        day="2-digit"
-                        month="long"
-                        year="numeric"
-                      />
-                    </Item.Extra>
-                  </Item.Content>
-                </Item>
-              ))
-            ) : (
-              <div>
-                <p>No results.</p>
-                <Placeholder>
-                  <Placeholder.Header image>
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                  </Placeholder.Header>
-                  <Placeholder.Paragraph>
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                  </Placeholder.Paragraph>
-                </Placeholder>
-              </div>
-            )}
-          </Item.Group>
-        </div>
+                  </div>
+                </div>
+              </Item.Description>
+            </Item.Content>
+          </Item>
+        ))}
+      </Item.Group>
+    ) : (
+      <div>
+        <p>No results.</p>
+        <Placeholder>
+          <Placeholder.Header image>
+            <Placeholder.Line />
+            <Placeholder.Line />
+          </Placeholder.Header>
+          <Placeholder.Paragraph>
+            <Placeholder.Line />
+            <Placeholder.Line />
+          </Placeholder.Paragraph>
+        </Placeholder>
       </div>
     );
   }
