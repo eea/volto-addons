@@ -87,6 +87,9 @@ class Edit extends Component {
       } else {
         editorState = EditorState.createEmpty(); //decorator
       }
+
+      console.log(settings.richTextEditorInlineToolbarButtons);
+
       const inlineToolbarPlugin = createInlineToolbarPlugin({
         structure: settings.richTextEditorInlineToolbarButtons,
         theme: {
@@ -260,6 +263,7 @@ class Edit extends Component {
     // volto-addons/drafteditor
 
     const { InlineToolbar } = this.state.inlineToolbarPlugin;
+    console.log('Inline Toolbar', this.state.inlineToolbarPlugin);
     return (
       <>
         <SidebarPortal selected={this.props.selected}>
@@ -352,7 +356,17 @@ class Edit extends Component {
                 id={this.props.toolbarId || uuid()}
                 className="toolbarWrapper"
               >
-                <InlineToolbar />
+                <InlineToolbar>
+                  {externalProps => (
+                    <>
+                      {settings.richTextEditorInlineToolbarButtons.map(
+                        (button, i) => (
+                          <button key={i} {...externalProps} />
+                        ),
+                      )}
+                    </>
+                  )}
+                </InlineToolbar>
               </div>
             </Portal>
           ) : (
@@ -367,7 +381,17 @@ class Edit extends Component {
                 id={this.props.toolbarId || uuid()}
                 className="toolbarWrapper"
               >
-                <InlineToolbar />
+                <InlineToolbar>
+                  {externalProps => (
+                    <>
+                      {settings.richTextEditorInlineToolbarButtons.map(
+                        (B, i) => (
+                          <B key={i} {...externalProps} />
+                        ),
+                      )}
+                    </>
+                  )}
+                </InlineToolbar>
               </div>
             </Portal>
           ))}
