@@ -19,6 +19,8 @@
   "dependencies": {
     "draft-js-alignment-plugin": "^2.0.6",
     "draft-js-focus-plugin": "^3.0.1",
+    "draft-js-import-html": "^1.4.1",
+    "draft-js-inline-toolbar-plugin": "^3.0.1",
     "draft-js-modifiers": "^0.2.2",
     "draft-js-plugins-editor": "^3.0.0",
     "draft-js-resizeable-plugin": "^2.0.9",
