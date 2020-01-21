@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { getPortlets } from '../actions';
 import { portlets } from '~/config';
 import { normalize } from './utils';
+import { getBaseUrl } from '@plone/volto/helpers';
 
 export function renderPortlet(portlet, props) {
   const PortletRenderer =
@@ -12,8 +13,10 @@ export function renderPortlet(portlet, props) {
 
 class PortletManagerRenderer extends Component {
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.pathname && prevProps.pathname !== this.props.pathname) {
-      this.props.getPortlets(this.props.pathname, this.props.name);
+    const url = getBaseUrl(this.props.pathname || '');
+    const prevUrl = getBaseUrl(prevProps.pathname || '');
+    if (this.props.pathname && prevUrl !== url) {
+      this.props.getPortlets(url, this.props.name);
     }
   }
 
