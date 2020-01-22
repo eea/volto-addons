@@ -20,7 +20,7 @@
   margin-right: 1rem;;
   background     : white;
   padding        : 0;
-  max-width      : 410px;
+  /* max-width      : 410px; */
   box-shadow     : 0px 0px 12px rgba(0, 0, 0, 0.2);
   list-style-type: none;
   border-radius  : 4px;
