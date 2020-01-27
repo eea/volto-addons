@@ -20,12 +20,12 @@ import './style.css';
 import redraft from 'redraft';
 
 const View = ({ data }) => {
-  return (
+  return data.text ? (
     <div>
-      {data.text
-        ? redraft(data.text, settings.ToHTMLRenderers, settings.ToHTMLOptions)
-        : ''}
+      {redraft(data.text, settings.ToHTMLRenderers, settings.ToHTMLOptions)}
     </div>
+  ) : (
+    <p> </p>
   );
 };
 
