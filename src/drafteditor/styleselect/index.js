@@ -119,6 +119,11 @@ export default function applyConfig(config) {
           {children}
         </div>
       ),
+      'BLOCK-TITLE-H5': (children, { data, keys }) => (
+        <h5 className="block-title-h5" key={keys[0]}>
+          {children}
+        </h5>
+      ),
     },
     inline: {
       ...config.settings.ToHTMLRenderers.inline,

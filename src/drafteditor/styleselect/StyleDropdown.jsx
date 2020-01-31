@@ -98,6 +98,16 @@ export default class StyleDropdown extends Component {
             />
 
             <Dropdown.Item
+              text="Block title H5"
+              onClick={(ev, data) => {
+                this.toggleBlockType(ev, 'BLOCK-TITLE-H5');
+              }}
+              icon={
+                this.blockTypeIsActive('BLOCK-TITLE-H5') ? this.checkIcon : null
+              }
+            />
+
+            <Dropdown.Item
               text="Block-level element"
               onClick={(ev, data) => {
                 this.toggleInlineStyle(ev, 'BLOCK-ELEMENT');
