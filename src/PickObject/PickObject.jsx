@@ -19,7 +19,7 @@ const ObjectBrowserWrapper = withObjectBrowser(
       icon={value ? clearSVG : navTreeSVG}
       iconAction={
         value
-          ? (id, value) => onSelectItem('')
+          ? (id, value) => onSelectItem(null)
           : () => openObjectBrowser({ mode: 'link', onSelectItem })
       }
       onChange={() => {}}
@@ -27,13 +27,14 @@ const ObjectBrowserWrapper = withObjectBrowser(
   ),
 );
 
-const ObjectBrowserAdapter = props => {
+const ObjectBrowserAdapter = ({ onChange, value, ...props }) => {
   return (
     <ObjectBrowserWrapper
-      onSelectItem={props.onChange}
-      onChangeBlock={props.onChange}
-      data={{ url: props.value }}
       {...props}
+      onSelectItem={value => onChange(props.id, value)}
+      onChangeBlock={onChange}
+      data={{ url: value }}
+      value={value}
     />
   );
 };
