@@ -2,6 +2,7 @@ import chartIcon from '@plone/volto/icons/world.svg';
 import HiddenWidget from './Widgets/Hidden';
 import CollectionYears from './Widgets/CollectionYears';
 import PickObject from './PickObject';
+import ObjectListWidget from './Widgets/ObjectList';
 
 import PDFBlockView from './PDFViewer/BlockView';
 import PDFBlockEdit from './PDFViewer/BlockEdit';
@@ -57,7 +58,9 @@ export function applyConfig(config) {
   config.widgets.id.collection_years = CollectionYears;
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
-  config.widgets.id.related_path = PickObject;
+
+  config.widgets.widget.object_by_path = PickObject;
+  config.widgets.widget.objectlist = ObjectListWidget;
 
   config.blocks.blocksConfig.collection_block = {
     id: 'collection_block',
