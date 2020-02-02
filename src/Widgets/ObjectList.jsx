@@ -1,17 +1,17 @@
 import { Button, Form, Grid } from 'semantic-ui-react';
-import React from 'react';
+import React, { Fragment } from 'react';
 import ObjectWidget from './Object';
 import deleteSVG from '@plone/volto/icons/delete.svg';
 import { Icon as VoltoIcon } from '@plone/volto/components';
 
 const ObjectListWidget = ({ id, value = [], schema, onChange }) => {
-  // console.log('object list', props);
+  // TODO: notice that the Fragment key={} might cause problems, need to test
   const empty = {};
   return (
     <>
       {!value && <ObjectWidget schema={schema} />}
       {value.map((obj, index) => (
-        <>
+        <Fragment key={index}>
           <Form.Field inline>
             <Grid>
               <Grid.Row>
@@ -44,7 +44,7 @@ const ObjectListWidget = ({ id, value = [], schema, onChange }) => {
             }
           />
           <hr />
-        </>
+        </Fragment>
       ))}
       <Form.Field inline>
         <Grid>
