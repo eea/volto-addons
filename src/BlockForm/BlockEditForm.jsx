@@ -3,7 +3,7 @@ import { keys, map } from 'lodash';
 import { Field } from '@plone/volto/components';
 import { Segment, Message } from 'semantic-ui-react';
 
-const BlockForm = ({
+const BlockEditForm = ({
   schema,
   title,
   description,
@@ -39,26 +39,28 @@ const BlockForm = ({
         />
       )}
 
-      <Segment className="form sidebar-image-data">
-        {map(defaultFieldset.fields, (field, index) => (
-          <Field
-            {...schema.properties[field]}
-            id={field}
-            fieldSet={defaultFieldset.title.toLowerCase()}
-            focus={index === 0}
-            value={formData[field]}
-            required={schema.required.indexOf(field) !== -1}
-            onChange={(id, value) => {
-              onChangeField(id, value);
-            }}
-            key={field}
-            error={errors[field]}
-          />
-        ))}
-      </Segment>
+      <div id={`blockform-fieldset-${defaultFieldset.id}`}>
+        <Segment className="form sidebar-image-data">
+          {map(defaultFieldset.fields, (field, index) => (
+            <Field
+              {...schema.properties[field]}
+              id={field}
+              fieldSet={defaultFieldset.title.toLowerCase()}
+              focus={index === 0}
+              value={formData[field]}
+              required={schema.required.indexOf(field) !== -1}
+              onChange={(id, value) => {
+                onChangeField(id, value);
+              }}
+              key={field}
+              error={errors[field]}
+            />
+          ))}
+        </Segment>
+      </div>
 
       {other.map(fieldset => (
-        <>
+        <div key={fieldset.id} id={`blockform-fieldset-${fieldset.id}`}>
           {title && <Segment className="secondary">{fieldset.title}</Segment>}
           <Segment className="form sidebar-image-data">
             {map(fieldset.fields, field => (
@@ -75,10 +77,10 @@ const BlockForm = ({
               />
             ))}
           </Segment>
-        </>
+        </div>
       ))}
     </Segment.Group>
   );
 };
 
-export default BlockForm;
+export default BlockEditForm;
