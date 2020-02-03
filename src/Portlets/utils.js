@@ -9,7 +9,13 @@ export default function renderPortletManager(name, cols, { ...props }) {
   let WrappedPortletManager =
     portlets.managers[name] || portlets.managers.default;
   return cols ? (
-    <Grid.Column mobile={12} tablet={12} largeScreen={3} widescreen={cols}>
+    <Grid.Column
+      mobile={12}
+      tablet={12}
+      largeScreen={3}
+      computer={2}
+      widescreen={3}
+    >
       <WrappedPortletManager name={name} {...props} />
     </Grid.Column>
   ) : (

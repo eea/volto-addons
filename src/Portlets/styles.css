@@ -25,8 +25,17 @@
   list-style-type: none;
   border-radius  : 4px;
   overflow       : hidden;
-
 }
+@media(max-width: 1200px) {
+  .navigation-portlet {
+    /* margin-right: 0; */
+    margin-top: 2rem;
+    box-shadow: none;
+    max-width: 500px;
+    margin: 2rem auto;
+  }
+}
+
 
 .navigation-portlet .item a {
   padding    : .6rem 1rem;
@@ -36,6 +45,11 @@
   position: relative;
   color: #444;
   font-weight: 400;
+}
+@media (min-width: 1200px) and (max-width: 1500px) {
+  .navigation-portlet .item a {
+    font-size: .9rem;
+  }
 }
 
 .navigation-portlet .item a:hover {
