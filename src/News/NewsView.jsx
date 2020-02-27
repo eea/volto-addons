@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import { getPortlets } from '../actions';
 import NewsItem from './NewsItem';
 import WidthBasedLayoutProvider from '~/components/theme/LayoutProvider/WidthBasedLayoutProvider';
+import './style.css'
 
 class NewsView extends Component {
   static propTypes = {

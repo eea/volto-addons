@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import NewsView from './NewsView';
 
 class NewsEdit extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class NewsEdit extends Component {
   }
 
   render() {
-    return (<h1>News Edit</h1>)
+    return (<NewsView />)
   }
 }
 

@@ -9,7 +9,7 @@ const NewsItem = ({ item }) => {
   const [expanded, setExpanded] = useState(false)
 
   const prettyDate = (time) => {
-    let date = new Date((time || "").replace(/-/g, "/").replace(/[TZ]/g, " ")),
+    let date = new Date(time),
       diff = (((new Date()).getTime() - date.getTime()) / 1000),
       day_diff = Math.floor(diff / 86400);
 
