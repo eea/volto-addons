@@ -21,7 +21,7 @@ import { Portal } from 'react-portal';
 import { settings } from '~/config';
 
 import { Icon, BlockChooser, SidebarPortal } from '@plone/volto/components';
-import addSVG from '@plone/volto/icons/circle-plus.svg';
+import addSVG from '@plone/volto/icons/add.svg';
 
 import './style.css';
 import Editor from 'draft-js-plugins-editor';
@@ -88,7 +88,7 @@ class Edit extends Component {
         editorState = EditorState.createEmpty(); //decorator
       }
       const inlineToolbarPlugin = createInlineToolbarPlugin({
-        structure: settings.richTextEditorInlineToolbarButtons,
+        structure: [...settings.richTextEditorInlineToolbarButtons, () => this.addNewBlockButton(this.props.onAddBlock)],
         theme: {
           toolbarStyles: {
             toolbar: 'inline-toolbar',
@@ -200,6 +200,10 @@ class Edit extends Component {
     // );
     this.setState(state);
     // this.onAlignChange(editorState);
+  }
+
+  addNewBlockButton = (addBlock) => {
+    return <button style={{outline: "none"}} className='inline-toolbar-button' onClick={() => addBlock('text', this.props.index + 1)}> <Icon name={addSVG} size="24px" /> </button>
   }
 
   //modifies state to use only one type of Align inline style
@@ -356,21 +360,21 @@ class Edit extends Component {
               </div>
             </Portal>
           ) : (
-            <Portal
-              node={
-                this.props.selected &&
-                __CLIENT__ &&
-                document.querySelector('.editor-toolbar-wrapper')
-              }
-            >
-              <div
-                id={this.props.toolbarId || uuid()}
-                className="toolbarWrapper"
+              <Portal
+                node={
+                  this.props.selected &&
+                  __CLIENT__ &&
+                  document.querySelector('.editor-toolbar-wrapper')
+                }
               >
-                <InlineToolbar />
-              </div>
-            </Portal>
-          ))}
+                <div
+                  id={this.props.toolbarId || uuid()}
+                  className="toolbarWrapper"
+                >
+                  <InlineToolbar />
+                </div>
+              </Portal>
+            ))}
         {!this.props.detached &&
           (!this.props.data.text ||
             (this.props.data.text &&

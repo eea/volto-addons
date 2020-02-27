@@ -23,6 +23,7 @@ import alignLeftSVG from '@plone/volto/icons/align-left.svg';
 import alignRightSVG from '@plone/volto/icons/align-right.svg';
 import alignCenterSVG from '@plone/volto/icons/align-center.svg';
 import underlineSVG from '@plone/volto/icons/underline.svg';
+import addSVG from '@plone/volto/icons/add.svg';
 
 import plugins from '@plone/volto/config/RichTextEditor/Plugins';
 
@@ -142,6 +143,10 @@ export const defaultToolbarButtons = [
 
   UnorderedListButton,
   OrderedListButton,
+
+  Separator,
+  
+
 
   // Separator,
   //

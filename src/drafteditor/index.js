@@ -98,6 +98,7 @@ export default function applyConfig(config) {
             {children}
           </span>
         );
+
       },
 
       // unstyled: (children, { keys }) => {
