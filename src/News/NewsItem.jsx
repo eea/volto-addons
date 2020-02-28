@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icon } from '@plone/volto/components';
-
+import { Link } from 'react-router-dom';
 import downKey from '@plone/volto/icons/down-key.svg';
 import upKey from '@plone/volto/icons/up-key.svg';
 
@@ -17,6 +17,11 @@ const NewsItem = ({ item }) => {
 
     return day_diff == 0 && (
     diff < 60 && "just now" || diff < 120 && "1 minute ago" || diff < 3600 && Math.floor(diff / 60) + " minutes ago" || diff < 7200 && "1 hour ago" || diff < 86400 && Math.floor(diff / 3600) + " hours ago") || day_diff == 1 && "Yesterday" || day_diff < 7 && day_diff + " days ago" || day_diff < 31 && Math.ceil(day_diff / 7) + " weeks ago";
+  }
+
+  const itemPath = (urlString) => {
+    const url = new URL(urlString);
+    return url.pathname.replace('/fise', '');
   }
 
   return (
@@ -44,7 +49,7 @@ const NewsItem = ({ item }) => {
             </div>
           )}
           <div className="actions">
-            <span>See all</span>
+            <Link to={itemPath(item['@id'])}>See all</Link>
             <span className="divider"></span>
             <span>Subscribe</span>
           </div>
