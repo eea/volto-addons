@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import { getBaseUrl } from '@plone/volto/helpers';
 import { getPortlets } from '../actions';
 import NewsItem from './NewsItem';
-import WidthBasedLayoutProvider from '~/components/theme/LayoutProvider/WidthBasedLayoutProvider';
+import WidthBasedLayoutProvider from 'volto-base/components/theme/LayoutProvider/WidthBasedLayoutProvider';
 import './style.css'
 
 class NewsView extends Component {
