@@ -49,9 +49,9 @@ const NewsItem = ({ item }) => {
             </div>
           )}
           <div className="actions">
-            <Link to={itemPath(item['@id'])}>See all</Link>
-            <span className="divider"></span>
-            <span>Subscribe</span>
+            <Link to={itemPath(item['@id'])}>Read article</Link>
+            {/* <span className="divider"></span>
+            <span>Subscribe</span> */}
           </div>
         </div>
       </div>

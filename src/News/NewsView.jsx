@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { getBaseUrl } from '@plone/volto/helpers';
 import { getPortlets } from '../actions';
 import NewsItem from './NewsItem';
 import WidthBasedLayoutProvider from '~/components/theme/LayoutProvider/WidthBasedLayoutProvider';
@@ -47,7 +48,7 @@ class NewsView extends Component {
     if (__SERVER__) return (<h1>Bye World!</h1>);
     return (
       <div className={`news-wrapper-view ${this.props.layout_type}-${this.state.grid[this.props.layout_type]}`}>
-        <span className={'headline'}>Latest news</span>
+        <span className={'headline'}>Recent news</span>
         { this.state.newsItems && this.state.newsItems.map((item) => {
           return (<NewsItem key={item['@id']} item={item}  />)
         })}
