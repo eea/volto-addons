@@ -35,6 +35,9 @@ const View = ({ data, detached }) => {
         margin: '.5rem',
         transition: '100ms opacity',
         opacity: hovered ? '1' : '0',
+        filter: 'drop-shadow(rgb(68, 68, 68) 1px 1px 3px)',
+        background: 'rgb(68, 68, 68)',
+        height: '25px',
       }}
       onClick={(e) => e.preventDefault}
       onMouseEnter={() => setHovered(true)}
@@ -87,7 +90,7 @@ const View = ({ data, detached }) => {
               <Modal
                 style={{ width: 'unset' }}
                 open={modalOpen}
-                onClose={() => { setZoomed(false); setModalOpen(false) }}
+                onClose={() => { setZoomed(false); setModalOpen(false); setHovered(false)}}
               >
                 <Modal.Content image>
                   <img
@@ -98,7 +101,6 @@ const View = ({ data, detached }) => {
                       ? `${flattenToAppURL(data.url)}/@@images/image`
                       : data.url}
                     onClick={() => setZoomed(true)}
-                    onRequestClose={() => setZoomed(false)}
                     alt={data.alt || ''}
                     onMouseLeave={() => setHovered(false)}
 
