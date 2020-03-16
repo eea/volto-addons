@@ -8,7 +8,9 @@
 
 .news-wrapper-view .headline {
     width: 100%;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     color: #1d5409;
     font-size: 20px;
     margin: 8px 0 !important;
@@ -19,7 +21,6 @@
 }
 
 .news-wrapper-view article .article-headline {
-    width: 100%;
     display: flex;
     align-items: center;
     color: #005454;
@@ -74,4 +75,12 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+}
+
+.news-wrapper-view .headline a.rss-feed {
+    opacity: 0.7;
+}
+
+.news-wrapper-view .headline a.rss-feed:hover {
+    opacity: 1;
 }
