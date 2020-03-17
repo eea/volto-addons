@@ -12,6 +12,9 @@ import PDFBlockEdit from './PDFViewer/BlockEdit';
 import TableauBlockView from './Tableau/BlockView';
 import TableauBlockEdit from './Tableau/BlockEdit';
 
+import NewsView from './News/NewsView';
+import NewsEdit from './News/NewsEdit';
+
 import CollectionBlockView from './Collection/BlockView';
 import CollectionBlockEdit from './Collection/BlockEdit';
 import CollectionView from './Collection/View';
@@ -116,6 +119,18 @@ export function installTableau(config) {
     title: 'Tableau',
     view: TableauBlockView,
     edit: TableauBlockEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+  return config;
+}
+
+export function installNews(config) {
+  config.blocks.blocksConfig.news = {
+    id: 'news',
+    title: 'News',
+    view: NewsView,
+    edit: NewsEdit,
     icon: chartIcon,
     group: 'custom_addons',
   };
