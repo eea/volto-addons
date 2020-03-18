@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Icon } from '@plone/volto/components';
@@ -12,10 +11,6 @@ import { settings } from '~/config';
 import './style.css'
 
 class NewsView extends Component {
-  static propTypes = {
-    getPortlets: PropTypes.func.isRequired,
-  };
-
   constructor(props) {
     super(props);
 
