@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Icon } from '@plone/volto/components';
 import { Label } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import NewsItem from './NewsItem';
 import WidthBasedLayoutProvider from 'volto-base/components/theme/LayoutProvider/WidthBasedLayoutProvider';
 import rss from '@plone/volto/icons/rss.svg';
@@ -47,19 +48,26 @@ class NewsView extends Component {
   }
 
   render() {
-    if (__SERVER__) return (<h1>Bye World!</h1>);
+    if (__SERVER__) return (<h1>News</h1>);
     return (
       <div className={`news-wrapper-view ${this.props.layout_type}-${this.state.grid[this.props.layout_type]}`}>
         <div className={'headline'}>
-          <span>Recent news</span>
+        <span>{this.props.data.block_title || 'News'}</span>
           <Label className="rss-feed" as='a' size="large" href={settings.apiPath + '/news/RSS'} target="_blank" color="teal">
             <span>Subscribe to rss feed</span>
             <Icon name={rss} size="14px" />
           </Label>
         </div>
-        { this.state.newsItems && this.state.newsItems.map((item) => {
-          return (<NewsItem key={item['@id']} item={item}  />)
-        })}
+        <div className="articles">
+          { this.state.newsItems && this.state.newsItems.map((item) => {
+            return (<NewsItem key={item['@id']} item={item}  />)
+          })}
+        </div>
+        <div className="actions">
+          <Link className="more-news" to='/news'>
+            More news
+          </Link>
+        </div>
       </div>
     );
   }

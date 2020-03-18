@@ -90,8 +90,8 @@
 }
 
 
-.news-wrapper-view article .article-body .article-content .actions {
-    color: #005454;
+.news-wrapper-view .actions {
+    color: #002d54;
     display: flex;
     justify-content: flex-end;
     align-items: center;
