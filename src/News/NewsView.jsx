@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { getBaseUrl } from '@plone/volto/helpers';
-import { getPortlets } from '../actions';
-import { Popup } from 'semantic-ui-react';
 import { Icon } from '@plone/volto/components';
+import { Label } from 'semantic-ui-react';
 import NewsItem from './NewsItem';
 import WidthBasedLayoutProvider from 'volto-base/components/theme/LayoutProvider/WidthBasedLayoutProvider';
 import rss from '@plone/volto/icons/rss.svg';
@@ -54,11 +52,10 @@ class NewsView extends Component {
       <div className={`news-wrapper-view ${this.props.layout_type}-${this.state.grid[this.props.layout_type]}`}>
         <div className={'headline'}>
           <span>Recent news</span>
-          <Popup content='RSS feed' trigger={
-            <a className="rss-feed" href={settings.apiPath + '/news/RSS'} target="_blank">
-              <Icon name={rss} size="30px" color="#005454" />
-            </a>
-          }/>
+          <Label className="rss-feed" as='a' size="large" href={settings.apiPath + '/news/RSS'} target="_blank" color="teal">
+            <span>Subscribe to rss feed</span>
+            <Icon name={rss} size="14px" />
+          </Label>
         </div>
         { this.state.newsItems && this.state.newsItems.map((item) => {
           return (<NewsItem key={item['@id']} item={item}  />)
@@ -72,7 +69,6 @@ export default compose(
   connect(
     (state, props) => ({
       portletsManagers: state.portlets.managers
-    }),
-    { getPortlets },
+    })
   ),
 )(WidthBasedLayoutProvider(NewsView));

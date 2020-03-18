@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Icon } from '@plone/volto/components';
 import { Link } from 'react-router-dom';
-import downKey from '@plone/volto/icons/down-key.svg';
-import upKey from '@plone/volto/icons/up-key.svg';
-
 
 const NewsItem = ({ item }) => {
-  const [expanded, setExpanded] = useState(false)
-
   const prettyDate = (time) => {
     let date = new Date(time),
       diff = (((new Date()).getTime() - date.getTime()) / 1000),
@@ -26,14 +20,10 @@ const NewsItem = ({ item }) => {
 
   return (
     <article key={item['@id']}>
-      <span onClick={() => setExpanded(!expanded)} className="article-headline" title={item.title}>
-        { expanded ? 
-          (<Icon name={upKey} size="16px" color="#005454" />) : 
-          (<Icon name={downKey} size="16px" color="#005454" /> )
-        }
+      <Link className="article-headline" title={item.title} to={itemPath(item['@id'])}>
         {item.title}
-      </span>
-      <div className={expanded ? 'expanded article-body' : 'article-body'}>
+      </Link>
+      <div className="expanded article-body">
         <div className={'meta-data'}>
           {item.date && (
             <div className="text-tab">
@@ -41,18 +31,6 @@ const NewsItem = ({ item }) => {
               <span className="format-type">{prettyDate(item.date)}</span>
             </div>
           )}
-        </div>
-        <div className={'article-content'}>
-          {item.description && (
-            <div className="block">
-              <span className="description">{item.description}</span>
-            </div>
-          )}
-          <div className="actions">
-            <Link to={itemPath(item['@id'])}>Read article</Link>
-            {/* <span className="divider"></span>
-            <span>Subscribe</span> */}
-          </div>
         </div>
       </div>
 
