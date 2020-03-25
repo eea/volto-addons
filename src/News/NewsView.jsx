@@ -35,7 +35,7 @@ class NewsView extends Component {
     Object.keys(this.props.portletsManagers).forEach(manager => {
       this.props.portletsManagers[manager].forEach(portlet => {
         if (portlet.portlet_id === portletId) {
-          items = portlet[portletId + 'portlet'].items
+          items = portlet[portletId + 'portlet']?.items
         }
       })
     })
@@ -47,9 +47,9 @@ class NewsView extends Component {
     return (
       <div className={`news-wrapper-view ${this.props.layout_type}-${this.state.grid[this.props.layout_type]}`}>
         <div className={'headline'}>
-        <span>{this.props.data.block_title || 'News'}</span>
+          <h5>{this.props.data?.block_title || 'News'}</h5>
           <Label className="rss-feed" as='a' size="large" href={settings.apiPath + '/news/RSS'} target="_blank" color="teal">
-            <span>Subscribe to rss feed</span>
+            <span>Subscribe via RSS</span>
             <Icon name={rss} size="14px" />
           </Label>
         </div>

@@ -31,7 +31,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #251;
     font-size: 20px;
     margin: 8px 0 !important;
 }
@@ -43,10 +42,10 @@
 .news-wrapper-view article .article-headline {
     display: flex;
     align-items: center;
-    color: #002d54;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     margin: 0 !important;
+    font-weight: 600;
 }
 
 .news-wrapper-view article .article-headline .icon {
