@@ -3,12 +3,15 @@ import React, { Fragment } from 'react';
 import ObjectWidget from './Object';
 import deleteSVG from '@plone/volto/icons/delete.svg';
 import { Icon as VoltoIcon } from '@plone/volto/components';
+// import { Segment, Label } from 'semantic-ui-react';
 
 const ObjectListWidget = ({ id, value = [], schema, onChange }) => {
   // TODO: notice that the Fragment key={} might cause problems, need to test
+  console.log('objectlist', schema);
   const empty = {};
   return (
     <>
+      <h4>{schema.title}</h4>
       {!value && <ObjectWidget schema={schema} />}
       {value.map((obj, index) => (
         <Fragment key={index}>
