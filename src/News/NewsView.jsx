@@ -1,14 +1,46 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Icon } from '@plone/volto/components';
-import { Label } from 'semantic-ui-react';
+import { Tab } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import NewsItem from './NewsItem';
 import WidthBasedLayoutProvider from 'volto-base/components/theme/LayoutProvider/WidthBasedLayoutProvider';
-import rss from '@plone/volto/icons/rss.svg';
 import { settings } from '~/config';
-import './style.css'
+import './style.css';
+
+const panes = context => [
+  {
+    menuItem: 'News',
+    render: () => {
+      return (
+        <RenderItems
+          items={context.newsItems}
+          type="news"
+        />
+      )
+    }
+  },
+  {
+    menuItem: 'Events',
+    render: () => {
+      return (
+        <RenderItems
+          items={context.eventsItems}
+          type="events"
+        />
+      )
+    }
+  },
+  {
+    menuItem: 'Subscrive via RSS',
+    render: () => 
+      <Tab.Pane>
+        <p>RSS is a format to share data, defined in XML, that contains information about news and events.</p>
+        <p>You have to use a RSS reader so that you can subscribe to our feed.</p>
+        <p>You can find more information about RSS <a href="https://en.wikipedia.org/wiki/RSS" target="_blank">here</a> and you can check our feed <a href={settings.apiPath + '/news/RSS'} target="_blank">here</a>.</p>
+      </Tab.Pane>
+  }
+]
 
 class NewsView extends Component {
   constructor(props) {
@@ -16,18 +48,21 @@ class NewsView extends Component {
 
     this.state = {
       newsItems: [],
+      eventsItems: [],
       grid: {
         phone: 'twelve',
         tablet: 'twelve',
         desktop: 'twelve',
         widescreen: 'twelve',
-      }
+      },
+      
     }
   }
 
   componentDidMount() {
     const newsItems = this.getPortletItems('news');
-    this.setState({ newsItems });
+    const eventsItems = this.getPortletItems('events');
+    this.setState({ newsItems, eventsItems });
   }
 
   getPortletItems(portletId) {
@@ -45,29 +80,43 @@ class NewsView extends Component {
   }
 
   render() {
-    if (__SERVER__) return (<h1>News</h1>);
+    const context = {
+      newsItems: this.state.newsItems,
+      eventsItems: this.state.eventsItems
+    }
+    if (__SERVER__) return (<h1>News &amp; Events</h1>);
     return (
       <div className={`news-wrapper-view ${this.props.layout_type}-${this.state.grid[this.props.layout_type]}`}>
-        <div className={'headline'}>
-          <h5>{this.props.data?.block_title || 'News'}</h5>
-          <Label className="rss-feed" as='a' size="large" href={settings.apiPath + '/news/RSS'} target="_blank" color="teal">
-            <span>Subscribe via RSS</span>
-            <Icon name={rss} size="14px" />
-          </Label>
-        </div>
-        <div className="articles">
-          { this.state.newsItems && this.state.newsItems.map((item) => {
-            return (<NewsItem key={item['@id']} item={item}  />)
-          })}
-        </div>
-        <div className="actions">
-          <Link className="more-news" to='/news'>
-            More news
-          </Link>
-        </div>
+        <Tab panes={panes(context)} />
       </div>
     );
   }
+}
+
+const RenderItems = ({ items, type }) => {
+  return (
+    <Tab.Pane>
+      <div className="articles">
+        { items && items.map((item) => {
+          return (<NewsItem key={item['@id']} item={item}  />)
+        })}
+      </div>
+      { items && items.length > 0 && (
+          <div className="actions">
+            <Link className="more-news" to='/news'>
+              More { type }
+            </Link>
+          </div>
+        )
+      }
+      { (!items || items.length == 0) && (
+          <div className="message">
+            <span>There are no { type } at the moment.</span>
+          </div>
+        )
+      }
+    </Tab.Pane>
+  );
 }
 
 export default compose(
