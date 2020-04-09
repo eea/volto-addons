@@ -103,7 +103,7 @@ const RenderItems = ({ items, type }) => {
       </div>
       { items && items.length > 0 && (
           <div className="actions">
-            <Link className="more-news" to='/news'>
+            <Link className="more-items" to={`/${type}`}>
               More { type }
             </Link>
           </div>
