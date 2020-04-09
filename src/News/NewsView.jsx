@@ -32,7 +32,7 @@ const panes = context => [
     }
   },
   {
-    menuItem: 'Subscrive via RSS',
+    menuItem: 'Subscribe via RSS',
     render: () => 
       <Tab.Pane>
         <p>RSS is a format to share data, defined in XML, that contains information about news and events.</p>
