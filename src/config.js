@@ -5,6 +5,7 @@ import CollectionYears from './Widgets/CollectionYears';
 import PickObject from './PickObject';
 import ObjectListWidget from './Widgets/ObjectList';
 import AlignBlockWidget from './Widgets/Align';
+import AttachedImageWidget from './Widgets/AttachedImage';
 
 import PDFBlockView from './PDFViewer/BlockView';
 import PDFBlockEdit from './PDFViewer/BlockEdit';
@@ -67,6 +68,7 @@ export function applyConfig(config) {
   config.widgets.widget.object_by_path = PickObject;
   config.widgets.widget.objectlist = ObjectListWidget;
   config.widgets.widget.align = AlignBlockWidget;
+  config.widgets.widget.attachedimage = AttachedImageWidget;
 
   config.blocks.blocksConfig.collection_block = {
     id: 'collection_block',
