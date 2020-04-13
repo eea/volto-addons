@@ -1,3 +1,4 @@
+import redraft from 'redraft';
 import { compact, concat, isArray, join, map, pickBy, toPairs } from 'lodash';
 import { settings } from '~/config';
 const url = require('url');
@@ -53,4 +54,10 @@ export function useCorsproxy(targetUrl) {
       : `/cors-proxy/${targetUrl}`;
   console.log('url is', nextUrl, parsed.host, allowed_cors_destinations);
   return nextUrl;
+}
+
+export function renderDraft(draftValue) {
+  return draftValue
+    ? redraft(draftValue, settings.ToHTMLRenderers, settings.ToHTMLOptions)
+    : '';
 }
