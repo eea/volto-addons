@@ -11,6 +11,7 @@ const BlockEditForm = ({
   error, // Such as {message: "It's not good"}
   errors = {},
   formData,
+  block,
 }) => {
   const defaultFieldset = schema.fieldsets.find(o => o.id === 'default');
   const other = schema.fieldsets.filter(o => o.id !== 'default');
@@ -54,6 +55,7 @@ const BlockEditForm = ({
               }}
               key={field}
               error={errors[field]}
+              block={block}
             />
           ))}
         </Segment>
@@ -74,6 +76,7 @@ const BlockEditForm = ({
                 }}
                 key={field}
                 error={errors[field]}
+                block={block}
               />
             ))}
           </Segment>
