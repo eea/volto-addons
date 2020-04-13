@@ -35,7 +35,9 @@ class NewsView extends Component {
     Object.keys(this.props.portletsManagers).forEach(manager => {
       this.props.portletsManagers[manager].forEach(portlet => {
         if (portlet.portlet_id === portletId) {
-          items = portlet[portletId + 'portlet']?.items
+          items = portlet[portletId + 'portlet']?.items.sort((a, b) => {
+            return new Date(b.effective) - new Date(a.effective)
+          })
         }
       })
     })
