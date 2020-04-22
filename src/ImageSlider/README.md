@@ -1,3 +1,5 @@
+NOTE: this is not used anywhere now!
+
 Goals: to allow context editing any folder and to upload some images that would
 be used as slides.
 

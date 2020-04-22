@@ -1,4 +1,5 @@
 import chartIcon from '@plone/volto/icons/world.svg';
+import codeSVG from '@plone/volto/icons/code.svg';
 
 import HiddenWidget from './Widgets/Hidden';
 import CollectionYears from './Widgets/CollectionYears';
@@ -26,7 +27,8 @@ import FolderListingBlockView from './FolderListing/BlockView';
 import FolderListingBlockEdit from './FolderListing/BlockEdit';
 import ControlPanelViewlet from './ControlPanel/Viewlet';
 
-import EditSlider from './ImageSlider/Edit';
+import ImageCardsView from './ImageCards/ImageCardsView';
+import ImageCardsEdit from './ImageCards/ImageCardsEdit';
 
 import { View } from '@plone/volto/components';
 
@@ -140,17 +142,34 @@ export function installNews(config) {
 }
 
 export function installImageSlides(config) {
-  config.addonRoutes = [
-    {
-      path: '/manage-slider',
-      component: EditSlider,
+  // config.addonRoutes = [
+  //   {
+  //     path: '/manage-slider',
+  //     component: EditSlider,
+  //   },
+  //   {
+  //     path: '*/**/manage-slider',
+  //     component: EditSlider,
+  //   },
+  //   ...(config.addonRoutes || []),
+  // ];
+
+  config.blocks.blocksConfig.imagecards = {
+    id: 'imagecards',
+    title: 'Image Cards',
+    icon: codeSVG,
+    group: 'bise',
+    view: ImageCardsView,
+    edit: ImageCardsEdit,
+    restricted: false,
+    mostUsed: false,
+    sidebarTab: 1,
+    security: {
+      addPermission: [],
+      view: [],
     },
-    {
-      path: '*/**/manage-slider',
-      component: EditSlider,
-    },
-    ...(config.addonRoutes || []),
-  ];
+  };
+
   return config;
 }
 
