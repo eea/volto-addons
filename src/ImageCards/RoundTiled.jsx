@@ -13,7 +13,7 @@ export const Card = props => {
   const { title, link, attachedimage } = props; // text,
 
   useEffect(() => {
-    return import('./css/roundtiled.less');
+    import('./css/roundtiled.less');
   });
 
   return (
