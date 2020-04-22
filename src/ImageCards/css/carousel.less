@@ -1,7 +1,6 @@
-@type    : 'extra';
-@element : 'custom';
+@import "variables.less";
 
-@import (multiple) '../../theme.config';
+// @import (multiple, reference, optional) '~@package/../theme/theme.config';
 
 & {
   .slide-overlay {
@@ -57,7 +56,7 @@
           font-weight: bold;
           margin-bottom: 3rem;
           line-height: 1.2;
-          // font-family: @headerFont;
+          font-family: @headerFont;
 
           @media(max-width: 600px) {
             font-size: 2rem;
