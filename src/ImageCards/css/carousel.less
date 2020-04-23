@@ -1,6 +1,4 @@
-@import "variables.less";
-
-// @import (multiple, reference, optional) '~@package/../theme/theme.config';
+@import "globals.less";
 
 & {
   .slide-overlay {
@@ -52,25 +50,25 @@
         }
 
         .slide-title {
+          margin-bottom: 3rem;
+          font-family: @headerFont;
           font-size: 60px;
           font-weight: bold;
-          margin-bottom: 3rem;
           line-height: 1.2;
-          font-family: @headerFont;
 
-          @media(max-width: 600px) {
-            font-size: 2rem;
+          @media (max-width: 600px) {
             margin-bottom: 2rem;
+            font-size: 2rem;
           }
         }
 
         .slide-description {
-          font-size: 24px;
-          line-height: 1.2;
-          font-weight: 200;
           max-width: 540px;
+          font-size: 24px;
+          font-weight: 200;
+          line-height: 1.2;
 
-          @media(max-width: 600px) {
+          @media (max-width: 600px) {
             font-size: 1rem;
             font-weight: 400;
           }
@@ -84,9 +82,9 @@
   }
 
   .image-gallery-left-nav {
-    left: 7em;
-    bottom: -2.5rem;
     top: unset;
+    bottom: -2.5rem;
+    left: 7em;
 
     @media screen and (max-width: 1500px) {
       left: 3em;
@@ -96,32 +94,34 @@
       left: 1em;
     }
 
-    @media(max-width: 600px) {
-      bottom: 0.5em!important;
+    @media (max-width: 600px) {
+      bottom: 0.5em !important;
     }
   }
 
   .image-gallery-right-nav {
-    left: 8em;
+    top: unset;
     right: unset;
     bottom: -2.5rem;
-    top: unset;
+    left: 8em;
 
     @media screen and (max-width: 1500px) {
       left: 4em;
     }
+
     @media screen and (max-width: 1100px) {
       left: 2em;
     }
-    @media(max-width: 600px) {
-      bottom: 0.5em!important;
+
+    @media (max-width: 600px) {
+      bottom: 0.5em !important;
     }
   }
 
-  .image-gallery-fullscreen-button:hover:before,
-  .image-gallery-left-nav:hover:before,
-  .image-gallery-play-button:hover:before,
-  .image-gallery-right-nav:hover:before {
+  .image-gallery-fullscreen-button:hover::before,
+  .image-gallery-left-nav:hover::before,
+  .image-gallery-play-button:hover::before,
+  .image-gallery-right-nav:hover::before {
     color: #fff;
   }
 
@@ -129,7 +129,7 @@
   .image-gallery-left-nav {
     font-size: 3rem;
 
-    @media(max-width: 600px) {
+    @media (max-width: 600px) {
       bottom: 0;
     }
   }
@@ -142,58 +142,42 @@
     display: none;
   }
 
-  .leadimage-header {
-    position: relative;
-    display: block;
-  }
-
-  .leadimage-container {
-    overflow: hidden;
-    height: 400px;
-  }
-
-  .leadimage-wrapper {
-    height: 400px;
-    position: relative;
-  }
-
-  .leadimage {
-    height: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: left center;
-    background-color: rgba(0,0,0,0.8);
-  }
-
   .image-layer {
-    background-color:rgba(0,0,0,0.2);
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    background-color:rgba(0,0,0,0.2);
   }
 
   .image-content {
     position: absolute;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    bottom: 25%;
     z-index: 997;
-    text-align: left;
+    right: 0;
+    bottom: 25%;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
     color: #fff;
+    text-align: left;
 
     h1 {
       margin-bottom: 1rem;
-      font-weight: 700;
       font-size: 48px;
+      font-weight: 700;
     }
+
     p {
+      max-width: 770px;
       font-size: 24px;
       font-weight: 200;
-      max-width: 770px;
     }
   }
 }
+
+@addon: 'volto-addons';
+@addontype: 'imagecard';
+@addonelement: 'carousel';
+
+.loadAddonOverrides();

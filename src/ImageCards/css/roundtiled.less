@@ -1,4 +1,4 @@
-@import "variables.less";
+@import "globals.less";
 
 & {
   .imagecards-block {
@@ -45,14 +45,8 @@
   }
 }
 
-/*
-@type: 'imagecard';
-@element: 'roundtiled';
+@addon: 'volto-addons';
+@addontype: 'imagecard';
+@addonelement: 'roundtiled';
 
-// .loadAddonOverrides() {
-//   @import (optional) "@{themesFolder}/@{theme}/@{type}s/@{element}.overrides";
-//   @import (optional) "@{siteFolder}/@{type}s/@{element}.overrides";
-// }
-//
-// .loadAddonOverrides();
-*/
+.loadAddonOverrides();

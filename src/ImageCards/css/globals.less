@@ -1,0 +1,10 @@
+@pageFont: 'Arial';
+
+@type: 'extra';
+@element: 'custom';
+
+@import (multiple, reference, optional) '~@package/../theme/theme.config';
+
+.loadAddonOverrides() {
+  @import (optional) "@{siteFolder}/@{addon}/@{addontype}s/@{addonelement}.overrides";
+}
