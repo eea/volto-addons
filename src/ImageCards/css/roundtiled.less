@@ -1,5 +1,11 @@
 @import "globals.less";
 
+@addon: 'volto-addons';
+@addontype: 'imagecard';
+@addonelement: 'roundtiled';
+
+.loadAddonVariables();
+
 & {
   .imagecards-block {
     div {
@@ -44,9 +50,5 @@
     }
   }
 }
-
-@addon: 'volto-addons';
-@addontype: 'imagecard';
-@addonelement: 'roundtiled';
 
 .loadAddonOverrides();
