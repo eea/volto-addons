@@ -5,11 +5,13 @@
 
 @import (multiple, reference, optional) '~@package/../theme/theme.config';
 
-.loadVariables() {
-  @import (optional) "@{addonelement}.variables";
-  @import (optional) "@{siteFolder}/@{addon}/@{addontype}s/@{addonelement}.variables";
+/* Enables customization of addons */
+.loadAddonOverrides() {
+  @import (optional) "@{siteFolder}/../addons/@{addon}/@{addontype}s/@{addonelement}.overrides";
 }
 
-.loadAddonOverrides() {
-  @import (optional) "@{siteFolder}/@{addon}/@{addontype}s/@{addonelement}.overrides";
+/* Helper to load variables */
+.loadAddonVariables() {
+  @import (optional) "@{addonelement}.variables";
+  @import (optional) "@{siteFolder}/../addons/@{addon}/@{addontype}s/@{addonelement}.variables";
 }
