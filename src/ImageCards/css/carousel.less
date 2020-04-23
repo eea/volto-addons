@@ -1,5 +1,11 @@
 @import "globals.less";
 
+@addon: 'volto-addons';
+@addontype: 'imagecard';
+@addonelement: 'carousel';
+
+.loadVariables();
+
 & {
   .slide-overlay {
     position: absolute;
@@ -183,9 +189,5 @@
     }
   }
 }
-
-@addon: 'volto-addons';
-@addontype: 'imagecard';
-@addonelement: 'carousel';
 
 .loadAddonOverrides();

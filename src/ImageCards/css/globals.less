@@ -5,6 +5,11 @@
 
 @import (multiple, reference, optional) '~@package/../theme/theme.config';
 
+.loadVariables() {
+  @import (optional) "@{addonelement}.variables";
+  @import (optional) "@{siteFolder}/@{addon}/@{addontype}s/@{addonelement}.variables";
+}
+
 .loadAddonOverrides() {
   @import (optional) "@{siteFolder}/@{addon}/@{addontype}s/@{addonelement}.overrides";
 }
