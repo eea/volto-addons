@@ -10,7 +10,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 
 class Carousel extends Component {
   componentDidMount() {
-    import('./css/carousel.less');
+    require('./css/carousel.less');
   }
 
   renderSlide = card => {
@@ -45,6 +45,21 @@ class Carousel extends Component {
     const { data } = this.props;
     const images = this.props.data.cards;
 
+    // renderLeftNav={(onClick, disabled) => (
+    //   <button
+    //     className="image-gallery-left-nav"
+    //     disabled={disabled}
+    //     onClick={onClick}
+    //   />
+    // )}
+    // renderRightNav={(onClick, disabled) => (
+    //   <button
+    //     className="image-gallery-right-nav"
+    //     disabled={disabled}
+    //     onClick={onClick}
+    //   />
+    // )}
+
     return (
       <div
         className={cx(
@@ -69,7 +84,7 @@ class Carousel extends Component {
               autoPlay
               renderItem={this.renderSlide}
               slideDuration={300}
-              slideInterval={10000}
+              slideInterval={100000}
             />
           </div>
         </div>
