@@ -124,6 +124,14 @@ export default class StyleDropdown extends Component {
             />
 
             <Dropdown.Item
+              text="Superscript text"
+              onClick={(ev, data) => {
+                this.toggleInlineStyle(ev, 'SUPERSCRIPT');
+              }}
+              icon={this.inlineStyleIsActive('SUPERSCRIPT') ? this.checkIcon : null}
+            />
+
+            <Dropdown.Item
               text="Discreet text"
               onClick={(ev, data) => {
                 this.toggleInlineStyle(ev, 'DISCREET');

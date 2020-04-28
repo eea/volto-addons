@@ -138,6 +138,11 @@ export default function applyConfig(config) {
           {unstyledRenderChildren(children, { keys: [key] })}
         </span>
       ),
+      'SUPERSCRIPT': (children, { key }) => (
+        <sup key={key}>
+          {unstyledRenderChildren(children, { keys: [key] })}
+        </sup>
+      ),
       'DISCREET': (children, { key }) => (
         <span className="discreet" key={key}>
           {unstyledRenderChildren(children, { keys: [key] })}
