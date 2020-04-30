@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Tab } from 'semantic-ui-react';
@@ -40,57 +40,20 @@ const panes = context => [
         <p>You can find more information about RSS <a href="https://en.wikipedia.org/wiki/RSS" target="_blank">here</a> and you can check our feed <a href={settings.apiPath + '/news/RSS'} target="_blank">here</a>.</p>
       </Tab.Pane>
   }
-]
+];
 
-class NewsView extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      newsItems: [],
-      eventsItems: [],
-      grid: {
-        phone: 'twelve',
-        tablet: 'twelve',
-        desktop: 'twelve',
-        widescreen: 'twelve',
-      },
-      
-    }
-  }
-
-  componentDidMount() {
-    const newsItems = this.getPortletItems('news');
-    const eventsItems = this.getPortletItems('events');
-    this.setState({ newsItems, eventsItems });
-  }
-
-  getPortletItems(portletId) {
-    let items = null
-    Object.keys(this.props.portletsManagers).forEach(manager => {
-      this.props.portletsManagers[manager].forEach(portlet => {
-        if (portlet.portlet_id === portletId) {
-          items = portlet[portletId + 'portlet']?.items.sort((a, b) => {
-            return new Date(b.effective) - new Date(a.effective)
-          })
-        }
-      })
+const getPortletItems = (portletsManagers, portletId) => {
+  let items = null
+  Object.keys(portletsManagers).forEach(manager => {
+    portletsManagers[manager].forEach(portlet => {
+      if (portlet.portlet_id === portletId) {
+        items = portlet[portletId + 'portlet']?.items.sort((a, b) => {
+          return new Date(b.effective) - new Date(a.effective)
+        })
+      }
     })
-    return items
-  }
-
-  render() {
-    const context = {
-      newsItems: this.state.newsItems,
-      eventsItems: this.state.eventsItems
-    }
-    if (__SERVER__) return (<h1>News &amp; Events</h1>);
-    return (
-      <div className={`news-wrapper-view ${this.props.layout_type}-${this.state.grid[this.props.layout_type]}`}>
-        <Tab panes={panes(context)} />
-      </div>
-    );
-  }
+  })
+  return items
 }
 
 const RenderItems = ({ items, type }) => {
@@ -118,6 +81,31 @@ const RenderItems = ({ items, type }) => {
     </Tab.Pane>
   );
 }
+
+const NewsView = (props) => {
+  const [newsItems, setNewsItems] = useState();
+  const [eventsItems, setEventsItems] = useState();
+
+  const grid = {
+    phone: 'twelve',
+    tablet: 'twelve',
+    desktop: 'twelve',
+    widescreen: 'twelve'
+  };
+
+  useEffect(() => {
+    setNewsItems(getPortletItems(props.portletsManagers, 'news'));
+    setEventsItems(getPortletItems(props.portletsManagers, 'events'));
+  }, [newsItems, eventsItems]);
+
+  if (__SERVER__) return (<h1>News &amp; Events</h1>);
+
+  return (
+    <div className={`news-wrapper-view ${props.layout_type}-${grid[props.layout_type]}`}>
+      <Tab panes={panes({newsItems, eventsItems})} />
+    </div>
+  )
+};
 
 export default compose(
   connect(
