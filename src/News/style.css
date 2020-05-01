@@ -83,6 +83,11 @@
     color: #545454;
 }
 
+.news-wrapper-view article .article-body .meta-data .text-tab {
+    display: inline-block;
+    padding-right: 8px;
+}
+
 .news-wrapper-view article .article-body .article-content {
     padding: 0;
     font-size: 14px;
@@ -109,7 +114,5 @@
 }
 
 .news-wrapper-view .ui.bottom.attached.segment.tab {
-    border-radius: 0 0 .28571429rem .28571429rem;
-    border: 1px solid #d4d4d5;
-    border-top: none;
+    border: none;
 }
