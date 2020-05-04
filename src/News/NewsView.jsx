@@ -94,8 +94,12 @@ const NewsView = (props) => {
   };
 
   useEffect(() => {
-    setNewsItems(getPortletItems(props.portletsManagers, 'news'));
-    setEventsItems(getPortletItems(props.portletsManagers, 'events'));
+    setNewsItems(getPortletItems(props.portletsManagers, 'news').sort((a, b) => {
+      return new Date(b.effective) - new Date(a.effective)
+    }));
+    setEventsItems(getPortletItems(props.portletsManagers, 'events').sort((a, b) => {
+      return new Date(a.start) - new Date(b.start)
+    }));
   }, [newsItems, eventsItems]);
 
   if (__SERVER__) return (<h1>News &amp; Events</h1>);
