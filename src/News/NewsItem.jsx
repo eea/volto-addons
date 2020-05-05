@@ -4,26 +4,46 @@ import { Link } from 'react-router-dom';
 const NewsItem = ({ item }) => {
   const prettyDate = time => {
     let date = new Date(time);
-    const dtf = new Intl.DateTimeFormat('en', {
+    const dtf = new Intl.DateTimeFormat('en-GB', {
+      day: 'numeric',
+      month: 'long',
       year: 'numeric',
-      month: 'short',
-      day: '2-digit',
-      hour: '2-digit',
     });
-    const [{ value: mo }, , { value: da }, , { value: ye }] = dtf.formatToParts(
+    const [{ value: da }, , { value: mo }, , { value: ye }] = dtf.formatToParts(
       date,
     );
-    return `${mo} ${da} ${ye}`;
+    return `${da} ${mo} ${ye}`;
   };
 
   const prettyDateTime = time => {
-    return Intl.DateTimeFormat('en', {
-      weekday: 'short',
-      day: '2-digit',
-      month: 'short',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(new Date(time));
+    const dtf = Intl.DateTimeFormat('en-GB', {
+      // weekday: 'short',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: false,
+      timeZone: 'Europe/Copenhagen',
+      timeZoneName: 'short',
+    });
+
+    const [
+      { value: da },
+      ,
+      { value: mo },
+      ,
+      { value: ye },
+      ,
+      { value: hh },
+      ,
+      { value: mm },
+      ,
+      { value: tz },
+      ,
+    ] = dtf.formatToParts(new Date(time));
+
+    return `${da} ${mo} ${ye} ${hh}:${mm} ${tz}`;
   };
 
   const itemPath = urlString => {
