@@ -34,7 +34,7 @@ const panes = context => [
         </p>
         <p>
           You can find more information about RSS and you can check our feed{' '}
-          <Link to="rss-feed" class="ui primary button" target="_blank">
+          <Link to="rss-feed" className="ui primary button" target="_blank">
             {' '}
             Here
           </Link>
@@ -96,12 +96,12 @@ const NewsView = props => {
 
   useEffect(() => {
     setNewsItems(
-      getPortletItems(props.portletsManagers, 'news').sort((a, b) => {
+      getPortletItems(props.portletsManagers, 'news')?.sort((a, b) => {
         return new Date(b.effective) - new Date(a.effective);
       }),
     );
     setEventsItems(
-      getPortletItems(props.portletsManagers, 'events').sort((a, b) => {
+      getPortletItems(props.portletsManagers, 'events')?.sort((a, b) => {
         return new Date(b.start) - new Date(a.start);
       }),
     );

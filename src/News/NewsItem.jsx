@@ -2,35 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const NewsItem = ({ item }) => {
-  const prettyDate = (time) => {
-    let date = new Date(time)
-    const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit' })
-    const  [{ value: mo },,{ value: da },,{ value: ye }] = dtf.formatToParts(date)
-    return `${mo} ${da} ${ye}`
-  }
+  const prettyDate = time => {
+    let date = new Date(time);
+    const dtf = new Intl.DateTimeFormat('en', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+    });
+    const [{ value: mo }, , { value: da }, , { value: ye }] = dtf.formatToParts(
+      date,
+    );
+    return `${mo} ${da} ${ye}`;
+  };
 
-  const prettyDateTime = (time) => {
+  const prettyDateTime = time => {
     return Intl.DateTimeFormat('en', {
       weekday: 'short',
       day: '2-digit',
       month: 'short',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     }).format(new Date(time));
-  }
+  };
 
-  const itemPath = (urlString) => {
+  const itemPath = urlString => {
     const url = new URL(urlString);
     return url.pathname.replace('/fise', '');
-  }
-  console.log(item)
-  if (item.start && item.end) {
-    console.log(new Date(item.start))
-  }
+  };
 
   return (
     <article key={item['@id']}>
-      <Link className="article-headline" title={item.title} to={itemPath(item['@id'])}>
+      <Link
+        className="article-headline"
+        title={item.title}
+        to={itemPath(item['@id'])}
+      >
         {item.title}
       </Link>
       <div className="expanded article-body">
@@ -45,7 +52,9 @@ const NewsItem = ({ item }) => {
             <div className="event-dates">
               <div className="text-tab">
                 <span className="format-text">Starting: </span>
-                <span className="format-type">{prettyDateTime(item.start)}</span>
+                <span className="format-type">
+                  {prettyDateTime(item.start)}
+                </span>
               </div>
               <div className="text-tab">
                 <span className="format-text">Ending: </span>
@@ -61,7 +70,6 @@ const NewsItem = ({ item }) => {
           )}
         </div>
       </div>
-
     </article>
   );
 };
