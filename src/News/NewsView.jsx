@@ -12,77 +12,78 @@ const panes = context => [
   {
     menuItem: 'News',
     render: () => {
-      return (
-        <RenderItems
-          items={context.newsItems}
-          type="news"
-        />
-      )
-    }
+      return <RenderItems items={context.newsItems} type="news" />;
+    },
   },
   {
     menuItem: 'Events',
     render: () => {
-      return (
-        <RenderItems
-          items={context.eventsItems}
-          type="events"
-        />
-      )
-    }
+      return <RenderItems items={context.eventsItems} type="events" />;
+    },
   },
   {
     menuItem: 'Subscribe via RSS',
-    render: () => 
+    render: () => (
       <Tab.Pane>
-        <p>RSS is a format to share data, defined in XML, that contains information about news and events.</p>
-        <p>You have to use a RSS reader so that you can subscribe to our feed.</p>
-        <p>You can find more information about RSS <a href="https://en.wikipedia.org/wiki/RSS" target="_blank">here</a> and you can check our feed <a href={settings.apiPath + '/news/RSS'} target="_blank">here</a>.</p>
+        <p>
+          RSS is a format to share data, defined in XML, that contains
+          information about news and events.
+        </p>
+        <p>
+          You have to use a RSS reader so that you can subscribe to our feed.
+        </p>
+        <p>
+          You can find more information about RSS and you can check our feed{' '}
+          <Link to="rss-feed" class="ui primary button" target="_blank">
+            {' '}
+            Here
+          </Link>
+        </p>
       </Tab.Pane>
-  }
+    ),
+  },
 ];
 
 const getPortletItems = (portletsManagers, portletId) => {
-  let items = null
+  let items = null;
   Object.keys(portletsManagers).forEach(manager => {
     portletsManagers[manager].forEach(portlet => {
       if (portlet.portlet_id === portletId) {
         items = portlet[portletId + 'portlet']?.items.sort((a, b) => {
-          return new Date(b.effective) - new Date(a.effective)
-        })
+          return new Date(b.effective) - new Date(a.effective);
+        });
       }
-    })
-  })
-  return items
-}
+    });
+  });
+  return items;
+};
 
 const RenderItems = ({ items, type }) => {
   return (
     <Tab.Pane>
       <div className="articles">
-        { items && items.map((item) => {
-          return (<NewsItem key={item['@id']} item={item}  />)
-        })}
+        {items &&
+          items.map(item => {
+            return <NewsItem key={item['@id']} item={item} />;
+          })}
       </div>
-      { items && items.length > 0 && (
-          <div className="actions">
-            <Link className="more-items" to={`/${type}`}>
-              More { type }
-            </Link>
-          </div>
-        )
-      }
-      { (!items || items.length == 0) && (
-          <div className="message">
-            <span>There are no { type } at the moment.</span>
-          </div>
-        )
-      }
+      {items && items.length > 0 && (
+        <div className="actions">
+          <Link className="more-items" to={`/${type}`}>
+            More {type}
+          </Link>
+        </div>
+      )}
+      {(!items || items.length == 0) && (
+        <div className="message">
+          <span>There are no {type} at the moment.</span>
+        </div>
+      )}
     </Tab.Pane>
   );
-}
+};
 
-const NewsView = (props) => {
+const NewsView = props => {
   const [newsItems, setNewsItems] = useState();
   const [eventsItems, setEventsItems] = useState();
 
@@ -90,31 +91,37 @@ const NewsView = (props) => {
     phone: 'twelve',
     tablet: 'twelve',
     desktop: 'twelve',
-    widescreen: 'twelve'
+    widescreen: 'twelve',
   };
 
   useEffect(() => {
-    setNewsItems(getPortletItems(props.portletsManagers, 'news').sort((a, b) => {
-      return new Date(b.effective) - new Date(a.effective)
-    }));
-    setEventsItems(getPortletItems(props.portletsManagers, 'events').sort((a, b) => {
-      return new Date(a.start) - new Date(b.start)
-    }));
-  }, [newsItems, eventsItems]);
+    setNewsItems(
+      getPortletItems(props.portletsManagers, 'news').sort((a, b) => {
+        return new Date(b.effective) - new Date(a.effective);
+      }),
+    );
+    setEventsItems(
+      getPortletItems(props.portletsManagers, 'events').sort((a, b) => {
+        return new Date(a.start) - new Date(b.start);
+      }),
+    );
+  }, [newsItems, eventsItems, props.portletsManagers]);
 
-  if (__SERVER__) return (<h1>News &amp; Events</h1>);
+  if (__SERVER__) return <h1>News &amp; Events</h1>;
 
   return (
-    <div className={`news-wrapper-view ${props.layout_type}-${grid[props.layout_type]}`}>
-      <Tab panes={panes({newsItems, eventsItems})} />
+    <div
+      className={`news-wrapper-view ${props.layout_type}-${
+        grid[props.layout_type]
+      }`}
+    >
+      <Tab panes={panes({ newsItems, eventsItems })} />
     </div>
-  )
+  );
 };
 
 export default compose(
-  connect(
-    (state, props) => ({
-      portletsManagers: state.portlets.managers
-    })
-  ),
+  connect((state, props) => ({
+    portletsManagers: state.portlets.managers,
+  })),
 )(WidthBasedLayoutProvider(NewsView));
