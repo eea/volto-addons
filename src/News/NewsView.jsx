@@ -102,7 +102,7 @@ const NewsView = props => {
     );
     setEventsItems(
       getPortletItems(props.portletsManagers, 'events').sort((a, b) => {
-        return new Date(a.start) - new Date(b.start);
+        return new Date(b.start) - new Date(a.start);
       }),
     );
   }, [newsItems, eventsItems, props.portletsManagers]);
