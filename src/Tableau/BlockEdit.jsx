@@ -47,6 +47,8 @@ class StackedBarChart extends Component {
       filters,
       sheetname: (data && data.sheetname) || '',
       error: false,
+      hideTabs: (data&& data.hideTabs) || false,
+      hideToolbars: (data&& data.hideToolbars) || false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -87,6 +89,22 @@ class StackedBarChart extends Component {
       />,
       { autoClose: true, toastId: 'readyForSave' },
     );
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if(prevState !== this.state) {
+      this.props.onChangeBlock(this.props.block, {
+        ...this.props.data,
+        url: this.state.url,
+        hideTabs:this.state.hideTabs,
+        hideToolbars: this.state.hideToolbars
+      });
+    }
+  }
+
+  onBlockEdit (id,value) {
+    console.log('block changed from sidebar', id, value)
+    this.setState({[id]:value})
   }
 
   saveCallback(saveData) {
@@ -153,6 +171,7 @@ class StackedBarChart extends Component {
                 filters={this.state.filters}
                 sheetname={this.state.sheetname}
                 callback={this.saveCallback}
+                options={{hideTabs: this.state.hideTabs, hideToolbars: this.state.hideToolbars,}}
               />
             </div>
           ) : (
@@ -213,12 +232,7 @@ class StackedBarChart extends Component {
         <BlockEditForm
           schema={schema}
           title={schema.title}
-          onChangeField={(id, value) => {
-            this.props.onChangeBlock(this.props.block, {
-              ...this.props.data,
-              [id]: value,
-            });
-          }}
+          onChangeField={(id, value) => this.onBlockEdit(id,value)}
           formData={this.props.data}
           block={this.props.block}
         />

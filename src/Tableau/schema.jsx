@@ -6,7 +6,7 @@ const TableauSchema = {
     {
       id: 'default',
       title: 'Default',
-      fields: ['url', 'hidetabs', 'hidetoolbars','onFirstInteractive', 'onFirstVizSizeKnown'],
+      fields: ['url', 'hideTabs', 'hideToolbars'],
     },
   ],
 
@@ -15,11 +15,11 @@ const TableauSchema = {
       type: 'string',
       title: 'Tableau Viz Url',
     },
-    hidetabs: {
+    hideTabs: {
       type: 'boolean',
       title: 'Hide Tabs',
     },
-    hidetoolbars: {
+    hideToolbars: {
       type: 'boolean',
       title: 'Hide Toolbars',
     }

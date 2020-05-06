@@ -49,7 +49,7 @@ class TableauReport extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const isReportChanged = nextProps.url !== this.props.url;
+    const isReportChanged = nextProps !== this.props;
     const isFiltersChanged = !shallowequal(
       this.props.filters,
       nextProps.filters,
@@ -135,9 +135,9 @@ class TableauReport extends React.Component {
    * @param  {Object} filters
    * @return {void}
    */
-applyFilters(filters) {
-  console.log("filters to apply", filters)
-}
+  applyFilters(filters) {
+    console.log("filters to apply", filters)
+  }
 
   // applyFilters(filters) {
   //   const REPLACE = Tableau.FilterUpdateType.REPLACE;
@@ -186,15 +186,15 @@ applyFilters(filters) {
     if (__SERVER__) return;
     const { filters, parameters } = this.props;
     const vizUrl = this.getUrl(nextUrl);
-
+console.log("options before", this.props)
     console.log('initing tableau', vizUrl);
     const options = {
       ...filters,
       ...parameters,
-      //extra options for tableau 
-      hideTabs: false,
-      hideToolbars: true,
       ...this.props.options,
+      onFirstVizSizeKnown: (e) => {
+        console.log("On first viz size", e)
+      },
       onFirstInteractive: () => {
         console.log('On first interacitve');
         this.workbook = this.viz.getWorkbook();
