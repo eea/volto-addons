@@ -135,6 +135,10 @@ class TableauReport extends React.Component {
    * @param  {Object} filters
    * @return {void}
    */
+applyFilters(filters) {
+  console.log("filters to apply", filters)
+}
+
   // applyFilters(filters) {
   //   const REPLACE = Tableau.FilterUpdateType.REPLACE;
   //   const promises = [];
@@ -187,8 +191,10 @@ class TableauReport extends React.Component {
     const options = {
       ...filters,
       ...parameters,
+      //extra options for tableau 
+      hideTabs: false,
+      hideToolbars: true,
       ...this.props.options,
-      // hideTabs: true,
       onFirstInteractive: () => {
         console.log('On first interacitve');
         this.workbook = this.viz.getWorkbook();

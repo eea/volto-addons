@@ -10,6 +10,10 @@ import clearSVG from '@plone/volto/icons/clear.svg';
 import { Icon } from '@plone/volto/components';
 import trashSVG from '@plone/volto/icons/delete.svg';
 import { Toast } from '@plone/volto/components';
+import { SidebarPortal } from '@plone/volto/components'; // EditBlock
+import { BlockEditForm } from 'volto-addons/BlockForm';
+
+import schema from './schema';
 //
 // import { ResponsiveContainer } from 'recharts';
 //FormattedMessage, , injectIntl
@@ -205,6 +209,20 @@ class StackedBarChart extends Component {
             &nbsp; and press ENTER
           </div>
         </div>
+        <SidebarPortal selected={this.props.selected}>
+        <BlockEditForm
+          schema={schema}
+          title={schema.title}
+          onChangeField={(id, value) => {
+            this.props.onChangeBlock(this.props.block, {
+              ...this.props.data,
+              [id]: value,
+            });
+          }}
+          formData={this.props.data}
+          block={this.props.block}
+        />
+      </SidebarPortal>
       </div>
     );
   }
