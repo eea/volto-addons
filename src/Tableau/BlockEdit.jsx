@@ -133,7 +133,6 @@ class StackedBarChart extends Component {
 
     // <ResponsiveContainer style={{ width: '100%', overflowX: 'auto' }}>
     // </ResponsiveContainer>
-    console.log('showValue', this.state);
     return (
       <div className="block chartWrapperEdit">
         <div className="block-inner-wrapper">

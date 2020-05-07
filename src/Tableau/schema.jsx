@@ -6,7 +6,7 @@ const TableauSchema = {
     {
       id: 'default',
       title: 'Default',
-      fields: ['url', 'hideTabs', 'hideToolbars'],
+      fields: ['url', 'hideTabs', 'hideToolbars', 'filters'],
     },
   ],
 
@@ -22,7 +22,14 @@ const TableauSchema = {
     hideToolbars: {
       type: 'boolean',
       title: 'Hide Toolbars',
-    }
+    },
+    //to be refined
+    filters: {
+      title: 'Filter',
+      choices: [[{
+          "Member State": ['BE']
+      },'Belgium']],
+    },
   },
 
   required: ['url'],
