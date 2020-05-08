@@ -49,7 +49,9 @@ class TableauReport extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const isReportChanged = nextProps.url !== this.props.url || nextProps.options !== this.props.options
+    const isReportChanged = nextProps.url !== this.props.url  
+    const isOptionsChanged = nextProps.options !== this.props.options
+    console.log('options changed',isOptionsChanged)
     const isFiltersChanged = !shallowequal(
       this.props.filters,
       nextProps.filters,
@@ -62,7 +64,7 @@ class TableauReport extends React.Component {
     const isLoading = this.state.loading;
 
     // Only report is changed - re-initialize
-    if (isReportChanged) {
+    if (isReportChanged || isOptionsChanged) {
       this.initTableau(nextProps.url);
     }
 
@@ -125,6 +127,10 @@ class TableauReport extends React.Component {
     return parsed.protocol + '//' + parsed.host + parsed.pathname + query;
   }
 
+  applyFilters(filters) {
+    console.log('the filters', filters)
+  }
+
   // invalidateToken() {
   //   this.setState({ didInvalidateToken: true });
   // }
@@ -135,10 +141,6 @@ class TableauReport extends React.Component {
    * @param  {Object} filters
    * @return {void}
    */
-  applyFilters(filters) {
-    console.log("filters to apply", filters)
-  }
-
   // applyFilters(filters) {
   //   const REPLACE = Tableau.FilterUpdateType.REPLACE;
   //   const promises = [];
@@ -186,15 +188,14 @@ class TableauReport extends React.Component {
     if (__SERVER__) return;
     const { filters, parameters } = this.props;
     const vizUrl = this.getUrl(nextUrl);
+
+    console.log('initing tableau', vizUrl);
     const options = {
       ...filters,
       ...parameters,
       ...this.props.options,
-      onFirstVizSizeKnown: (e) => {
-        console.log("On first viz size", e)
-      },
       onFirstInteractive: () => {
-        console.log('On first interactive');
+        console.log('On first interacitve');
         this.workbook = this.viz.getWorkbook();
         let activeSheet = this.workbook.getActiveSheet();
 
@@ -238,14 +239,12 @@ class TableauReport extends React.Component {
               let name = r.$caption;
               let values = r.$appliedValues.map(e => e.value);
               let sheetname = this.state.saveData.sheetname;
+              let filters = {[r.$caption]:[r.$appliedValues[0].value]}
+              this.setState({filters})
               const save = {
                 ...this.state.saveData,
                 filters: {
-                  ...this.state.saveData.filters,
-                  [sheetname]: {
-                    ...(this.state.saveData.filters[sheetname] || {}),
-                    [name]: values,
-                  },
+                  ...this.state.filters
                 },
               };
               this.setState({ saveData: save }, this.onChange);

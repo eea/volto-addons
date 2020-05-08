@@ -44,7 +44,7 @@ class StackedBarChart extends Component {
     this.state = {
       show,
       url: (data && data.url) || '',
-      filters,
+      filters: data.filters,
       sheetname: (data && data.sheetname) || '',
       error: false,
       hideTabs: (data&& data.hideTabs) || false,
@@ -97,7 +97,9 @@ class StackedBarChart extends Component {
         ...this.props.data,
         url: this.state.url,
         hideTabs:this.state.hideTabs,
-        hideToolbars: this.state.hideToolbars
+        hideToolbars: this.state.hideToolbars,
+        sheetname: this.state.sheetname,
+        filters: this.state.filters
       });
     }
   }
@@ -130,6 +132,11 @@ class StackedBarChart extends Component {
     // const TableauReport = require('tableau-react');
     // console.log(this.state);
     //
+    const options = {
+      ...this.state.filters,
+      hideTabs: this.state.hideTabs,
+      hideToolbars: this.state.hideToolbars
+    }
 
     // <ResponsiveContainer style={{ width: '100%', overflowX: 'auto' }}>
     // </ResponsiveContainer>
@@ -170,7 +177,7 @@ class StackedBarChart extends Component {
                 filters={this.state.filters}
                 sheetname={this.state.sheetname}
                 callback={this.saveCallback}
-                options={{hideTabs: this.state.hideTabs, hideToolbars: this.state.hideToolbars,}}
+                options={options}
               />
             </div>
           ) : (

@@ -11,24 +11,28 @@ class TableauBlockView extends Component {
     this.state = {
       url: data.url || '',
       sheetname: data.sheetname || '',
-      filters: filters,
+      filters: data.filters || '',
+      options: { hideTabs: data.hideTabs, hideToolbars: data.hideToolbars } || ''
+
     };
   }
-
   render() {
     if (__SERVER__) return '';
     return (
-      <div className="chartWrapperView" style={{    width: '100%',
-        overflowX: 'auto'}}>
+      <div className="chartWrapperView" style={{
+        width: '100%',
+        overflowX: 'auto'
+      }}>
         {this.state.url ? (
           <TableauReport
             url={this.state.url}
             filters={this.state.filters}
             sheetname={this.state.sheetname}
+            options={this.state.options}
           />
         ) : (
-          <div>Invalid or missing data.</div>
-        )}
+            <div>Invalid or missing data.</div>
+          )}
       </div>
     );
   }
