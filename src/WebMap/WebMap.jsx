@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { loadModules } from 'esri-loader';
+import { MapLegend, setInitialLegend } from 'arcgis-react-redux-legend';
 
 
 const WebMap = props => {
@@ -11,14 +12,14 @@ const WebMap = props => {
   }
 
   const modules = [
-    'esri/views/MapView', 'esri/WebMap', 'esri/widgets/Legend'
+    'esri/views/MapView', 'esri/WebMap', 'esri/widgets/Legend', 'esri/widgets/LayerList'
   ]
 
   useEffect(
     () => {
       // lazy load the required ArcGIS API for JavaScript modules and CSS
       loadModules(modules, options)
-        .then(([MapView, WebMap, Legend]) => {
+        .then(([MapView, WebMap, Legend, LayerList]) => {
 
           // then we load a web map from an id
           const webmap = new WebMap({
@@ -35,8 +36,18 @@ const WebMap = props => {
             // zoom: 8,
           });
 
+          //Filter by layers
+          var layerList = new LayerList({
+            view: view
+          });
+         
+          view.ui.add(layerList, {
+            position: "top-right"
+          });
+
           view.when(() => {
             var featureLayer = webmap.layers.getItemAt(0);
+            console.log(view, 'webmap')
 
             const legend = new Legend({
               view: view,
@@ -50,29 +61,15 @@ const WebMap = props => {
               view.ui.add(legend, 'top-left');
             }
           })
-
-
-          const url = 'https://cors-anywhere.herokuapp.com/https://eea.maps.arcgis.com/home/webmap/viewer.html?webmap=5a9916df66814405afcd678ed445c45f'
-
-          // return () => {
-          //   if (view) {
-          //     // destroy the map view
-          //     view.container = null;
-          //   }
-          // };
-          // return esriRequest(`${url}/legend`, {
-          //   query: { f: 'json' },
-          //   responseType: 'json'
-          // }).then(response => { console.log(response) }, error => { console.log(error) })
-
-
         });
     }
   );
 
   return (
     ///remember to change this inline style
-    <div style={{ height: '700px' }} className="webmap" ref={mapRef} />
+    <div style={{ height: '700px' }} className="webmap" ref={mapRef}>
+      {/* {props.mapId && <MapLegend mapId={props.mapId} title="Filters" />} */}
+    </div>
   );
 }
 
