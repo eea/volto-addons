@@ -6,7 +6,7 @@ const WebMapBlockView = props => {
   return (
     <div>
       {hasMapId &&
-        <WebMap mapId={props.data.mapId} legend={props.data.legend} />
+        <WebMap mapId={props.data.mapId} showLegend={props.data.showLegend} showFilters={props.data.showFilters} />
       }
     </div>
   );

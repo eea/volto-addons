@@ -1,7 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
 import { loadModules } from 'esri-loader';
-import { MapLegend, setInitialLegend } from 'arcgis-react-redux-legend';
 
 
 const WebMap = props => {
@@ -35,15 +34,18 @@ const WebMap = props => {
             // center: [-118, 34],
             // zoom: 8,
           });
-
+          console.log(props.showFilters)
           //Filter by layers
-          var layerList = new LayerList({
-            view: view
-          });
-         
-          view.ui.add(layerList, {
-            position: "top-right"
-          });
+
+          if (props.showFilters) {
+            var layerList = new LayerList({
+              view: view
+            });
+
+            view.ui.add(layerList, {
+              position: "top-right"
+            });
+          }
 
           view.when(() => {
             var featureLayer = webmap.layers.getItemAt(0);
@@ -56,7 +58,7 @@ const WebMap = props => {
                 title: 'Legend',
               }]
             })
-            if (props.legend) {
+            if (props.showLegend) {
 
               view.ui.add(legend, 'top-left');
             }
@@ -67,9 +69,7 @@ const WebMap = props => {
 
   return (
     ///remember to change this inline style
-    <div style={{ height: '700px' }} className="webmap" ref={mapRef}>
-      {/* {props.mapId && <MapLegend mapId={props.mapId} title="Filters" />} */}
-    </div>
+    <div style={{ height: '700px' }} className="webmap" ref={mapRef} />
   );
 }
 

@@ -5,7 +5,7 @@ const WebMap = {
       {
         id: 'default',
         title: 'Default',
-        fields: ['mapId', 'legend'],
+        fields: ['mapId', 'showLegend', 'showFilters'],
       },
     ],
   
@@ -14,15 +14,18 @@ const WebMap = {
         type: 'string',
         title: 'Map ID',
       },
-      legend: {
+      showLegend: {
         type: 'boolean',
         title: 'Show Legend',
       },
-      
+      showFilters: {
+        type: 'boolean',
+        title: 'Show Filters',
+      },
       
     },
+    required: ['mapId'],
   
-    required: ['display', 'cards'],
   };
   
   export default WebMap;
