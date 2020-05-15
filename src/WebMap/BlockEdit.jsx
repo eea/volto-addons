@@ -7,15 +7,21 @@ import schema from './schema'
 
 const WebMapBlockEdit = props => {
 
-    const hasMapId = props.data.mapId
+    const { mapId, showLegend, showFilters, latitude, longitude, zoom } = props.data
 
     return (
         <div>
-            {hasMapId &&
-                <WebMap mapId={props.data.mapId} showLegend={props.data.showLegend} showFilters={props.data.showFilters} />
+            {mapId &&
+                <WebMap
+                    mapId={mapId}
+                    showLegend={showLegend}
+                    showFilters={showFilters}
+                    latitude={latitude}
+                    longitude={longitude}
+                    zoom={zoom} />
             }
-            {!hasMapId &&
-                <p style={{textAlign: "center", color:'red', fontSize: '20px'}}> Select Map ID from sidebar! </p>
+            {!mapId &&
+                <p style={{ textAlign: "center", color: 'red', fontSize: '20px' }}> Select Map ID from sidebar! </p>
             }
             <SidebarPortal selected={props.selected}>
                 <BlockEditForm

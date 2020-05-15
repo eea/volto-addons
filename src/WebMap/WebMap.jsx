@@ -11,7 +11,7 @@ const WebMap = props => {
   }
 
   const modules = [
-    'esri/views/MapView', 'esri/WebMap', 'esri/widgets/Legend', 'esri/widgets/LayerList'
+    'esri/views/MapView', 'esri/WebMap', 'esri/widgets/Legend', 'esri/widgets/LayerList',
   ]
 
   useEffect(
@@ -31,12 +31,21 @@ const WebMap = props => {
           const view = new MapView({
             container: mapRef.current,
             map: webmap,
-            // center: [-118, 34],
-            // zoom: 8,
+            // center: props.latitude && props.longitude ? [props.latitude, props.longitude] : [],
+            // zoom: props.zoom ? props.zoom : ""
           });
-          console.log(props.showFilters)
-          //Filter by layers
 
+          //watch for zoom
+          if (props.zoom) {
+            view.zoom = props.zoom
+          }
+
+          //watch for lat/long changes
+          if (props.latitude && props.longitude) {
+            view.center = [props.latitude, props.longitude]
+          }
+
+          //Filter by layers
           if (props.showFilters) {
             var layerList = new LayerList({
               view: view
@@ -49,7 +58,6 @@ const WebMap = props => {
 
           view.when(() => {
             var featureLayer = webmap.layers.getItemAt(0);
-            console.log(view, 'webmap')
 
             const legend = new Legend({
               view: view,

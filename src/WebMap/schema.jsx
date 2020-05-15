@@ -5,7 +5,7 @@ const WebMap = {
       {
         id: 'default',
         title: 'Default',
-        fields: ['mapId', 'showLegend', 'showFilters'],
+        fields: ['mapId', 'showLegend', 'showFilters', 'latitude', 'longitude', 'zoom'],
       },
     ],
   
@@ -21,6 +21,18 @@ const WebMap = {
       showFilters: {
         type: 'boolean',
         title: 'Show Filters',
+      },
+      latitude: {
+        type: 'number',
+        title: 'Latitude',
+      },
+      longitude: {
+        type: 'number',
+        title: 'Longitude',
+      },
+      zoom: {
+        type: 'number',
+        title: 'Zoom',
       },
       
     },

@@ -2,11 +2,17 @@ import React, { Component } from 'react';
 import WebMap from './WebMap';
 
 const WebMapBlockView = props => {
-  const hasMapId = props.data.mapId
+  const { mapId, showLegend, showFilters, latitude, longitude, zoom } = props.data
   return (
     <div>
-      {hasMapId &&
-        <WebMap mapId={props.data.mapId} showLegend={props.data.showLegend} showFilters={props.data.showFilters} />
+      {mapId &&
+        <WebMap
+          mapId={mapId}
+          showLegend={showLegend}
+          showFilters={showFilters}
+          latitude={latitude}
+          longitude={longitude}
+          zoom={zoom} />
       }
     </div>
   );
