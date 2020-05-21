@@ -28,15 +28,14 @@ const WebMap = props => {
       loadModules(modules, options)
         .then(([MapView, WebMap, Legend, LayerList, CoordinateConversion, esriConfig, MapImageLayer]) => {
 
-          esriConfig.portalUrl = "https://eea.maps.arcgis.com"
+          esriConfig.portalUrl = props.portalUrl
+          
           // then we load a web map from an id
-
           const webmap = new WebMap({
             portalItem: {
               id: props.mapId
             }
           });
-
 
           // load the map view at the ref's DOM node
           const view = new MapView({
@@ -63,7 +62,7 @@ const WebMap = props => {
             view.center = [props.latitude, props.longitude]
           }
 
-          //Filter by layers
+          //Layers Visible
           if (props.showLayers) {
             var layerList = new LayerList({
               view: view
@@ -77,7 +76,7 @@ const WebMap = props => {
           view.when(() => {
             var mainLayer = view.map.layers.getItemAt(0);
 
-            //edit main layer's sublayer definition expression
+            //edit main layer's sublayer definition expression (Filter)
             if (props.filter) {
               var imgLayer = new MapImageLayer({
                 url: mainLayer.url,

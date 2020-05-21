@@ -7,7 +7,7 @@ import schema from './schema'
 
 const WebMapBlockEdit = props => {
 
-    const { mapId, showLegend, showLayers, latitude, longitude, zoom, showCoordWidget, filter } = props.data
+    const { mapId, showLegend, showLayers, latitude, longitude, zoom, showCoordWidget, filter, portalUrl } = props.data
 
     return (
         <div>
@@ -21,6 +21,7 @@ const WebMapBlockEdit = props => {
                     zoom={zoom}
                     showCoordWidget={showCoordWidget}
                     filter={filter}
+                    portalUrl={portalUrl}
                     />
             }
             {!mapId &&
