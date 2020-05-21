@@ -6,34 +6,52 @@ import { loadModules } from 'esri-loader';
 const WebMap = props => {
   const mapRef = useRef();
 
+
+
   const options = {
     css: true,
   }
 
   const modules = [
-    'esri/views/MapView', 'esri/WebMap', 'esri/widgets/Legend', 'esri/widgets/LayerList',
+    'esri/views/MapView',
+    'esri/WebMap',
+    'esri/widgets/Legend',
+    'esri/widgets/LayerList',
+    "esri/widgets/CoordinateConversion",
+    'esri/config',
+    "esri/layers/MapImageLayer",
   ]
 
   useEffect(
     () => {
       // lazy load the required ArcGIS API for JavaScript modules and CSS
       loadModules(modules, options)
-        .then(([MapView, WebMap, Legend, LayerList]) => {
+        .then(([MapView, WebMap, Legend, LayerList, CoordinateConversion, esriConfig, MapImageLayer]) => {
 
+          esriConfig.portalUrl = "https://eea.maps.arcgis.com"
           // then we load a web map from an id
+
           const webmap = new WebMap({
-            portalItem: { // autocasts as new PortalItem()
+            portalItem: {
               id: props.mapId
             }
           });
+
 
           // load the map view at the ref's DOM node
           const view = new MapView({
             container: mapRef.current,
             map: webmap,
-            // center: props.latitude && props.longitude ? [props.latitude, props.longitude] : [],
-            // zoom: props.zoom ? props.zoom : ""
           });
+
+          //coordinates tracking widget
+          if (props.showCoordWidget) {
+            var ccWidget = new CoordinateConversion({
+              view: view
+            });
+
+            view.ui.add(ccWidget, "bottom-left");
+          }
 
           //watch for zoom
           if (props.zoom) {
@@ -46,7 +64,7 @@ const WebMap = props => {
           }
 
           //Filter by layers
-          if (props.showFilters) {
+          if (props.showLayers) {
             var layerList = new LayerList({
               view: view
             });
@@ -57,16 +75,34 @@ const WebMap = props => {
           }
 
           view.when(() => {
-            var featureLayer = webmap.layers.getItemAt(0);
+            var mainLayer = view.map.layers.getItemAt(0);
 
-            const legend = new Legend({
-              view: view,
-              layerInfos: [{
-                layer: featureLayer,
-                title: 'Legend',
-              }]
-            })
+            //edit main layer's sublayer definition expression
+            if (props.filter) {
+              var imgLayer = new MapImageLayer({
+                url: mainLayer.url,
+                sublayers: [
+                  {
+                    id: 0,
+                    visible: true,
+                    definitionExpression: `NUTS0 = '${props.filter}'`
+                  }
+                ]
+              })
+
+              view.map.layers.add(imgLayer)
+
+            }
+
+            //add legend
             if (props.showLegend) {
+              const legend = new Legend({
+                view: view,
+                layerInfos: [{
+                  layer: mainLayer,
+                  title: 'Legend',
+                }]
+              })
 
               view.ui.add(legend, 'top-left');
             }
@@ -76,7 +112,6 @@ const WebMap = props => {
   );
 
   return (
-    ///remember to change this inline style
     <div style={{ height: '700px' }} className="webmap" ref={mapRef} />
   );
 }

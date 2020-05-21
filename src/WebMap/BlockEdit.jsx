@@ -7,7 +7,7 @@ import schema from './schema'
 
 const WebMapBlockEdit = props => {
 
-    const { mapId, showLegend, showFilters, latitude, longitude, zoom } = props.data
+    const { mapId, showLegend, showLayers, latitude, longitude, zoom, showCoordWidget, filter } = props.data
 
     return (
         <div>
@@ -15,10 +15,13 @@ const WebMapBlockEdit = props => {
                 <WebMap
                     mapId={mapId}
                     showLegend={showLegend}
-                    showFilters={showFilters}
+                    showLayers={showLayers}
                     latitude={latitude}
                     longitude={longitude}
-                    zoom={zoom} />
+                    zoom={zoom}
+                    showCoordWidget={showCoordWidget}
+                    filter={filter}
+                    />
             }
             {!mapId &&
                 <p style={{ textAlign: "center", color: 'red', fontSize: '20px' }}> Select Map ID from sidebar! </p>
