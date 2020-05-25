@@ -1,0 +1,68 @@
+body:not(.has-sidebar-collapsed) > #sidebar {
+    position: relative !important;
+}
+
+body.has-sidebar #layout-preview-lg {
+    width: auto !important;
+}
+
+#sidebar .sidebar-container {
+    width: 415px;
+}
+
+#sidebar .sidebar-container.full-size {
+    width: calc(100% - 80px);
+}
+
+#sidebar .sidebar-container.collapsed {
+    right: -396px;
+}
+
+#sidebar .pusher.expanded {
+    margin-left: 415px !important;
+}
+
+#sidebar .sidebar-container .tabs-wrapper {
+    padding: 0;
+}
+
+#sidebar .sidebar-container .ui.button.full-size-sidenav-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 12px 6px;
+    background: rgba(0,0,0,0);
+    font-size: 1.4rem;
+}
+
+#sidebar .sidebar-container .tabs-wrapper .formtabs.menu a:first-child {
+    margin-left: 40px;
+}
+
+#sidebar .sidebar-container #sidebar-properties {
+    padding: 20px;
+}
+
+#sidebar .sidebar-container #sidebar-properties > div {
+    height: auto;
+}
+
+#visual-form,
+#sidebar-metadata,
+#sidebar-metadata > form > .segment {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#sidebar-metadata > form > .secondary.segment {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+#sidebar-metadata > form > .segment .field:not(:last-child) {
+    margin-bottom: 2.5rem;
+}
+
+#sidebar-metadata > form > .segment .field-file-name {
+    padding-bottom: 0;
+}
