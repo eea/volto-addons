@@ -88,7 +88,10 @@ class Edit extends Component {
         editorState = EditorState.createEmpty(); //decorator
       }
       const inlineToolbarPlugin = createInlineToolbarPlugin({
-        structure: [...settings.richTextEditorInlineToolbarButtons, () => this.addNewBlockButton(this.props.onAddBlock)],
+        structure: [
+          ...settings.richTextEditorInlineToolbarButtons,
+          () => this.addNewBlockButton(this.props.onAddBlock),
+        ],
         theme: {
           toolbarStyles: {
             toolbar: 'inline-toolbar',
@@ -202,9 +205,18 @@ class Edit extends Component {
     // this.onAlignChange(editorState);
   }
 
-  addNewBlockButton = (addBlock) => {
-    return <button style={{outline: "none"}} className='inline-toolbar-button' onClick={() => addBlock('text', this.props.index + 1)}> <Icon name={addSVG} size="24px" /> </button>
-  }
+  addNewBlockButton = addBlock => {
+    return (
+      <button
+        style={{ outline: 'none' }}
+        className="inline-toolbar-button"
+        onClick={() => addBlock('text', this.props.index + 1)}
+      >
+        {' '}
+        <Icon name={addSVG} size="24px" />{' '}
+      </button>
+    );
+  };
 
   //modifies state to use only one type of Align inline style
   onAlignChange(editorState) {
@@ -360,21 +372,21 @@ class Edit extends Component {
               </div>
             </Portal>
           ) : (
-              <Portal
-                node={
-                  this.props.selected &&
-                  __CLIENT__ &&
-                  document.querySelector('.editor-toolbar-wrapper')
-                }
+            <Portal
+              node={
+                this.props.selected &&
+                __CLIENT__ &&
+                document.querySelector('.editor-toolbar-wrapper')
+              }
+            >
+              <div
+                id={this.props.toolbarId || uuid()}
+                className="toolbarWrapper"
               >
-                <div
-                  id={this.props.toolbarId || uuid()}
-                  className="toolbarWrapper"
-                >
-                  <InlineToolbar />
-                </div>
-              </Portal>
-            ))}
+                <InlineToolbar />
+              </div>
+            </Portal>
+          ))}
         {!this.props.detached &&
           (!this.props.data.text ||
             (this.props.data.text &&

@@ -30,7 +30,7 @@ import ControlPanelViewlet from './ControlPanel/Viewlet';
 import ImageCardsView from './ImageCards/ImageCardsView';
 import ImageCardsEdit from './ImageCards/ImageCardsEdit';
 
-import { View } from '@plone/volto/components';
+// import { View } from '@plone/volto/components';
 
 import * as addonReducers from './reducers';
 import installDraftEditor from './drafteditor';
@@ -61,7 +61,7 @@ export function applyConfig(config) {
   config.views.contentTypesViews.Collection = CollectionView;
   config.views.contentTypesViews.EmbeddedMap = MapView;
   config.views.contentTypesViews.embeddedmap = MapView;
-  config.views.layoutViews.compositepage_view = View;
+  // config.views.layoutViews.compositepage_view = View;
 
   config.widgets.id.collection_years = CollectionYears;
   config.widgets.id.blocks = HiddenWidget;

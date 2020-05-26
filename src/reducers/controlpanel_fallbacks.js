@@ -16,22 +16,7 @@ const initialState = {
  */
 export default function index_values(state = initialState, action = {}) {
   switch (action.type) {
-    case `${GET_CONTROLPANEL_FALLBACKS}_PENDING`:
-      return {
-        ...state,
-        error: null,
-        loaded: false,
-        loading: true,
-      };
-    case `${GET_CONTROLPANEL_FALLBACKS}_SUCCESS`:
-      return {
-        ...state,
-        error: null,
-        items: action.result || [],
-        loaded: true,
-        loading: false,
-      };
-    case `${GET_CONTROLPANEL_FALLBACKS}_FAIL`:
+    case GET_CONTROLPANEL_FALLBACKS:
       return {
         ...state,
         error: action.error,
