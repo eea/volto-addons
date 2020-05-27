@@ -1,6 +1,6 @@
 import redraft from 'redraft';
 import { compact, concat, isArray, join, map, pickBy, toPairs } from 'lodash';
-import { settings, editForms } from '~/config';
+import { settings } from '~/config';
 const url = require('url');
 
 // NOTE: this needs to be improvded to recursively convert the query to qs
@@ -60,31 +60,4 @@ export function renderDraft(draftValue) {
   return draftValue
     ? redraft(draftValue, settings.ToHTMLRenderers, settings.ToHTMLOptions)
     : '';
-}
-
-function getByType(props, type) {
-  let res;
-  switch (type) {
-    case 'edit':
-      res = props.content['@type'];
-      break;
-    case 'add':
-      res = props.type;
-      break;
-    default:
-      res = props.content['@type'];
-  }
-  return editForms.byType[res];
-}
-
-function getByLayout(props, type) {
-  console.log(editForms)
-  return type === 'edit' ? editForms.byLayout[props.content.layout] : null;
-}
-
-export function getEditForm(props, type = 'edit') {
-  const impl =
-    getByLayout(props, type) || getByType(props, type) || editForms.default;
-
-  return impl;
 }

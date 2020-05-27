@@ -8,6 +8,7 @@ import {
   UPDATE_ATTACHMENT,
   GET_PORTLETS,
   FORCE_DRAFT_EDITOR_REFRESH,
+  CHANGE_SIDEBAR_STATE,
   CLONE_AS_TYPE
 } from './constants';
 import { GET_CONTENT } from '@plone/volto/constants/ActionTypes';

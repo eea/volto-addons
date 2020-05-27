@@ -48,9 +48,11 @@ const CreateTemplateDialog = ({ onSave, onClose }) => {
 const Toolbar = ({ formData, onSave, cloneAsType, ...props }) => {
   const [showImportExport, setShowImportExport] = useState(false);
   const [showCreateTemplate, setShowCreateTemplate] = useState(false);
+  const [infoShown, setInfoShown] = useState(true);
 
   const showSuccess = useCallback(() => {
-    if (props.cloned_type.loaded) {
+    if (props.cloned_type.loaded && !infoShown) {
+      setInfoShown(true)
       toast.info(
         <Toast
           info
@@ -66,9 +68,11 @@ const Toolbar = ({ formData, onSave, cloneAsType, ...props }) => {
     props.cloned_type.items,
     props.cloned_type.loaded,
     setShowCreateTemplate,
+    infoShown,
   ]);
   const showFailure = useCallback(() => {
-    if (props.cloned_type.error)
+    if (props.cloned_type.error && !infoShown) {
+      setInfoShown(true)
       toast.error(
         <Toast
           error
@@ -76,26 +80,39 @@ const Toolbar = ({ formData, onSave, cloneAsType, ...props }) => {
           content="An error occured while creating the new template type."
         />,
       );
-  }, [props.cloned_type.error]);
+    }
+  }, [props.cloned_type.error, infoShown,]);
+  const preventPropagation = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  }
 
   useEffect(() => {
     showSuccess();
     showFailure();
   }, [showSuccess, showFailure]);
-  // console.log('props', props);
 
   return (
-    <Segment.Group>
+    <Segment.Group className="layout-templating" style={{
+      width: "100%",
+      boxShadow: "none"
+    }}>
       <Segment>
         <div className="import-export-blockdata">
           {props.cloned_type.loading && <Spinner />}
 
-          <Button size="mini" onClick={() => setShowImportExport(true)}>
+          <Button size="mini" onClick={(event) =>  {
+            preventPropagation(event)
+            setShowImportExport(true)
+          }}>
             Import/Export layout and blocks
           </Button>
 
           {props.location && props.mode === 'editform' && (
-            <Button size="mini" onClick={() => setShowCreateTemplate(true)}>
+            <Button size="mini" onClick={() =>  {
+              preventPropagation(event)
+              setShowCreateTemplate(true)
+            }}>
               Save as clonable template
             </Button>
           )}
@@ -107,19 +124,31 @@ const Toolbar = ({ formData, onSave, cloneAsType, ...props }) => {
                 blocks_layout: formData?.blocks_layout || {},
               }}
               onSave={formData => {
+                preventPropagation(event)
+                setInfoShown(false)
                 onSave(formData);
                 setShowImportExport(false);
               }}
-              onClose={() => setShowImportExport(false)}
+              onClose={() => {
+                preventPropagation(event)
+                setInfoShown(true)
+                setShowImportExport(false)
+              }}
             />
           )}
 
           {showCreateTemplate && (
             <CreateTemplateDialog
               onSave={typeName => {
+                preventPropagation(event)
+                setInfoShown(false)
                 cloneAsType(props.location, typeName);
               }}
-              onClose={() => setShowCreateTemplate(false)}
+              onClose={() => {
+                preventPropagation(event)
+                setInfoShown(true)
+                setShowCreateTemplate(false)
+              }}
             />
           )}
         </div>
