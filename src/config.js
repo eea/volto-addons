@@ -14,6 +14,9 @@ import PDFBlockEdit from './PDFViewer/BlockEdit';
 import TableauBlockView from './Tableau/BlockView';
 import TableauBlockEdit from './Tableau/BlockEdit';
 
+import FetcherBlockView from "./Fetcher/View"
+import FetcherBlockEdit from "./Fetcher/Edit"
+
 import NewsView from './News/NewsView';
 import NewsEdit from './News/NewsEdit';
 
@@ -29,6 +32,8 @@ import ControlPanelViewlet from './ControlPanel/Viewlet';
 
 import ImageCardsView from './ImageCards/ImageCardsView';
 import ImageCardsEdit from './ImageCards/ImageCardsEdit';
+
+
 
 import { View } from '@plone/volto/components';
 
@@ -123,6 +128,18 @@ export function installTableau(config) {
     title: 'Tableau',
     view: TableauBlockView,
     edit: TableauBlockEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+  return config;
+}
+
+export function installFetcher(config) {
+  config.blocks.blocksConfig.fetcher = {
+    id: 'fetcher',  
+    title: 'Fetcher',
+    view: FetcherBlockView,
+    edit: FetcherBlockEdit,
     icon: chartIcon,
     group: 'custom_addons',
   };
