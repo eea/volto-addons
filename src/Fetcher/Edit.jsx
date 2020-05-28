@@ -9,6 +9,7 @@ import _ from 'lodash';
 import { SidebarPortal } from '@plone/volto/components'; // EditBlock
 import { BlockEditForm } from 'volto-addons/BlockForm';
 import Article from './Article';
+import { useCorsProxyAll, useCorsproxy } from '../helpers';
 
 import schema from './schema';
 
@@ -22,14 +23,18 @@ const Edit = props => {
 
   const [activePage, setActivePage] = useState(1);
 
+  const [endpoint, setEndpoint] = useState('')
+
   const hasRequest = props.data.request || props.data.customRequest
   const hasQueryData = props.data.endpoint && hasRequest;
 
 
   const handleFetch = async () => {
-    const endpointUrl = props.data.endpoint;
+    setEndpoint(props.data.endpoint)
+    const endpointUrl = useCorsProxyAll(props.data.endpoint);
     const request = props.data.customRequest ? props.data.customRequest : props.data.request;
 
+    console.log('éndpoin', endpointUrl)
     const client = new SparqlClient({ endpointUrl });
     const stream = await client.query.select(request);
 
@@ -54,11 +59,12 @@ const Edit = props => {
   useEffect(() => {
     if (
       hasQueryData &&
-      articleList !== props.data.articles
+      articleList !== props.data.articles &&
+      endpoint !== props.data.endpoint
     ) {
       handleFetch();
     }
-  }, [props.data]);
+  }, [props.data.endpointUrl, props.data.request, props.data.customRequest]);
 
   const handlePaginationChange = (e, { activePage }) => {
     setActivePage(activePage);

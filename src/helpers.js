@@ -56,6 +56,15 @@ export function useCorsproxy(targetUrl) {
   return nextUrl;
 }
 
+export function useCorsProxyAll(url) {
+
+
+  const proxiedUrl =  "https://cors-anywhere.herokuapp.com/" + url;
+
+  console.log("using cors anywhere proxy", proxiedUrl)
+  return proxiedUrl
+}
+
 export function renderDraft(draftValue) {
   return draftValue
     ? redraft(draftValue, settings.ToHTMLRenderers, settings.ToHTMLOptions)
