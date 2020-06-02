@@ -24,17 +24,17 @@ const Edit = props => {
   const [activePage, setActivePage] = useState(1);
 
   const [endpoint, setEndpoint] = useState('')
+  const hasCustomRequest = props.data.customRequest ? true : false
+  const hasRequest = props.data.request ? true : false
 
-  const hasRequest = props.data.request || props.data.customRequest
-  const hasQueryData = props.data.endpoint && hasRequest;
+  const hasAnyRequest = hasCustomRequest || hasRequest
+  const hasQueryData = props.data.endpoint && hasAnyRequest;
 
 
   const handleFetch = async () => {
-    setEndpoint(props.data.endpoint)
     const endpointUrl = useCorsProxyAll(props.data.endpoint);
     const request = props.data.customRequest ? props.data.customRequest : props.data.request;
 
-    console.log('éndpoin', endpointUrl)
     const client = new SparqlClient({ endpointUrl });
     const stream = await client.query.select(request);
 
@@ -58,13 +58,16 @@ const Edit = props => {
 
   useEffect(() => {
     if (
-      hasQueryData &&
-      articleList !== props.data.articles &&
-      endpoint !== props.data.endpoint
+      hasQueryData
     ) {
+      props.onChangeBlock(props.block, {
+      ...props.data,
+      articles: "",
+    });
+      console.log('passingthrufetch')
       handleFetch();
     }
-  }, [props.data.endpointUrl, props.data.request, props.data.customRequest]);
+  }, [props.data.endpoint, props.data.request, props.data.customRequest]);
 
   const handlePaginationChange = (e, { activePage }) => {
     setActivePage(activePage);

@@ -15,15 +15,15 @@ export function dataToQueryString(data) {
     queryArray,
     data
       ? join(
-          map(toPairs(pickBy(data, item => !isArray(item))), item => {
-            if (item[0] === 'SearchableText') {
-              // Adds the wildcard to the SearchableText param
-              item[1] = `${item[1]}*`;
-            }
-            return join(item, '=');
-          }),
-          '&',
-        )
+        map(toPairs(pickBy(data, item => !isArray(item))), item => {
+          if (item[0] === 'SearchableText') {
+            // Adds the wildcard to the SearchableText param
+            item[1] = `${item[1]}*`;
+          }
+          return join(item, '=');
+        }),
+        '&',
+      )
       : '',
   );
 
@@ -31,11 +31,11 @@ export function dataToQueryString(data) {
     queryArray,
     arrayOptions
       ? join(
-          map(pickBy(arrayOptions), (item, key) =>
-            join(item.map(value => `${key}:list=${value}`), '&'),
-          ),
-          '&',
-        )
+        map(pickBy(arrayOptions), (item, key) =>
+          join(item.map(value => `${key}:list=${value}`), '&'),
+        ),
+        '&',
+      )
       : '',
   );
 
@@ -57,9 +57,7 @@ export function useCorsproxy(targetUrl) {
 }
 
 export function useCorsProxyAll(url) {
-
-
-  const proxiedUrl =  "https://cors-anywhere.herokuapp.com/" + url;
+  const proxiedUrl = "https://cors-anywhere.herokuapp.com/" + url;
 
   console.log("using cors anywhere proxy", proxiedUrl)
   return proxiedUrl
