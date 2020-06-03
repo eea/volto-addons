@@ -7,6 +7,7 @@ import PickObject from './PickObject';
 import ObjectListWidget from './Widgets/ObjectList';
 import AlignBlockWidget from './Widgets/Align';
 import AttachedImageWidget from './Widgets/AttachedImage';
+import TemplatingToolbarWidget from './Widgets/TemplatingToolbar';
 
 import PDFBlockView from './PDFViewer/BlockView';
 import PDFBlockEdit from './PDFViewer/BlockEdit';
@@ -66,6 +67,9 @@ export function applyConfig(config) {
   config.widgets.id.collection_years = CollectionYears;
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
+  config.widgets.id.templatingtoolbar = TemplatingToolbarWidget;
+
+  config.widgets.widget.sidebar = [ TemplatingToolbarWidget ]
 
   config.widgets.widget.object_by_path = PickObject;
   config.widgets.widget.objectlist = ObjectListWidget;
