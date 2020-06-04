@@ -1,5 +1,6 @@
 import chartIcon from '@plone/volto/icons/world.svg';
 import codeSVG from '@plone/volto/icons/code.svg';
+import rssSVG from '@plone/volto/icons/rss.svg';
 
 import HiddenWidget from './Widgets/Hidden';
 import CollectionYears from './Widgets/CollectionYears';
@@ -27,6 +28,11 @@ import MapView from './Map/View';
 import FolderListingBlockView from './FolderListing/BlockView';
 import FolderListingBlockEdit from './FolderListing/BlockEdit';
 import ControlPanelViewlet from './ControlPanel/Viewlet';
+
+import RssBlockView from './RssBlock/View';
+import RssBlockEdit from './RssBlock/Edit';
+import DefaultRSSTemplate from './RssBlock/DefaultRssTemplate';
+
 
 import ImageCardsView from './ImageCards/ImageCardsView';
 import ImageCardsEdit from './ImageCards/ImageCardsEdit';
@@ -69,7 +75,7 @@ export function applyConfig(config) {
   config.widgets.id.blocks_layout = HiddenWidget;
   config.widgets.id.templatingtoolbar = TemplatingToolbarWidget;
 
-  config.widgets.widget.sidebar = [ TemplatingToolbarWidget ]
+  config.widgets.widget.sidebar = [TemplatingToolbarWidget]
 
   config.widgets.widget.object_by_path = PickObject;
   config.widgets.widget.objectlist = ObjectListWidget;
@@ -84,6 +90,19 @@ export function applyConfig(config) {
     icon: chartIcon,
     group: 'custom_addons',
   };
+
+  config.blocks.blocksConfig.rssBlock = {
+    id: 'rssBlock',
+    title: 'RSS Block',
+    view: RssBlockView,
+    edit: RssBlockEdit,
+    icon: rssSVG,
+    group: 'custom_addons',
+    templates: {
+      default: { label: 'Default template', template: DefaultRSSTemplate },
+    },
+  };
+
   config.blocks.blocksConfig.pdf_viewer = {
     id: 'pdf_viewer',
     title: 'PDF Viewer',

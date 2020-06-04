@@ -28,7 +28,8 @@
     "react-image-gallery": "^1.0.7",
     "react-lazy-load-image-component": "^1.4.3",
     "react-pdf-js": "^5.1.0",
-    "redraft": "^0.10.2"
+    "redraft": "^0.10.2",
+    "rss-parser": "^3.8.0"
   },
   "voltoCustomizationPath": "src/customizations"
 }
