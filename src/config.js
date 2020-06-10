@@ -7,6 +7,7 @@ import PickObject from './PickObject';
 import ObjectListWidget from './Widgets/ObjectList';
 import AlignBlockWidget from './Widgets/Align';
 import AttachedImageWidget from './Widgets/AttachedImage';
+import TemplatingToolbarWidget from './Widgets/TemplatingToolbar';
 
 import PDFBlockView from './PDFViewer/BlockView';
 import PDFBlockEdit from './PDFViewer/BlockEdit';
@@ -30,7 +31,7 @@ import ControlPanelViewlet from './ControlPanel/Viewlet';
 import ImageCardsView from './ImageCards/ImageCardsView';
 import ImageCardsEdit from './ImageCards/ImageCardsEdit';
 
-import { View } from '@plone/volto/components';
+// import { View } from '@plone/volto/components';
 
 import * as addonReducers from './reducers';
 import installDraftEditor from './drafteditor';
@@ -61,11 +62,14 @@ export function applyConfig(config) {
   config.views.contentTypesViews.Collection = CollectionView;
   config.views.contentTypesViews.EmbeddedMap = MapView;
   config.views.contentTypesViews.embeddedmap = MapView;
-  config.views.layoutViews.compositepage_view = View;
+  // config.views.layoutViews.compositepage_view = View;
 
   config.widgets.id.collection_years = CollectionYears;
   config.widgets.id.blocks = HiddenWidget;
   config.widgets.id.blocks_layout = HiddenWidget;
+  config.widgets.id.templatingtoolbar = TemplatingToolbarWidget;
+
+  config.widgets.widget.sidebar = [ TemplatingToolbarWidget ]
 
   config.widgets.widget.object_by_path = PickObject;
   config.widgets.widget.objectlist = ObjectListWidget;
