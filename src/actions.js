@@ -8,6 +8,8 @@ import {
   UPDATE_ATTACHMENT,
   GET_PORTLETS,
   FORCE_DRAFT_EDITOR_REFRESH,
+  CHANGE_SIDEBAR_STATE,
+  CLONE_AS_TYPE
 } from './constants';
 import { GET_CONTENT } from '@plone/volto/constants/ActionTypes';
 import { dataToQueryString } from './helpers';
@@ -123,5 +125,25 @@ export function forceDraftEditorRefresh(key) {
   return {
     type: FORCE_DRAFT_EDITOR_REFRESH,
     editorKey: key,
+  };
+}
+
+export function changeSidebarState(open) {
+  return {
+    type: CHANGE_SIDEBAR_STATE,
+    open,
+  };
+}
+
+export function cloneAsType(path, typeName) {
+  return {
+    type: CLONE_AS_TYPE,
+    request: {
+      op: 'post',
+      path: `${path}/@clone-as-type`,
+      data: {
+        typeName,
+      },
+    },
   };
 }
