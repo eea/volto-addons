@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
 import { Button, Input } from 'semantic-ui-react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import TableauReport from './TableauReport';
+import { compose } from 'redux';
 
 import clearSVG from '@plone/volto/icons/clear.svg';
 import { Icon } from '@plone/volto/components';
@@ -29,7 +30,7 @@ const messages = defineMessages({
   },
 });
 
-class StackedBarChart extends Component {
+class TableauEdit extends Component {
   constructor(props) {
     super(props);
 
@@ -47,8 +48,8 @@ class StackedBarChart extends Component {
       filters: data.filters,
       sheetname: (data && data.sheetname) || '',
       error: false,
-      hideTabs: (data&& data.hideTabs) || false,
-      hideToolbars: (data&& data.hideToolbars) || false
+      hideTabs: (data && data.hideTabs) || false,
+      hideToolbars: (data && data.hideToolbars) || false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -91,22 +92,22 @@ class StackedBarChart extends Component {
     );
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    if(prevState !== this.state) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState !== this.state) {
       this.props.onChangeBlock(this.props.block, {
         ...this.props.data,
         url: this.state.url,
-        hideTabs:this.state.hideTabs,
+        hideTabs: this.state.hideTabs,
         hideToolbars: this.state.hideToolbars,
         sheetname: this.state.sheetname,
-        filters: this.state.filters
+        filters: this.state.filters,
       });
     }
   }
 
-  onBlockEdit (id,value) {
-    console.log('block changed from sidebar', id, value)
-    this.setState({[id]:value})
+  onBlockEdit(id, value) {
+    console.log('block changed from sidebar', id, value);
+    this.setState({ [id]: value });
   }
 
   saveCallback(saveData) {
@@ -135,8 +136,8 @@ class StackedBarChart extends Component {
     const options = {
       ...this.state.filters,
       hideTabs: this.state.hideTabs,
-      hideToolbars: this.state.hideToolbars
-    }
+      hideToolbars: this.state.hideToolbars,
+    };
 
     // <ResponsiveContainer style={{ width: '100%', overflowX: 'auto' }}>
     // </ResponsiveContainer>
@@ -235,17 +236,17 @@ class StackedBarChart extends Component {
           </div>
         </div>
         <SidebarPortal selected={this.props.selected}>
-        <BlockEditForm
-          schema={schema}
-          title={schema.title}
-          onChangeField={(id, value) => this.onBlockEdit(id,value)}
-          formData={this.props.data}
-          block={this.props.block}
-        />
-      </SidebarPortal>
+          <BlockEditForm
+            schema={schema}
+            title={schema.title}
+            onChangeField={(id, value) => this.onBlockEdit(id, value)}
+            formData={this.props.data}
+            block={this.props.block}
+          />
+        </SidebarPortal>
       </div>
     );
   }
 }
 
-export default StackedBarChart;
+export default compose(injectIntl)(TableauEdit);
