@@ -55,11 +55,11 @@ class TableauReport extends React.Component {
     const isToolbarsChanged =
       prevProps.options.hideToolbars !== this.props.options.hideToolbars;
 
-    const isFiltersChanged = !shallowequal(
-      this.props.filters,
-      prevProps.filters,
-      this.compareArrays,
-    );
+    // const isFiltersChanged = !shallowequal(
+    //   this.props.filters,
+    //   prevProps.filters,
+    //   this.compareArrays,
+    // );
 
     const isParametersChanged = !shallowequal(
       this.props.parameters,
@@ -67,28 +67,20 @@ class TableauReport extends React.Component {
     );
     const isLoading = this.state.loading;
 
-    if (isFiltersChanged) {
+    const isFiltersChanged =
+      Object.keys(this.props.options)[0] !== Object.keys(prevProps.options)[0];
+    console.log('filter changed in tabluea', isFiltersChanged);
+    if (
+      isFiltersChanged ||
+      isTabsChanged ||
+      isReportChanged ||
+      isToolbarsChanged
+    ) {
       this.initTableau(this.props.url);
     }
-
-    if (isTabsChanged) {
-      console.log('hide tabs changed. init tableau');
-      this.initTableau(this.props.url);
-    }
-
-    if (isReportChanged) {
-      console.log('report changed. init tableau');
-      this.initTableau(this.props.url);
-    }
-
-    if (isToolbarsChanged) {
-      console.log('hide toolbars changed. init tableau');
-      this.initTableau(this.props.url);
-    }
-
     // Only filters are changed, apply via the API
     if (!isReportChanged && isFiltersChanged && !isLoading) {
-      this.applyFilters(this.props.filters);
+      this.applyFiltersInside(this.props.filters);
     }
 
     // Only parameters are changed, apply via the API
@@ -145,7 +137,7 @@ class TableauReport extends React.Component {
     return parsed.protocol + '//' + parsed.host + parsed.pathname + query;
   }
 
-  applyFilters(filters) {
+  applyFiltersInside(filters) {
     console.log('the filters', filters);
     // this.api.worksheet.applyFilterAsync(
     //   'Container',

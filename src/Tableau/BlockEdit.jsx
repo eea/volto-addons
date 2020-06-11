@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 import TableauReport from './TableauReport';
 import { compose } from 'redux';
-
+import editingSVG from '@plone/volto/icons/editing.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import { Icon } from '@plone/volto/components';
 import trashSVG from '@plone/volto/icons/delete.svg';
@@ -149,6 +149,15 @@ class TableauEdit extends Component {
             <div class="image-add">
               <div className="toolbar">
                 <Button.Group>
+                  <Button
+                    icon
+                    basic
+                    onClick={() =>
+                      console.log('block selected. Can be edited from sidebar.')
+                    }
+                  >
+                    <Icon name={editingSVG} size="24px" color="#e40166" />
+                  </Button>
                   <Button
                     icon
                     basic
