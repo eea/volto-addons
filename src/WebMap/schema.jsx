@@ -5,7 +5,17 @@ const WebMap = {
     {
       id: 'default',
       title: 'Default',
-      fields: ['mapId',"portalUrl","filter", 'latitude', 'longitude', 'zoom', 'showLegend', 'showLayers', "showCoordWidget"],
+      fields: [
+        'mapId',
+        'portalUrl',
+        'filter',
+        'latitude',
+        'longitude',
+        'zoom',
+        'showLegend',
+        'showLayers',
+        'showCoordWidget',
+      ],
     },
   ],
 
@@ -40,16 +50,14 @@ const WebMap = {
     },
     filter: {
       type: 'string',
-      title: "Filter by Country Code"
+      title: 'Filter by Country Code',
     },
     portalUrl: {
-      type: "string",
-      title: "Portal URL"
-    }
-
+      type: 'string',
+      title: 'Portal URL',
+    },
   },
   required: ['mapId'],
-
 };
 
 export default WebMap;
