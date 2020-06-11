@@ -12,17 +12,20 @@ class TableauBlockView extends Component {
       url: data.url || '',
       sheetname: data.sheetname || '',
       filters: data.filters || '',
-      options: { hideTabs: data.hideTabs, hideToolbars: data.hideToolbars } || ''
-
+      options:
+        { hideTabs: data.hideTabs, hideToolbars: data.hideToolbars } || '',
     };
   }
   render() {
     if (__SERVER__) return '';
     return (
-      <div className="chartWrapperView" style={{
-        width: '100%',
-        overflowX: 'auto'
-      }}>
+      <div
+        className="chartWrapperView"
+        style={{
+          width: '100%',
+          overflowX: 'auto',
+        }}
+      >
         {this.state.url ? (
           <TableauReport
             url={this.state.url}
@@ -31,8 +34,8 @@ class TableauBlockView extends Component {
             options={this.state.options}
           />
         ) : (
-            <div>Invalid or missing data.</div>
-          )}
+          <div>Invalid or missing data.</div>
+        )}
       </div>
     );
   }

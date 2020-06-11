@@ -62,6 +62,7 @@ class TableauEdit extends Component {
   }
 
   handleChange(e) {
+    e.preventDefault();
     let data = e.target.value;
     try {
       data = e.target.value;
@@ -144,7 +145,7 @@ class TableauEdit extends Component {
     return (
       <div className="block chartWrapperEdit">
         <div className="block-inner-wrapper">
-          {this.state.show && this.state.url ? (
+          {this.state.url ? (
             <div class="image-add">
               <div className="toolbar">
                 <Button.Group>
@@ -182,58 +183,8 @@ class TableauEdit extends Component {
               />
             </div>
           ) : (
-            <div className="image-add">
-              <div class="ui segment">
-                {this.state.error && (
-                  <h2 style={{ color: 'red', fontWeight: 'bold' }}>
-                    The url "{this.state.error}" is not a valid tableau url
-                  </h2>
-                )}
-
-                <div class="ui placeholder">
-                  <div class="image header">
-                    <div class="line" />
-                    <div class="line" />
-                  </div>
-                  <div class="paragraph">
-                    <div class="medium line" />
-                    <div class="short line" />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <p>Please use Sidebar to set Tableau URL</p>
           )}
-          <div
-            role="presentation"
-            onKeyPress={event => {
-              if (event.key === 'Enter') {
-                this.setState({ show: true });
-                this.onSubmit();
-              }
-            }}
-            style={{
-              fontWeight: 'bold',
-              textAlign: 'center',
-              fontSize: '1.3rem',
-              boxShadow: '0px 1px 2px 0 rgba(34, 36, 38, 0.15)',
-              border: '1px solid rgba(34, 36, 38, 0.15)',
-              background: '#fafafa',
-            }}
-          >
-            <label>
-              {this.state.show && this.state.url ? 'Change' : 'Add'} tableau
-              URL: &nbsp;
-            </label>
-            <Input
-              type="text"
-              className="remove-all-border-radius"
-              defaultValue={this.state.url}
-              value={this.state.url}
-              placeholder="Tableau URL"
-              onChange={this.handleChange}
-            />
-            &nbsp; and press ENTER
-          </div>
         </div>
         <SidebarPortal selected={this.props.selected}>
           <BlockEditForm

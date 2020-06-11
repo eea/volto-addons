@@ -1,4 +1,3 @@
-
 const TableauSchema = {
   title: 'Tableau',
 
@@ -26,9 +25,14 @@ const TableauSchema = {
     //to be refined
     filters: {
       title: 'Filter',
-      choices: [[{
-          "Member State": ['BE']
-      },'Belgium']],
+      choices: [
+        [
+          {
+            'Member State': ['BE'],
+          },
+          'Belgium',
+        ],
+      ],
     },
   },
 

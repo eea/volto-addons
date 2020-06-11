@@ -20,7 +20,7 @@ const defaultProps = {
   parameters: {},
   filters: {},
   options: {},
-  query: '?:embed=yes&:comments=no&:toolbar=yes&:refresh=yes',
+  query: '',
 };
 
 class TableauReport extends React.Component {
@@ -48,38 +48,56 @@ class TableauReport extends React.Component {
     this.initTableau();
   }
 
-  componentWillReceiveProps(nextProps) {
-    const isReportChanged = nextProps.url !== this.props.url  
-    const isOptionsChanged = nextProps.options !== this.props.options
-    console.log('options changed',isOptionsChanged)
+  componentDidUpdate(prevProps, prevState) {
+    const isTabsChanged =
+      prevProps.options.hideTabs !== this.props.options.hideTabs;
+    const isReportChanged = prevProps.url !== this.props.url;
+    const isToolbarsChanged =
+      prevProps.options.hideToolbars !== this.props.options.hideToolbars;
+
     const isFiltersChanged = !shallowequal(
       this.props.filters,
-      nextProps.filters,
+      prevProps.filters,
       this.compareArrays,
     );
+
     const isParametersChanged = !shallowequal(
       this.props.parameters,
-      nextProps.parameters,
+      this.props.parameters,
     );
     const isLoading = this.state.loading;
 
-    // Only report is changed - re-initialize
-    if (isReportChanged || isOptionsChanged) {
-      this.initTableau(nextProps.url);
+    if (isFiltersChanged) {
+      this.initTableau(this.props.url);
+    }
+
+    if (isTabsChanged) {
+      console.log('hide tabs changed. init tableau');
+      this.initTableau(this.props.url);
+    }
+
+    if (isReportChanged) {
+      console.log('report changed. init tableau');
+      this.initTableau(this.props.url);
+    }
+
+    if (isToolbarsChanged) {
+      console.log('hide toolbars changed. init tableau');
+      this.initTableau(this.props.url);
     }
 
     // Only filters are changed, apply via the API
     if (!isReportChanged && isFiltersChanged && !isLoading) {
-      this.applyFilters(nextProps.filters);
+      this.applyFilters(this.props.filters);
     }
 
     // Only parameters are changed, apply via the API
     if (!isReportChanged && isParametersChanged && !isLoading) {
-      this.applyParameters(nextProps.parameters);
+      this.applyParameters(this.props.parameters);
     }
 
     // token change, validate it.
-    if (nextProps.token !== this.props.token) {
+    if (prevProps.token !== this.props.token) {
       this.setState({ didInvalidateToken: false });
     }
   }
@@ -128,7 +146,13 @@ class TableauReport extends React.Component {
   }
 
   applyFilters(filters) {
-    console.log('the filters', filters)
+    console.log('the filters', filters);
+    // this.api.worksheet.applyFilterAsync(
+    //   'Container',
+    //   'Boxes',
+    //   tableau.FilterUpdateType.REPLACE,
+    // );
+    //console.log('searching for tableau', this.api);
   }
 
   // invalidateToken() {
@@ -142,7 +166,7 @@ class TableauReport extends React.Component {
    * @return {void}
    */
   // applyFilters(filters) {
-  //   const REPLACE = Tableau.FilterUpdateType.REPLACE;
+  //   const REPLACE = tableau.FilterUpdateType.REPLACE;
   //   const promises = [];
   //
   //   this.setState({ loading: true });
@@ -188,21 +212,19 @@ class TableauReport extends React.Component {
     if (__SERVER__) return;
     const { filters, parameters } = this.props;
     const vizUrl = this.getUrl(nextUrl);
-
-    console.log('initing tableau', vizUrl);
     const options = {
       ...filters,
       ...parameters,
       ...this.props.options,
       onFirstInteractive: () => {
-        console.log('On first interacitve');
+        console.log('On first interactive');
         this.workbook = this.viz.getWorkbook();
         let activeSheet = this.workbook.getActiveSheet();
 
         let saveData = JSON.parse(JSON.stringify(this.state.saveData));
         saveData['url'] = this.viz.getUrl();
         saveData['sheetname'] = activeSheet.getName();
-        saveData.filters = this.props.filters[activeSheet.getName()]
+        saveData.filters = this.props.filters[activeSheet.getName()];
         console.log('urls', this.props.url, this.state.saveData.url);
 
         if (this.props.url !== this.state.saveData.url) {
@@ -239,12 +261,12 @@ class TableauReport extends React.Component {
               let name = r.$caption;
               let values = r.$appliedValues.map(e => e.value);
               let sheetname = this.state.saveData.sheetname;
-              let filters = {[r.$caption]:[r.$appliedValues[0].value]}
-              this.setState({filters})
+              let filters = { [r.$caption]: [r.$appliedValues[0].value] };
+              this.setState({ filters });
               const save = {
                 ...this.state.saveData,
                 filters: {
-                  ...this.state.filters
+                  ...this.state.filters,
                 },
               };
               this.setState({ saveData: save }, this.onChange);
@@ -255,7 +277,7 @@ class TableauReport extends React.Component {
     };
 
     console.log('the options', options);
-    // cleanup
+
     if (this.viz) {
       this.viz.dispose();
       this.viz = null;
