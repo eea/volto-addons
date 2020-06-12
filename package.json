@@ -17,6 +17,8 @@
     "redraft": "^0.10.2"
   },
   "dependencies": {
+    "@esri/react-arcgis": "^5.0.0",
+    "arcgis-react-redux-legend": "^3.0.0",
     "draft-js-alignment-plugin": "^2.0.6",
     "draft-js-focus-plugin": "^3.0.1",
     "draft-js-import-html": "^1.4.1",
@@ -25,6 +27,7 @@
     "draft-js-plugins-editor": "^3.0.0",
     "draft-js-resizeable-plugin": "^2.0.9",
     "draft-js-video-plugin": "^2.0.2",
+    "esri-loader": "^2.14.0",
     "react-image-gallery": "^1.0.7",
     "react-lazy-load-image-component": "^1.4.3",
     "react-pdf-js": "^5.1.0",

@@ -31,6 +31,9 @@ import ControlPanelViewlet from './ControlPanel/Viewlet';
 import ImageCardsView from './ImageCards/ImageCardsView';
 import ImageCardsEdit from './ImageCards/ImageCardsEdit';
 
+import WebMapBlockView from './WebMap/BlockView';
+import WebMapBlockEdit from './WebMap/BlockEdit';
+
 // import { View } from '@plone/volto/components';
 
 import * as addonReducers from './reducers';
@@ -69,7 +72,7 @@ export function applyConfig(config) {
   config.widgets.id.blocks_layout = HiddenWidget;
   config.widgets.id.templatingtoolbar = TemplatingToolbarWidget;
 
-  config.widgets.widget.sidebar = [ TemplatingToolbarWidget ]
+  config.widgets.widget.sidebar = [TemplatingToolbarWidget];
 
   config.widgets.widget.object_by_path = PickObject;
   config.widgets.widget.objectlist = ObjectListWidget;
@@ -89,6 +92,15 @@ export function applyConfig(config) {
     title: 'PDF Viewer',
     view: PDFBlockView,
     edit: PDFBlockEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+
+  config.blocks.blocksConfig.web_map = {
+    id: 'web_map',
+    title: 'Web Map',
+    view: WebMapBlockView,
+    edit: WebMapBlockEdit,
     icon: chartIcon,
     group: 'custom_addons',
   };
