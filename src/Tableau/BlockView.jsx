@@ -14,6 +14,7 @@ class TableauBlockView extends Component {
       filters: data.filters || '',
       options:
         { hideTabs: data.hideTabs, hideToolbars: data.hideToolbars } || '',
+      hideShare: data.hideShare || false,
     };
   }
   render() {
@@ -32,6 +33,7 @@ class TableauBlockView extends Component {
             filters={this.state.filters}
             sheetname={this.state.sheetname}
             options={this.state.options}
+            hideShare={this.state.hideShare}
           />
         ) : (
           <div>Invalid or missing data.</div>

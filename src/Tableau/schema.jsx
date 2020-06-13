@@ -5,7 +5,7 @@ const TableauSchema = {
     {
       id: 'default',
       title: 'Default',
-      fields: ['url', 'hideTabs', 'hideToolbars', 'filters'],
+      fields: ['url', 'hideTabs', 'hideToolbars', 'hideShare', 'filters'],
     },
   ],
 
@@ -21,6 +21,10 @@ const TableauSchema = {
     hideToolbars: {
       type: 'boolean',
       title: 'Hide Toolbars',
+    },
+    hideShare: {
+      type: 'boolean',
+      title: 'Hide Share',
     },
     //to be refined
     filters: {

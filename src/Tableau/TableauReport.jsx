@@ -20,7 +20,6 @@ const defaultProps = {
   parameters: {},
   filters: {},
   options: {},
-  query: '',
 };
 
 class TableauReport extends React.Component {
@@ -34,6 +33,7 @@ class TableauReport extends React.Component {
         url: props.url,
         filters: {},
       },
+      query: '?:embed=yes',
     };
 
     if (!__SERVER__) {
@@ -55,26 +55,22 @@ class TableauReport extends React.Component {
     const isToolbarsChanged =
       prevProps.options.hideToolbars !== this.props.options.hideToolbars;
 
-    // const isFiltersChanged = !shallowequal(
-    //   this.props.filters,
-    //   prevProps.filters,
-    //   this.compareArrays,
-    // );
-
     const isParametersChanged = !shallowequal(
       this.props.parameters,
       this.props.parameters,
     );
     const isLoading = this.state.loading;
 
+    const isShareChanged = prevProps.hideShare !== this.props.hideShare;
+
     const isFiltersChanged =
       Object.keys(this.props.options)[0] !== Object.keys(prevProps.options)[0];
-    console.log('filter changed in tabluea', isFiltersChanged);
     if (
       isFiltersChanged ||
       isTabsChanged ||
       isReportChanged ||
-      isToolbarsChanged
+      isToolbarsChanged ||
+      isShareChanged
     ) {
       this.initTableau(this.props.url);
     }
@@ -92,6 +88,12 @@ class TableauReport extends React.Component {
     if (prevProps.token !== this.props.token) {
       this.setState({ didInvalidateToken: false });
     }
+    //hidetoolbars from query
+    // if (isToolbarsChanged) {
+    //   const toolbarQuery = this.props.options.hideToolbars
+    //     ? '&:toolbar=no'
+    //     : '&:toolbar=yes';
+    // }
   }
 
   onChange() {
@@ -126,16 +128,33 @@ class TableauReport extends React.Component {
    */
   getUrl(nextUrl) {
     const newUrl = nextUrl || this.props.url;
-    const { token, query } = this.props;
+    const token = this.props.token;
     const parsed = url.parse(newUrl, true);
 
     if (!this.state.didInvalidateToken && token) {
       this.invalidateToken();
-      return tokenizeUrl(newUrl, token) + query;
+      const tokenizedUrl = tokenizeUrl(newUrl, token);
+      const queriedUrl = this.applyQueryParameters(tokenizedUrl);
+      return queriedUrl;
     }
 
-    return parsed.protocol + '//' + parsed.host + parsed.pathname + query;
+    return this.applyQueryParameters(
+      parsed.protocol + '//' + parsed.host + parsed.pathname,
+    );
   }
+
+  applyQueryParameters = url => {
+    const toolbarQuery = this.props.options.hideToolbars
+      ? '&:toolbar=no'
+      : '&:toolbar=yes';
+    const hideShareQuery =
+      this.props.hideShare && !this.props.options.hideToolbars
+        ? '&:showShareOptions=false'
+        : '';
+    const queriedUrl = url + '?:embed=yes' + toolbarQuery + hideShareQuery;
+    console.log('thequeriedurl', queriedUrl);
+    return queriedUrl;
+  };
 
   applyFiltersInside(filters) {
     console.log('the filters', filters);

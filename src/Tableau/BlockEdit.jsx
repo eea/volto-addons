@@ -50,6 +50,7 @@ class TableauEdit extends Component {
       error: false,
       hideTabs: (data && data.hideTabs) || false,
       hideToolbars: (data && data.hideToolbars) || false,
+      hideShare: (data && data.hideShare) || false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -102,6 +103,7 @@ class TableauEdit extends Component {
         hideToolbars: this.state.hideToolbars,
         sheetname: this.state.sheetname,
         filters: this.state.filters,
+        hideShare: this.state.hideShare,
       });
     }
   }
@@ -139,6 +141,9 @@ class TableauEdit extends Component {
       hideTabs: this.state.hideTabs,
       hideToolbars: this.state.hideToolbars,
     };
+
+    // const parameters = {
+    // };
 
     // <ResponsiveContainer style={{ width: '100%', overflowX: 'auto' }}>
     // </ResponsiveContainer>
@@ -189,6 +194,8 @@ class TableauEdit extends Component {
                 sheetname={this.state.sheetname}
                 callback={this.saveCallback}
                 options={options}
+                // parameters={parameters}
+                hideShare={this.state.hideShare}
               />
             </div>
           ) : (
