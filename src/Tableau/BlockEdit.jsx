@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 
 import { Button, Input } from 'semantic-ui-react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import TableauReport from './TableauReport';
-
+import { compose } from 'redux';
+import editingSVG from '@plone/volto/icons/editing.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import { Icon } from '@plone/volto/components';
 import trashSVG from '@plone/volto/icons/delete.svg';
 import { Toast } from '@plone/volto/components';
+import { SidebarPortal } from '@plone/volto/components'; // EditBlock
+import { BlockEditForm } from 'volto-addons/BlockForm';
+
+import schema from './schema';
 //
 // import { ResponsiveContainer } from 'recharts';
 //FormattedMessage, , injectIntl
@@ -25,7 +30,7 @@ const messages = defineMessages({
   },
 });
 
-class StackedBarChart extends Component {
+class TableauEdit extends Component {
   constructor(props) {
     super(props);
 
@@ -40,9 +45,12 @@ class StackedBarChart extends Component {
     this.state = {
       show,
       url: (data && data.url) || '',
-      filters,
+      filters: data.filters,
       sheetname: (data && data.sheetname) || '',
       error: false,
+      hideTabs: (data && data.hideTabs) || false,
+      hideToolbars: (data && data.hideToolbars) || false,
+      hideShare: (data && data.hideShare) || false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -55,6 +63,7 @@ class StackedBarChart extends Component {
   }
 
   handleChange(e) {
+    e.preventDefault();
     let data = e.target.value;
     try {
       data = e.target.value;
@@ -85,6 +94,25 @@ class StackedBarChart extends Component {
     );
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState !== this.state) {
+      this.props.onChangeBlock(this.props.block, {
+        ...this.props.data,
+        url: this.state.url,
+        hideTabs: this.state.hideTabs,
+        hideToolbars: this.state.hideToolbars,
+        sheetname: this.state.sheetname,
+        filters: this.state.filters,
+        hideShare: this.state.hideShare,
+      });
+    }
+  }
+
+  onBlockEdit(id, value) {
+    console.log('block changed from sidebar', id, value);
+    this.setState({ [id]: value });
+  }
+
   saveCallback(saveData) {
     console.log('Received save data', saveData);
     this.setState(
@@ -108,17 +136,33 @@ class StackedBarChart extends Component {
     // const TableauReport = require('tableau-react');
     // console.log(this.state);
     //
+    const options = {
+      ...this.state.filters,
+      hideTabs: this.state.hideTabs,
+      hideToolbars: this.state.hideToolbars,
+    };
+
+    // const parameters = {
+    // };
 
     // <ResponsiveContainer style={{ width: '100%', overflowX: 'auto' }}>
     // </ResponsiveContainer>
-    console.log('showValue', this.state);
     return (
       <div className="block chartWrapperEdit">
         <div className="block-inner-wrapper">
-          {this.state.show && this.state.url ? (
+          {this.state.url ? (
             <div class="image-add">
               <div className="toolbar">
                 <Button.Group>
+                  <Button
+                    icon
+                    basic
+                    onClick={() =>
+                      console.log('block selected. Can be edited from sidebar.')
+                    }
+                  >
+                    <Icon name={editingSVG} size="24px" color="#e40166" />
+                  </Button>
                   <Button
                     icon
                     basic
@@ -149,65 +193,27 @@ class StackedBarChart extends Component {
                 filters={this.state.filters}
                 sheetname={this.state.sheetname}
                 callback={this.saveCallback}
+                options={options}
+                // parameters={parameters}
+                hideShare={this.state.hideShare}
               />
             </div>
           ) : (
-            <div className="image-add">
-              <div class="ui segment">
-                {this.state.error && (
-                  <h2 style={{ color: 'red', fontWeight: 'bold' }}>
-                    The url "{this.state.error}" is not a valid tableau url
-                  </h2>
-                )}
-
-                <div class="ui placeholder">
-                  <div class="image header">
-                    <div class="line" />
-                    <div class="line" />
-                  </div>
-                  <div class="paragraph">
-                    <div class="medium line" />
-                    <div class="short line" />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <p>Please use Sidebar to set Tableau URL</p>
           )}
-          <div
-            role="presentation"
-            onKeyPress={event => {
-              if (event.key === 'Enter') {
-                this.setState({ show: true });
-                this.onSubmit();
-              }
-            }}
-            style={{
-              fontWeight: 'bold',
-              textAlign: 'center',
-              fontSize: '1.3rem',
-              boxShadow: '0px 1px 2px 0 rgba(34, 36, 38, 0.15)',
-              border: '1px solid rgba(34, 36, 38, 0.15)',
-              background: '#fafafa',
-            }}
-          >
-            <label>
-              {this.state.show && this.state.url ? 'Change' : 'Add'} tableau
-              URL: &nbsp;
-            </label>
-            <Input
-              type="text"
-              className="remove-all-border-radius"
-              defaultValue={this.state.url}
-              value={this.state.url}
-              placeholder="Tableau URL"
-              onChange={this.handleChange}
-            />
-            &nbsp; and press ENTER
-          </div>
         </div>
+        <SidebarPortal selected={this.props.selected}>
+          <BlockEditForm
+            schema={schema}
+            title={schema.title}
+            onChangeField={(id, value) => this.onBlockEdit(id, value)}
+            formData={this.props.data}
+            block={this.props.block}
+          />
+        </SidebarPortal>
       </div>
     );
   }
 }
 
-export default StackedBarChart;
+export default compose(injectIntl)(TableauEdit);
