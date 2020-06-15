@@ -152,6 +152,7 @@ class TableauReport extends React.Component {
         ? '&:showShareOptions=false'
         : '';
     const queriedUrl = url + '?:embed=yes' + toolbarQuery + hideShareQuery;
+
     console.log('thequeriedurl', queriedUrl);
     return queriedUrl;
   };
