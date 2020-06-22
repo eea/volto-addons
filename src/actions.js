@@ -9,7 +9,8 @@ import {
   GET_PORTLETS,
   FORCE_DRAFT_EDITOR_REFRESH,
   CHANGE_SIDEBAR_STATE,
-  CLONE_AS_TYPE
+  CLONE_AS_TYPE,
+  CHANGE_MAP_DATA,
 } from './constants';
 import { GET_CONTENT } from '@plone/volto/constants/ActionTypes';
 import { dataToQueryString } from './helpers';
@@ -145,5 +146,12 @@ export function cloneAsType(path, typeName) {
         typeName,
       },
     },
+  };
+}
+
+export function changeMapData(mapData) {
+  return {
+    type: CHANGE_MAP_DATA,
+    mapData,
   };
 }

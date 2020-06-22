@@ -34,6 +34,9 @@ import ImageCardsEdit from './ImageCards/ImageCardsEdit';
 import WebMapBlockView from './WebMap/BlockView';
 import WebMapBlockEdit from './WebMap/BlockEdit';
 
+import ConnectedMapView from './ConnectedMap/BlockView';
+import ConnectedMapEdit from './ConnectedMap/BlockEdit';
+
 // import { View } from '@plone/volto/components';
 
 import * as addonReducers from './reducers';
@@ -78,6 +81,15 @@ export function applyConfig(config) {
   config.widgets.widget.objectlist = ObjectListWidget;
   config.widgets.widget.align = AlignBlockWidget;
   config.widgets.widget.attachedimage = AttachedImageWidget;
+
+  config.blocks.blocksConfig.connected_map = {
+    id: 'connected_map',
+    title: 'Connected Map',
+    view: ConnectedMapView,
+    edit: ConnectedMapEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
 
   config.blocks.blocksConfig.collection_block = {
     id: 'collection_block',
