@@ -6,15 +6,44 @@ import { connect } from 'react-redux';
 
 import { changeMapData } from '../actions';
 
-const ConnectedControl = ({ mapData, block, id, updateData }) => {
-  const [mapId, setMapId] = useState('');
+const ConnectedControl = ({ mapData, block, id, updateData, onChange }) => {
+  const [mapId, setMapId] = useState();
+  const [localMapData, setLocalMapData] = useState({});
 
-  const newMapData = {
-    id,
-    mapId,
-  };
+  useEffect(() => {
+    //here goes to redux
+    //updateData(newMapData);
 
-  useEffect(() => {}, [mapId, mapData, id]);
+    const newMapData = {
+      mapId,
+    };
+
+    //here using localstorage
+    const existingLocalMapData = JSON.parse(localStorage.getItem('mapData'));
+    console.log('existingmapdata', existingLocalMapData);
+    //check for existing mapData on the same page element and edits it
+    const hasMapData = existingLocalMapData && existingLocalMapData[id];
+
+    if (hasMapData) {
+      console.log('existingmemmem', existingLocalMapData[id]);
+
+      const sameMapData = existingLocalMapData[id] === newMapData;
+
+      if (!sameMapData) {
+        const updatedMapData = { ...existingLocalMapData, [id]: newMapData };
+
+        console.log('udpatedmapdata', updatedMapData);
+        setMapId(newMapData.mapId);
+        localStorage.setItem('mapData', JSON.stringify(updatedMapData));
+        onChange();
+      }
+    } else {
+      console.log('there is no data, adding data');
+      setMapId(newMapData.mapId);
+      localStorage.setItem('mapData', JSON.stringify({ [id]: newMapData }));
+      onChange();
+    }
+  }, [id, localMapData, mapId, onChange]);
 
   return (
     <Segment.Group raised>
@@ -41,22 +70,9 @@ const ConnectedControl = ({ mapData, block, id, updateData }) => {
           }}
           //block={block}
         />
-        <Button onClick={() => updateData(newMapData)}>Update</Button>
       </Segment>
     </Segment.Group>
   );
 };
 
-export const mapStateToProps = state => ({
-  mapData: state.map_data,
-});
-
-const mapDispatchToProps = dispatch => {
-  return {
-    updateData: mapData => dispatch(changeMapData(mapData)),
-  };
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ConnectedControl);
+export default ConnectedControl;

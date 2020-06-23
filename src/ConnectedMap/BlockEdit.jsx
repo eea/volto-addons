@@ -1,25 +1,30 @@
 import React, { Component, useState, useEffect } from 'react';
 import { SidebarPortal } from '@plone/volto/components'; // EditBlock
-import { Field } from '@plone/volto/components';
-import { Segment, Message } from 'semantic-ui-react';
 
 import WebMap from '../WebMap/WebMap';
 import ConnectedControl from './ConnectedControl';
-
-import { connect } from 'react-redux';
-
-import { changeMapData } from '../actions';
 
 const ConnectedMapEdit = props => {
   const { mapData, id, block } = props;
 
   const [elementMapData, setElementMapData] = useState('');
+  const [localMapData, setLocalMapData] = useState();
 
-  useEffect(() => {
-    const filteredData =
-      mapData.length !== 0 ? mapData.filter(element => element.id === id) : '';
-    setElementMapData(filteredData[0]);
-  }, [id, mapData]);
+  const handleControlChange = () => {
+    const localStorageData = JSON.parse(localStorage.getItem('mapData'));
+
+    console.log('got new data', localStorageData);
+
+    const elementLocalData =
+      localStorageData && localStorageData[id] ? localStorageData[id] : '';
+
+    console.log('elementLocalData', elementLocalData);
+    if (elementMapData.mapId !== elementLocalData.mapId) {
+      console.log('element state', elementMapData);
+      console.log('element local', elementLocalData);
+      setElementMapData(elementLocalData);
+    }
+  };
 
   const {
     showLegend,
@@ -44,7 +49,7 @@ const ConnectedMapEdit = props => {
           zoom={zoom}
           showCoordWidget={showCoordWidget}
           filter={filter}
-          portalUrl={portalUrl}
+          portalUrl="https://eea.maps.arcgis.com"
         />
       )}
       {!elementMapData && (
@@ -52,26 +57,17 @@ const ConnectedMapEdit = props => {
           <p style={{ textAlign: 'center', color: 'red', fontSize: '20px' }}>
             Select Map ID from sidebar!
           </p>
-         
         </React.Fragment>
       )}
       <SidebarPortal selected={props.selected}>
-        <ConnectedControl block={block} id={id} />
+        <ConnectedControl
+          block={block}
+          id={id}
+          onChange={handleControlChange}
+        />
       </SidebarPortal>
     </div>
   );
 };
 
-export const mapStateToProps = state => ({
-  mapData: state.map_data,
-});
-
-const mapDispatchToProps = dispatch => {
-  return {
-    updateData: mapData => dispatch(changeMapData(mapData)),
-  };
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ConnectedMapEdit);
+export default ConnectedMapEdit;
