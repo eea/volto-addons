@@ -37,6 +37,8 @@ import WebMapBlockEdit from './WebMap/BlockEdit';
 import ConnectedMapView from './ConnectedMap/BlockView';
 import ConnectedMapEdit from './ConnectedMap/BlockEdit';
 
+import ConnectedControl from './ConnectedControl/ConnectedControl';
+
 // import { View } from '@plone/volto/components';
 
 import * as addonReducers from './reducers';
@@ -87,6 +89,15 @@ export function applyConfig(config) {
     title: 'Connected Map',
     view: ConnectedMapView,
     edit: ConnectedMapEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+
+  config.blocks.blocksConfig.connected_control = {
+    id: 'connected_control',
+    title: 'Connected Control',
+    view: ConnectedControl,
+    edit: ConnectedControl,
     icon: chartIcon,
     group: 'custom_addons',
   };

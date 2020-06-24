@@ -14,3 +14,5 @@ export const CHANGE_SIDEBAR_STATE = 'CHANGE_SIDEBAR_STATE';
 export const CLONE_AS_TYPE = 'CLONE_AS_TYPE';
 
 export const CHANGE_MAP_DATA = 'CHANGE_MAP_DATA';
+
+export const GET_MAP_DATA = 'GET_MAP_DATA';
