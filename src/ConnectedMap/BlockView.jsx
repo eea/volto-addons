@@ -14,10 +14,17 @@ const ConnectedMapView = props => {
 
   useEffect(() => {
     const elementLocalData = mapData && mapData[id] ? mapData[id] : '';
-    if (elementLocalData && elementMapData.mapId !== elementLocalData.mapId) {
+
+    const mapIdChanged = elementMapData.mapId !== elementLocalData.mapId;
+
+    const filterChanged = elementMapData.filter !== elementLocalData.filter;
+
+    const hasMapChanged = mapIdChanged || filterChanged;
+
+    if (elementLocalData && hasMapChanged) {
       setElementMapData(elementLocalData);
     }
-  }, [elementMapData.mapId, id, mapData]);
+  }, [elementMapData.mapId, elementMapData.filter, id, mapData]);
 
   return (
     <div>
@@ -29,7 +36,7 @@ const ConnectedMapView = props => {
           latitude={''}
           longitude={''}
           zoom={''}
-          filter={''}
+          filter={elementMapData.filter}
           portalUrl={'https://eea.maps.arcgis.com'}
         />
       )}

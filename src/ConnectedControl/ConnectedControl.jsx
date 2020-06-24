@@ -16,6 +16,8 @@ const ConnectedControl = ({
 
   const [viewId, setViewId] = useState('');
 
+  const [filter, setFilter] = useState('');
+
   const allBlocks = properties.blocks;
 
   const filteredMapBlocks = Object.keys(allBlocks)
@@ -31,20 +33,58 @@ const ConnectedControl = ({
   const handleViewSet = id => {
     setViewId(id);
 
-    //get existing mapId from state
+    //get existing mapId from props
     const viewMapId = mapData && mapData[id] ? mapData[id].mapId : '';
 
     if (viewMapId !== mapId) {
       setMapId(viewMapId);
+    }
+
+    //get existing filter from props
+
+    const existingFilter = mapData && mapData[id] ? mapData[id].filter : '';
+
+    if (existingFilter !== filter) {
+      setFilter(existingFilter);
     }
   };
 
   const handleMapIdSet = mapId => {
     setMapId(mapId);
 
-    const newMapData = {
-      mapId,
+    const hasData = mapData && mapData[viewId];
+
+    const newMapData = hasData
+      ? {
+          ...mapData[viewId],
+          mapId,
+        }
+      : {
+          mapId,
+        };
+
+    const updatedMapData = {
+      ...mapData,
+      [viewId]: newMapData,
     };
+    updateData(updatedMapData);
+  };
+
+  const handleFilterChange = filter => {
+    console.log(filter);
+
+    setFilter(filter);
+
+    const hasData = mapData && mapData[viewId];
+
+    const newMapData = hasData
+      ? {
+          ...mapData[viewId],
+          filter,
+        }
+      : {
+          filter,
+        };
 
     const updatedMapData = {
       ...mapData,
@@ -75,12 +115,12 @@ const ConnectedControl = ({
           //block={block}
         />
         <Field
-          title="Filter"
+          title="Filter by country code"
           id="filter"
-          //value={formData[field]}
+          value={filter}
           //required={schema.required.indexOf(field) !== -1}
           onChange={(id, value) => {
-            console.log('value', value, id);
+            handleFilterChange(value);
           }}
           //block={block}
         />
