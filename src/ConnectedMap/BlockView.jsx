@@ -6,11 +6,9 @@ import { connect } from 'react-redux';
 import { getMapData } from '../actions';
 
 const ConnectedMapView = props => {
-  const { mapData, id, block, getFreshData } = props;
+  const { mapData, id } = props;
 
   const [elementMapData, setElementMapData] = useState('');
-
-  const [localMapData, setLocalMapData] = useState('');
 
   useEffect(() => {
     const elementLocalData = mapData && mapData[id] ? mapData[id] : '';
@@ -19,25 +17,46 @@ const ConnectedMapView = props => {
 
     const filterChanged = elementMapData.filter !== elementLocalData.filter;
 
-    const hasMapChanged = mapIdChanged || filterChanged;
+    const portalChanged =
+      elementMapData.portalUrl !== elementLocalData.portalUrl;
+
+    const zoomChanged = elementMapData.zoom !== elementLocalData.zoom;
+
+    const legendChanged =
+      elementMapData.showLegend !== elementLocalData.showLegend;
+
+    const hasMapChanged =
+      mapIdChanged ||
+      filterChanged ||
+      portalChanged ||
+      zoomChanged ||
+      legendChanged;
 
     if (elementLocalData && hasMapChanged) {
       setElementMapData(elementLocalData);
     }
-  }, [elementMapData.mapId, elementMapData.filter, id, mapData]);
+  }, [
+    elementMapData.mapId,
+    elementMapData.filter,
+    id,
+    mapData,
+    elementMapData.portalUrl,
+    elementMapData.zoom,
+    elementMapData.showLegend,
+  ]);
 
   return (
     <div>
       {elementMapData.mapId && (
         <WebMap
           mapId={elementMapData.mapId}
-          showLegend={''}
+          showLegend={elementMapData.showLegend}
           showLayers={''}
           latitude={''}
           longitude={''}
-          zoom={''}
+          zoom={elementMapData.zoom}
           filter={elementMapData.filter}
-          portalUrl={'https://eea.maps.arcgis.com'}
+          portalUrl={elementMapData.portalUrl}
         />
       )}
       {!elementMapData.mapId && <p>No data to display map</p>}
@@ -49,12 +68,4 @@ export const mapStateToProps = state => ({
   mapData: state.map_data,
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    getFreshData: () => dispatch(getMapData()),
-  };
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ConnectedMapView);
+export default connect(mapStateToProps)(ConnectedMapView);
