@@ -36,6 +36,18 @@ const TableauSchema = {
           },
           'Belgium',
         ],
+        [
+          {
+            'Member State': ['GE'],
+          },
+          'Germany',
+        ],
+        [
+          {
+            'Member State': ['RO'],
+          },
+          'Romania',
+        ],
       ],
     },
   },

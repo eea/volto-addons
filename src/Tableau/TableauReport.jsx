@@ -5,6 +5,12 @@ import url from 'url';
 import shallowequal from 'shallowequal';
 import tokenizeUrl from './tokenizeUrl';
 
+const mappedCountries = [
+  { country: 'Belgium', code: 'BE' },
+  { country: 'Germany', code: 'GE' },
+  { country: 'Romania', code: 'RO' },
+];
+
 const propTypes = {
   filters: PropTypes.object,
   url: PropTypes.string.isRequired,
@@ -34,6 +40,7 @@ class TableauReport extends React.Component {
         filters: {},
       },
       query: '?:embed=yes',
+      activeSheet: '',
     };
 
     if (!__SERVER__) {
@@ -64,14 +71,22 @@ class TableauReport extends React.Component {
     const isShareChanged = prevProps.hideShare !== this.props.hideShare;
 
     const isFiltersChanged =
-      Object.keys(this.props.options)[0] !== Object.keys(prevProps.options)[0];
+      //Object.keys(this.props.options)[0] !== Object.keys(prevProps.options)[0];
+      this.props.filters !== prevProps.filters;
+
     if (
-      isFiltersChanged ||
       isTabsChanged ||
       isReportChanged ||
       isToolbarsChanged ||
       isShareChanged
     ) {
+      console.log(
+        'reloading because',
+        isTabsChanged,
+        isReportChanged,
+        isToolbarsChanged,
+        isShareChanged,
+      );
       this.initTableau(this.props.url);
     }
     // Only filters are changed, apply via the API
@@ -88,12 +103,6 @@ class TableauReport extends React.Component {
     if (prevProps.token !== this.props.token) {
       this.setState({ didInvalidateToken: false });
     }
-    //hidetoolbars from query
-    // if (isToolbarsChanged) {
-    //   const toolbarQuery = this.props.options.hideToolbars
-    //     ? '&:toolbar=no'
-    //     : '&:toolbar=yes';
-    // }
   }
 
   onChange() {
@@ -159,12 +168,23 @@ class TableauReport extends React.Component {
 
   applyFiltersInside(filters) {
     console.log('the filters', filters);
-    // this.api.worksheet.applyFilterAsync(
-    //   'Container',
-    //   'Boxes',
-    //   tableau.FilterUpdateType.REPLACE,
-    // );
-    //console.log('searching for tableau', this.api);
+
+    const asyncFilter = mappedCountries.filter(
+      country => country.code === filters['Member State'][0],
+    )[0];
+
+    if (this.viz && asyncFilter) {
+      var worksheet = this.viz
+        .getWorkbook()
+        .getActiveSheet()
+        .getWorksheets()[0];
+
+      worksheet
+        .applyFilterAsync('Member State', asyncFilter.country, 'REPLACE')
+        .then(res => console.log(res));
+    }
+
+    console.log('asyncu', asyncFilter);
   }
 
   // invalidateToken() {
@@ -237,6 +257,7 @@ class TableauReport extends React.Component {
         saveData['url'] = this.viz.getUrl();
         saveData['sheetname'] = activeSheet.getName();
         saveData.filters = this.props.filters[activeSheet.getName()];
+
         console.log('urls', this.props.url, this.state.saveData.url);
 
         if (this.props.url !== this.state.saveData.url) {

@@ -95,6 +95,13 @@ class TableauEdit extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.url !== this.state.url) {
+      this.props.onChangeBlock(this.props.block, {
+        ...this.props.data,
+        url: this.state.url,
+      });
+    }
+
     if (prevState !== this.state) {
       this.props.onChangeBlock(this.props.block, {
         ...this.props.data,
