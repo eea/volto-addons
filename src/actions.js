@@ -1,3 +1,4 @@
+import { GET_CONTENT } from '@plone/volto/constants/ActionTypes';
 import {
   GET_INDEX_VALUES,
   GET_CONTROLPANEL_FALLBACKS,
@@ -9,11 +10,14 @@ import {
   GET_PORTLETS,
   FORCE_DRAFT_EDITOR_REFRESH,
   CHANGE_SIDEBAR_STATE,
-  CLONE_AS_TYPE
+  CLONE_AS_TYPE,
+  QUICK_RESET_SEARCH_CONTENT,
+  QUICK_SEARCH_CONTENT,
+  GET_RESOURCES,
 } from './constants';
-import { GET_CONTENT } from '@plone/volto/constants/ActionTypes';
-import { dataToQueryString } from './helpers';
+import { compact, concat, isArray, join, map, pickBy, toPairs } from 'lodash';
 import { settings } from '~/config';
+import { dataToQueryString } from './helpers';
 
 export function getIndexValues(name) {
   return {
@@ -144,6 +148,74 @@ export function cloneAsType(path, typeName) {
       data: {
         typeName,
       },
+    },
+  };
+}
+
+export function quickSearchContent(url, options, subrequest = null) {
+  let queryArray = [];
+  const arrayOptions = pickBy(options, item => isArray(item));
+
+  queryArray = concat(
+    queryArray,
+    options
+      ? join(
+          map(toPairs(pickBy(options, item => !isArray(item))), item => {
+            if (item[0] === 'SearchableText') {
+              // Adds the wildcard to the SearchableText param
+              item[1] = `${item[1]}*`;
+            }
+            return join(item, '=');
+          }),
+          '&',
+        )
+      : '',
+  );
+
+  queryArray = concat(
+    queryArray,
+    arrayOptions
+      ? join(
+          map(pickBy(arrayOptions), (item, key) => {
+            let property = ':list';
+            if (key === 'path') property = '.query';
+            return join(item.map(value => `${key}${property}=${value}`), '&');
+          }),
+          '&',
+        )
+      : '',
+  );
+
+  const querystring = join(compact(queryArray), '&');
+
+  return {
+    type: QUICK_SEARCH_CONTENT,
+    subrequest,
+    request: {
+      op: 'get',
+      path: `${url}/@search${querystring ? `?${querystring}` : ''}`,
+    },
+  };
+}
+
+export function quickResetSearchContent(subrequest = null) {
+  return {
+    type: QUICK_RESET_SEARCH_CONTENT,
+    subrequest,
+  };
+}
+
+export function getResources(path, b_size = 5, b_start = 0, metadata = []) {
+  let metadata_fields = '';
+  metadata.forEach(item => {
+    metadata_fields += `&metadata_fields=${item}`;
+  });
+  return {
+    type: GET_RESOURCES,
+    dataType: path,
+    request: {
+      op: 'get',
+      path: `/${path}/aggregator/?b_size:int=${b_size}&b_start:int=${b_start}${metadata_fields}`,
     },
   };
 }

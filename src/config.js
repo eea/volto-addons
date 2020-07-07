@@ -34,6 +34,12 @@ import ImageCardsEdit from './ImageCards/ImageCardsEdit';
 import WebMapBlockView from './WebMap/BlockView';
 import WebMapBlockEdit from './WebMap/BlockEdit';
 
+import SearchEdit from './SearchBlock/Edit';
+import SearchView from './SearchBlock/View';
+
+import TableEdit from './TableBlock/Edit';
+import TableView from './TableBlock/View';
+
 // import { View } from '@plone/volto/components';
 
 import * as addonReducers from './reducers';
@@ -101,6 +107,24 @@ export function applyConfig(config) {
     title: 'Web Map',
     view: WebMapBlockView,
     edit: WebMapBlockEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+
+  config.blocks.blocksConfig.search_block = {
+    id: 'search_block',
+    title: 'Search block',
+    view: SearchView,
+    edit: SearchEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+
+  config.blocks.blocksConfig.table_block = {
+    id: 'table_block',
+    title: 'Table block',
+    view: TableView,
+    edit: TableEdit,
     icon: chartIcon,
     group: 'custom_addons',
   };
