@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-
 import { Button, Input } from 'semantic-ui-react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { toast } from 'react-toastify';
-
+import { settings } from '~/config';
 import TableauReport from './TableauReport';
 import { compose } from 'redux';
 import editingSVG from '@plone/volto/icons/editing.svg';
@@ -160,7 +159,7 @@ class TableauEdit extends Component {
     return (
       <div className="block chartWrapperEdit">
         <div className="block-inner-wrapper">
-          {this.state.url && this.state.tableauVersion ? (
+          {this.state.url ? (
             <div className="image-add">
               <div className="toolbar">
                 <Button.Group>
@@ -200,7 +199,9 @@ class TableauEdit extends Component {
 
               <TableauReport
                 url={this.state.url}
-                tableauVersion={this.props.data.tableauVersion}
+                tableauVersion={
+                  this.props.data.tableauVersion || settings.tableauVersion
+                }
                 filters={this.state.filters}
                 sheetname={this.state.sheetname}
                 callback={this.saveCallback}
@@ -210,7 +211,7 @@ class TableauEdit extends Component {
               />
             </div>
           ) : (
-            <p>Please use Sidebar to set Tableau URL and Tableau Version</p>
+            <p>Please use Sidebar to set Tableau URL</p>
           )}
         </div>
         <SidebarPortal selected={this.props.selected}>

@@ -20,6 +20,7 @@ const TableauSchema = {
     tableauVersion: {
       type: 'string',
       title: 'Tableau Version',
+      defaultValue: '2.3.0',
       choices: [['2.3.0', '2.3.0'], ['2.4.0', '2.4.0'], ['2.5.0', '2.5.0']],
     },
     url: {
@@ -64,7 +65,7 @@ const TableauSchema = {
     },
   },
 
-  required: ['tableauVersion', 'url'],
+  required: ['url'],
 };
 
 export default TableauSchema;

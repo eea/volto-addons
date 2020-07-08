@@ -110,6 +110,8 @@ export function applyConfig(config) {
     ...addonReducers,
   };
 
+  config.settings.tableauVersion = '2.3.0';
+
   config.viewlets = [
     {
       path: '/controlpanel',
