@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-
 import { Button, Input } from 'semantic-ui-react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { toast } from 'react-toastify';
-
+import { settings } from '~/config';
 import TableauReport from './TableauReport';
 import { compose } from 'redux';
 import editingSVG from '@plone/volto/icons/editing.svg';
@@ -44,6 +43,7 @@ class TableauEdit extends Component {
 
     this.state = {
       show,
+      tableauVersion: (data && data.tableauVersion) || '',
       url: (data && data.url) || '',
       filters: data.filters,
       sheetname: (data && data.sheetname) || '',
@@ -80,6 +80,7 @@ class TableauEdit extends Component {
     this.props.onChangeBlock(this.props.block, {
       ...this.props.data,
       filters: this.state.filters,
+      tableauVersion: this.state.tableauVersion,
       url: this.state.url,
       sheetname: this.state.sheetname,
     });
@@ -105,6 +106,7 @@ class TableauEdit extends Component {
     if (prevState !== this.state) {
       this.props.onChangeBlock(this.props.block, {
         ...this.props.data,
+        tableauVersion: this.state.tableauVersion,
         url: this.state.url,
         hideTabs: this.state.hideTabs,
         hideToolbars: this.state.hideToolbars,
@@ -158,7 +160,7 @@ class TableauEdit extends Component {
       <div className="block chartWrapperEdit">
         <div className="block-inner-wrapper">
           {this.state.url ? (
-            <div class="image-add">
+            <div className="image-add">
               <div className="toolbar">
                 <Button.Group>
                   <Button
@@ -197,6 +199,9 @@ class TableauEdit extends Component {
 
               <TableauReport
                 url={this.state.url}
+                tableauVersion={
+                  this.props.data.tableauVersion || settings.tableauVersion
+                }
                 filters={this.state.filters}
                 sheetname={this.state.sheetname}
                 callback={this.saveCallback}

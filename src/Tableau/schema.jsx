@@ -5,11 +5,24 @@ const TableauSchema = {
     {
       id: 'default',
       title: 'Default',
-      fields: ['url', 'hideTabs', 'hideToolbars', 'hideShare', 'filters'],
+      fields: [
+        'tableauVersion',
+        'url',
+        'hideTabs',
+        'hideToolbars',
+        'hideShare',
+        'filters',
+      ],
     },
   ],
 
   properties: {
+    tableauVersion: {
+      type: 'string',
+      title: 'Tableau Version',
+      defaultValue: '2.3.0',
+      choices: [['2.3.0', '2.3.0'], ['2.4.0', '2.4.0'], ['2.5.0', '2.5.0']],
+    },
     url: {
       type: 'string',
       title: 'Tableau Viz Url',

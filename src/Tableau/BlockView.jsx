@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { settings } from '~/config';
 import TableauReport from './TableauReport';
 
 class TableauBlockView extends Component {
@@ -30,6 +31,9 @@ class TableauBlockView extends Component {
         {this.state.url ? (
           <TableauReport
             url={this.state.url}
+            tableauVersion={
+              this.props.data.tableauVersion || settings.tableauVersion
+            }
             filters={this.state.filters}
             sheetname={this.state.sheetname}
             options={this.state.options}
