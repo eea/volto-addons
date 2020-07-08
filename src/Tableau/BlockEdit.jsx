@@ -44,6 +44,7 @@ class TableauEdit extends Component {
 
     this.state = {
       show,
+      tableauVersion: (data && data.tableauVersion) || '',
       url: (data && data.url) || '',
       filters: data.filters,
       sheetname: (data && data.sheetname) || '',
@@ -80,6 +81,7 @@ class TableauEdit extends Component {
     this.props.onChangeBlock(this.props.block, {
       ...this.props.data,
       filters: this.state.filters,
+      tableauVersion: this.state.tableauVersion,
       url: this.state.url,
       sheetname: this.state.sheetname,
     });
@@ -105,6 +107,7 @@ class TableauEdit extends Component {
     if (prevState !== this.state) {
       this.props.onChangeBlock(this.props.block, {
         ...this.props.data,
+        tableauVersion: this.state.tableauVersion,
         url: this.state.url,
         hideTabs: this.state.hideTabs,
         hideToolbars: this.state.hideToolbars,
@@ -157,8 +160,8 @@ class TableauEdit extends Component {
     return (
       <div className="block chartWrapperEdit">
         <div className="block-inner-wrapper">
-          {this.state.url ? (
-            <div class="image-add">
+          {this.state.url && this.state.tableauVersion ? (
+            <div className="image-add">
               <div className="toolbar">
                 <Button.Group>
                   <Button
@@ -197,6 +200,7 @@ class TableauEdit extends Component {
 
               <TableauReport
                 url={this.state.url}
+                tableauVersion={this.props.data.tableauVersion}
                 filters={this.state.filters}
                 sheetname={this.state.sheetname}
                 callback={this.saveCallback}
@@ -206,7 +210,7 @@ class TableauEdit extends Component {
               />
             </div>
           ) : (
-            <p>Please use Sidebar to set Tableau URL</p>
+            <p>Please use Sidebar to set Tableau URL and Tableau Version</p>
           )}
         </div>
         <SidebarPortal selected={this.props.selected}>

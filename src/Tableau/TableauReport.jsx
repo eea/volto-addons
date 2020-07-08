@@ -13,6 +13,7 @@ const mappedCountries = [
 
 const propTypes = {
   filters: PropTypes.object,
+  tableauVersion: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
   parameters: PropTypes.object,
   options: PropTypes.object,
@@ -43,16 +44,17 @@ class TableauReport extends React.Component {
       activeSheet: '',
     };
 
-    if (!__SERVER__) {
-      this.api = require('./tableau-2.3.0');
-    } else {
-      // this.api = null;
+    if (!__SERVER__ && this.props.tableauVersion) {
+      this.api = require(`./tableau-${this.props.tableauVersion}`);
     }
+
     this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
-    this.initTableau();
+    if (this.api) {
+      this.initTableau();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -102,6 +104,20 @@ class TableauReport extends React.Component {
     // token change, validate it.
     if (prevProps.token !== this.props.token) {
       this.setState({ didInvalidateToken: false });
+    }
+    //hidetoolbars from query
+    // if (isToolbarsChanged) {
+    //   const toolbarQuery = this.props.options.hideToolbars
+    //     ? '&:toolbar=no'
+    //     : '&:toolbar=yes';
+    // }
+    //  Select tableau version and update tableau
+    if (
+      prevProps.tableauVersion !== this.props.tableauVersion &&
+      this.props.tableauVersion
+    ) {
+      this.api = require(`./tableau-${this.props.tableauVersion}`);
+      this.initTableau();
     }
   }
 

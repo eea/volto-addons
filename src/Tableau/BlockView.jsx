@@ -30,6 +30,7 @@ class TableauBlockView extends Component {
         {this.state.url ? (
           <TableauReport
             url={this.state.url}
+            tableauVersion={this.props.data.tableauVersion}
             filters={this.state.filters}
             sheetname={this.state.sheetname}
             options={this.state.options}
