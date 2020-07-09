@@ -128,10 +128,15 @@ export function applyConfig(config) {
     group: 'custom_addons',
   };
 
-  config.addonReducers = {
-    ...config.addonReducers,
-    ...addonReducers,
-  };
+  console.log('addonReducers', addonReducers);
+  // config.addonReducers = {
+  //   // ...config.addonReducers,
+  //   ...addonReducers,
+  // };
+  //
+  Object.keys(addonReducers).forEach(name => {
+    config.addonReducers[name] = addonReducers[name];
+  });
 
   config.settings.tableauVersion = '2.3.0';
 
