@@ -9,7 +9,9 @@ import {
   GET_PORTLETS,
   FORCE_DRAFT_EDITOR_REFRESH,
   CHANGE_SIDEBAR_STATE,
-  CLONE_AS_TYPE
+  CLONE_AS_TYPE,
+  CHANGE_MAP_DATA,
+  GET_MAP_DATA,
 } from './constants';
 import { GET_CONTENT } from '@plone/volto/constants/ActionTypes';
 import { dataToQueryString } from './helpers';
@@ -145,5 +147,23 @@ export function cloneAsType(path, typeName) {
         typeName,
       },
     },
+  };
+}
+
+export function changeMapData(mapData) {
+  localStorage.setItem('mapData', JSON.stringify(mapData));
+  console.log('coming her', mapData);
+  return {
+    type: CHANGE_MAP_DATA,
+    mapData,
+  };
+}
+
+export function getMapData() {
+  const mapData = JSON.parse(localStorage.getItem('mapData'));
+  console.log('got new data', mapData);
+  return {
+    type: GET_MAP_DATA,
+    mapData,
   };
 }
