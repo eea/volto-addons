@@ -134,6 +134,9 @@ export function applyConfig(config) {
   //   ...addonReducers,
   // };
   //
+  if (!config.addonReducers) {
+    config.addonReducers = {};
+  }
   Object.keys(addonReducers).forEach(name => {
     config.addonReducers[name] = addonReducers[name];
   });
