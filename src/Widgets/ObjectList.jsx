@@ -98,9 +98,7 @@ export const ModalObjectListForm = props => {
           size="big"
           className="icon"
           onClick={() => setStateValue([...stateValue, empty])}
-        >
-          Add {schema.title}
-        </Button>
+        />
 
         <Button
           basic

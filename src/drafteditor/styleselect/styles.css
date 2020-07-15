@@ -65,3 +65,24 @@
   top: 5px;
   left: -3px;
 }
+
+.DraftEditor-root {
+  border: 1px solid #C7D5D8;
+  border-radius: 0.28571429rem;
+  display: flex;
+  padding: 0.5em;
+  margin-top: 0 !important; /* TODO: do not use !important here */
+}
+
+.focused-draft-container .DraftEditor-root {
+  border-color: #85B7D9;
+}
+
+.DraftEditor-editorContainer {
+  flex-grow: 1;
+}
+
+.public-DraftEditor-content[contenteditable='true'],
+.public-DraftEditor-content[contenteditable='true'] > * {
+  height: 100%;
+}
