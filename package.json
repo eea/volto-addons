@@ -28,6 +28,7 @@
     "draft-js-resizeable-plugin": "^2.0.9",
     "draft-js-video-plugin": "^2.0.2",
     "esri-loader": "^2.14.0",
+    "react-highlight-words": "^0.16.0",
     "react-image-gallery": "^1.0.7",
     "react-lazy-load-image-component": "^1.4.3",
     "react-pdf-js": "^5.1.0",
