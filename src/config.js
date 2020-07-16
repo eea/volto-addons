@@ -38,6 +38,11 @@ import ConnectedMapView from './ConnectedMap/BlockView';
 import ConnectedMapEdit from './ConnectedMap/BlockEdit';
 
 import ConnectedControl from './ConnectedControl/ConnectedControl';
+import SearchEdit from './SearchBlock/Edit';
+import SearchView from './SearchBlock/View';
+
+import TableEdit from './TableBlock/Edit';
+import TableView from './TableBlock/View';
 
 // import { View } from '@plone/volto/components';
 
@@ -142,6 +147,28 @@ export function applyConfig(config) {
   });
 
   config.settings.tableauVersion = '2.3.0';
+  config.blocks.blocksConfig.search_block = {
+    id: 'search_block',
+    title: 'Search block',
+    view: SearchView,
+    edit: SearchEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+
+  config.blocks.blocksConfig.table_block = {
+    id: 'table_block',
+    title: 'Table block',
+    view: TableView,
+    edit: TableEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+
+  config.addonReducers = {
+    ...config.addonReducers,
+    ...addonReducers,
+  };
 
   config.viewlets = [
     {
