@@ -3,7 +3,8 @@ import { Field } from '@plone/volto/components';
 import { Segment, Message, Button, Select } from 'semantic-ui-react';
 
 import { connect } from 'react-redux';
-
+import { compose } from 'redux';
+import { asyncConnect } from 'redux-connect';
 import { changeMapData, getMapData } from '../actions';
 
 const ConnectedControl = ({
@@ -243,7 +244,15 @@ const mapDispatchToProps = dispatch => {
     getFreshData: () => dispatch(getMapData()),
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  asyncConnect([
+    {
+      key: 'mapData',
+      promise: ({ location, store: { dispatch } }) =>__SERVER__ && dispatch(getMapData())
+    }
+  ]),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(ConnectedControl);

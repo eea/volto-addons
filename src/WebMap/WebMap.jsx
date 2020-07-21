@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef } from 'react';
 import { loadModules } from 'esri-loader';
 
@@ -16,6 +17,8 @@ const WebMap = props => {
     'esri/widgets/CoordinateConversion',
     'esri/config',
     'esri/layers/MapImageLayer',
+    // 'esri/map',
+    'esri/widgets/Search',
   ];
 
   useEffect(() => {
@@ -30,6 +33,7 @@ const WebMap = props => {
         CoordinateConversion,
         esriConfig,
         MapImageLayer,
+        Search,
       ]) => {
         esriConfig.portalUrl = props.portalUrl ? props.portalUrl : '';
 
@@ -45,7 +49,19 @@ const WebMap = props => {
           container: mapRef.current,
           map: webmap,
         });
+        console.log('search in view', webmap, view);
 
+        const search = new Search({
+          map: view,
+          searchAllEnabled: true,
+        });
+        view.ui.add(search, 'top-right');
+
+        // search.goToOverride = function(view, goToParams) {
+        //   // goToParams.options.duration = updatedDuration;
+        //   console.log('search goto', view, goToParams)
+        //   return view.goTo(goToParams.target, goToParams.options);
+        // };
         //coordinates tracking widget
         if (props.showCoordWidget) {
           var ccWidget = new CoordinateConversion({
@@ -67,6 +83,7 @@ const WebMap = props => {
 
         //Layers Visible
         if (props.showLayers) {
+          console.log('layers', props.showLayers);
           var layerList = new LayerList({
             view: view,
           });
@@ -79,6 +96,13 @@ const WebMap = props => {
         view.when(() => {
           var mainLayer = view.map.layers.getItemAt(0);
 
+          search.on('search-complete', function(event) {
+            // The results are stored in the event Object[]
+            view.goTo(event.results[0].results[0]);
+          });
+
+          console.log('layer list', view.map.layers);
+          console.log('search', Search);
           //edit main layer's sublayer definition expression (Filter)
           if (props.filter) {
             var imgLayer = new MapImageLayer({
@@ -91,7 +115,7 @@ const WebMap = props => {
                 },
               ],
             });
-
+            console.log('imglayer', imgLayer);
             view.map.layers.add(imgLayer);
           }
 

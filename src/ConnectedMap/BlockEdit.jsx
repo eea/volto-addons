@@ -1,34 +1,60 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component } from 'react';
+import WebMap from 'volto-addons/WebMap/WebMap';
+import { SidebarPortal } from '@plone/volto/components'; // EditBlock
+import { BlockEditForm } from 'volto-addons/BlockForm';
 
-const ConnectedMapEdit = props => {
-  // const { mapData, id, block } = props;
+import schema from './schema';
 
-  // const [elementMapData, setElementMapData] = useState('');
-  // const [localMapData, setLocalMapData] = useState();
-
-  // const handleControlChange = () => {
-  //   const localStorageData = JSON.parse(localStorage.getItem('mapData'));
-
-  //   console.log('got new data', localStorageData);
-
-  //   const elementLocalData =
-  //     localStorageData && localStorageData[id] ? localStorageData[id] : '';
-
-  //   console.log('elementLocalData', elementLocalData);
-  //   if (elementMapData.mapId !== elementLocalData.mapId) {
-  //     console.log('element state', elementMapData);
-  //     console.log('element local', elementLocalData);
-  //     setElementMapData(elementLocalData);
-  //   }
-  // };
+const WebMapBlockEdit = props => {
+  const {
+    mapId,
+    showLegend,
+    showLayers,
+    latitude,
+    longitude,
+    zoom,
+    showCoordWidget,
+    filter,
+    portalUrl,
+  } = props.data;
 
   return (
     <div>
-      <p style={{ textAlign: 'center', color: 'red', fontSize: '20px' }}>
-        Viewable from View
-      </p>
+      {mapId && (
+        <WebMap
+          mapId={mapId}
+          showLegend={showLegend}
+          showLayers={showLayers}
+          latitude={latitude}
+          longitude={longitude}
+          zoom={zoom}
+          showCoordWidget={showCoordWidget}
+          filter={filter}
+          portalUrl={portalUrl}
+        />
+      )}
+      {!mapId && (
+        <p style={{ textAlign: 'center', color: 'red', fontSize: '20px' }}>
+          {' '}
+          Select Map ID from sidebar!{' '}
+        </p>
+      )}
+      <SidebarPortal selected={props.selected}>
+        <BlockEditForm
+          schema={schema}
+          title={schema.title}
+          onChangeField={(id, value) => {
+            props.onChangeBlock(props.block, {
+              ...props.data,
+              [id]: value,
+            });
+          }}
+          formData={props.data}
+          block={props.block}
+        />
+      </SidebarPortal>
     </div>
   );
 };
 
-export default ConnectedMapEdit;
+export default WebMapBlockEdit;
