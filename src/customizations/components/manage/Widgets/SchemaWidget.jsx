@@ -202,6 +202,8 @@ class SchemaWidget extends Component {
    * @returns {undefined}
    */
   onAddField(values) {
+    const formData = { ...values };
+    formData.id && delete formData.id;
     this.onChange({
       ...this.props.value,
       fieldsets: [
@@ -218,13 +220,7 @@ class SchemaWidget extends Component {
       properties: {
         ...this.props.value.properties,
         [values.id]: {
-          title: values.title,
-          description: values.description,
-          tableType: values.tableType,
-          dataType: values.dataType,
-          show: values.show,
-          urlFieldId: values.urlFieldId,
-          hiddenRowType: values.hiddenRowType,
+          ...formData,
         },
       },
       required: values.required
@@ -518,6 +514,18 @@ class SchemaWidget extends Component {
     this.onChange(value);
   }
 
+  getDefaultValues(properties) {
+    const formData = {};
+    properties &&
+      Object.entries(properties).forEach(([key, property]) => {
+        if (property.defaultValue) {
+          formData[key] = property.defaultValue;
+        } else {
+          formData[key] = undefined;
+        }
+      });
+    return formData;
+  }
   /**
    * Render method.
    * @method render
@@ -619,13 +627,14 @@ class SchemaWidget extends Component {
             }
             formData={
               this.state.addField
-                ? {}
+                ? this.getDefaultValues(this.props.schema.properties) || {}
                 : {
                     ...this.props.value.properties[this.state.editField.id],
                     id: this.state.editField.id,
                   }
             }
             schema={this.props.schema}
+            {...this.props}
           />
         )}
         {this.state.addFieldset !== null && (

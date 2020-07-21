@@ -146,10 +146,23 @@ class ModalForm extends Component {
    * @returns {undefined}
    */
   onChangeField(id, value) {
+    let formDataId = this.state.formData.id;
+    if (id === 'title') {
+      formDataId = value
+        ? value
+            .toLowerCase()
+            .split(' ')
+            .join('_')
+        : undefined;
+    }
+    if (id === 'id') {
+      formDataId = value;
+    }
     this.setState({
       formData: {
         ...this.state.formData,
         [id]: value,
+        id: formDataId,
       },
     });
   }
@@ -226,9 +239,9 @@ class ModalForm extends Component {
     const currentFieldset = schema.fieldsets[this.state.currentTab];
 
     const fields = map(currentFieldset.fields, field => {
-      const choices = isFunction(schema.properties[field].choices)
+      const choices = isFunction(schema.properties[field]?.choices)
         ? schema.properties[field].choices(this.state.formData)
-        : schema.properties[field].choices;
+        : schema.properties[field]?.choices;
       const value = choices
         ? choices
             .map(choice => choice[0] === this.state.formData[field])
@@ -239,17 +252,16 @@ class ModalForm extends Component {
 
       return {
         ...schema.properties[field],
-        id: `modal_${field}`,
+        id: field,
         value: value,
         required: schema.required.indexOf(field) !== -1,
         onChange: this.onChangeField,
-        disabled: schema.properties[field].disabled
+        disabled: schema.properties[field]?.disabled
           ? schema.properties[field].disabled(this.state.formData)
           : false,
         choices,
       };
     });
-
     const state_errors = keys(this.state.errors).length > 0;
     return (
       <Modal open={this.props.open} className={this.props.className}>
@@ -287,7 +299,16 @@ class ModalForm extends Component {
               </Menu>
             )}
             {fields.map(
-              field => !field.disabled && <Field {...field} key={field.id} />,
+              field =>
+                !field.disabled && (
+                  <Field
+                    {...field}
+                    key={field.id}
+                    data={this.props.data}
+                    block={this.props.block}
+                    onChangeBlock={this.props.onChangeBlock}
+                  />
+                ),
             )}
           </UiForm>
         </Modal.Content>
