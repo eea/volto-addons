@@ -19,6 +19,8 @@ const WebMap = props => {
     'esri/layers/MapImageLayer',
     // 'esri/map',
     'esri/widgets/Search',
+    'esri/layers/FeatureLayer',
+    'esri/PopupTemplate',
   ];
 
   useEffect(() => {
@@ -34,6 +36,8 @@ const WebMap = props => {
         esriConfig,
         MapImageLayer,
         Search,
+        FeatureLayer,
+        PopupTemplate
       ]) => {
         esriConfig.portalUrl = props.portalUrl ? props.portalUrl : '';
 
@@ -51,10 +55,52 @@ const WebMap = props => {
         });
         console.log('search in view', webmap, view);
 
+
+ var featureLayerSites = new FeatureLayer({
+          url:
+            'https://services.arcgis.com/LcQjj2sL7Txk9Lag/arcgis/rest/services/ly_IED_SiteMap_WM/FeatureServer/0',
+          // popupTemplate: new PopupTemplate({
+          //   // autocasts as new PopupTemplate()
+          //   title: '{sitename}',
+          //   // overwriteActions: true,
+          // }),
+        });
+
+        var customSearchSource = {
+          layer: featureLayerSites,
+          searchFields: ['sitename'],
+          suggestionTemplate: '{sitename}',
+          exactMatch: false,
+          outFields: ['*'],
+          placeholder: 'example: 110DJ0000.SITE',
+          name: 'sites',
+          zoomScale: 0.1,
+          // resultSymbol: {
+          //   type: "picture-marker", // autocasts as new PictureMarkerSymbol()
+          //   url: "images/senate.png",
+          //   height: 36,
+          //   width: 36
+          // }
+          // resultSymbol: {
+          //   type: 'picture-marker', // autocasts as new PictureMarkerSymbol()
+          //   url:
+          //     'https://developers.arcgis.com/javascript/latest/sample-code/widgets-search-multiplesource/live/images/senate.png',
+          //   height: 36,
+          // },
+        };
+
+
+
         const search = new Search({
           map: view,
           searchAllEnabled: true,
+          // sources: [customSearchSource]
         });
+
+        const sources = search.get('sources')
+        console.log('sources',sources)
+        sources.push(customSearchSource)
+        sources.set('sources', sources)
         view.ui.add(search, 'top-right');
 
         // search.goToOverride = function(view, goToParams) {
@@ -98,26 +144,27 @@ const WebMap = props => {
 
           search.on('search-complete', function(event) {
             // The results are stored in the event Object[]
-            view.goTo(event.results[0].results[0]);
+            console.log(event)
+            view.goTo(event.results[0].results[0].feature);
           });
 
           console.log('layer list', view.map.layers);
           console.log('search', Search);
           //edit main layer's sublayer definition expression (Filter)
-          if (props.filter) {
-            var imgLayer = new MapImageLayer({
-              url: mainLayer.url,
-              sublayers: [
-                {
-                  id: 0,
-                  visible: true,
-                  definitionExpression: `NUTS0 = '${props.filter}'`,
-                },
-              ],
-            });
-            console.log('imglayer', imgLayer);
-            view.map.layers.add(imgLayer);
-          }
+          // if (props.filter) {
+          //   var imgLayer = new MapImageLayer({
+          //     url: mainLayer.url,
+          //     sublayers: [
+          //       {
+          //         id: 0,
+          //         visible: true,
+          //         definitionExpression: `NUTS0 = '${props.filter}'`,
+          //       },
+          //     ],
+          //   });
+          //   console.log('imglayer', imgLayer);
+          //   view.map.layers.add(imgLayer);
+          // }
 
           //add legend
           if (props.showLegend) {
