@@ -38,7 +38,7 @@ import Map from 'ol/Map';
 
 const WebMap = ({ layerUrl }) => {
 
-  console.log('tilelayer', Map, View);
+  console.log('tilelayer', Map);
 
   return <div>{JSON.stringify(layerUrl)}</div>;
 };
