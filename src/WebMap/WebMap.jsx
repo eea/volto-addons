@@ -37,7 +37,7 @@ const WebMap = props => {
         MapImageLayer,
         Search,
         FeatureLayer,
-        PopupTemplate
+        PopupTemplate,
       ]) => {
         esriConfig.portalUrl = props.portalUrl ? props.portalUrl : '';
 
@@ -55,8 +55,7 @@ const WebMap = props => {
         });
         console.log('search in view', webmap, view);
 
-
- var featureLayerSites = new FeatureLayer({
+        var featureLayerSites = new FeatureLayer({
           url:
             'https://services.arcgis.com/LcQjj2sL7Txk9Lag/arcgis/rest/services/ly_IED_SiteMap_WM/FeatureServer/0',
           // popupTemplate: new PopupTemplate({
@@ -64,6 +63,41 @@ const WebMap = props => {
           //   title: '{sitename}',
           //   // overwriteActions: true,
           // }),
+        });
+        var selectFilter = document.createElement('select');
+        selectFilter.setAttribute('class', 'esri-widget esri-select');
+        selectFilter.setAttribute(
+          'style',
+          'width: 275px; font-family: Avenir Next W00; font-size: 1em;',
+        );
+
+        var sqlExpressions = [
+          'rep_yr = 2020',
+          'rep_yr = 2017',
+        ];
+
+        sqlExpressions.forEach(function(sql) {
+          var option = document.createElement('option');
+          option.value = sql;
+          option.innerHTML = sql;
+          selectFilter.appendChild(option);
+        });
+
+        function setFeatureLayerViewFilter(expression) {
+          view
+            .whenLayerView(featureLayerSites)
+            .then(function(featureLayerView) {
+              featureLayerView.filter = {
+                where: expression,
+              };
+            });
+        }
+
+        view.ui.add(selectFilter, 'top-right');
+
+        selectFilter.addEventListener('change', function(event) {
+          // setFeatureLayerFilter(event.target.value);
+          setFeatureLayerViewFilter(event.target.value);
         });
 
         var customSearchSource = {
@@ -89,18 +123,16 @@ const WebMap = props => {
           // },
         };
 
-
-
         const search = new Search({
           map: view,
           searchAllEnabled: true,
           // sources: [customSearchSource]
         });
 
-        const sources = search.get('sources')
-        console.log('sources',sources)
-        sources.push(customSearchSource)
-        sources.set('sources', sources)
+        const sources = search.get('sources');
+        console.log('sources', sources);
+        sources.push(customSearchSource);
+        sources.set('sources', sources);
         view.ui.add(search, 'top-right');
 
         // search.goToOverride = function(view, goToParams) {
@@ -144,8 +176,18 @@ const WebMap = props => {
 
           search.on('search-complete', function(event) {
             // The results are stored in the event Object[]
-            console.log(event)
-            view.goTo(event.results[0].results[0].feature);
+            console.log(event);
+            if (event.results[0].results[0].extent) {
+              console.log('in if');
+              view.goTo(event.results[0].results[0]);
+            } else {
+              console.log('in else');
+              view.goTo({
+                target: event.results[0].results[0].feature.geometry,
+                zoom: 15,
+                popup: 'open',
+              });
+            }
           });
 
           console.log('layer list', view.map.layers);
