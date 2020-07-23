@@ -34,6 +34,10 @@ import ImageCardsEdit from './ImageCards/ImageCardsEdit';
 import WebMapBlockView from './WebMap/BlockView';
 import WebMapBlockEdit from './WebMap/BlockEdit';
 
+
+import OpenLayersMapView from './OpenLayersMap/BlockView';
+import OpenLayersMapEdit from './OpenLayersMap/BlockEdit';
+
 import ConnectedMapView from './ConnectedMap/BlockView';
 import ConnectedMapEdit from './ConnectedMap/BlockEdit';
 
@@ -129,6 +133,15 @@ export function applyConfig(config) {
     title: 'Web Map',
     view: WebMapBlockView,
     edit: WebMapBlockEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+
+  config.blocks.blocksConfig.open_layers_map = {
+    id: 'open_layers_map',
+    title: 'Open layers map',
+    view: OpenLayersMapView,
+    edit: OpenLayersMapEdit,
     icon: chartIcon,
     group: 'custom_addons',
   };
