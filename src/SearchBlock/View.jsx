@@ -5,16 +5,15 @@ import { compose } from 'redux';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import qs from 'query-string';
-
+import { isArray, isObject, isString } from 'lodash';
 import { Icon } from '@plone/volto/components';
 import zoomSVG from '@plone/volto/icons/zoom.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 
 import { settings } from '~/config';
 import { quickResetSearchContent, quickSearchContent } from '../actions';
-
-import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import Highlighter from 'react-highlight-words';
+import './style.css';
 
 const messages = defineMessages({
   search: {
@@ -39,17 +38,28 @@ class View extends Component {
       text: '',
       apiRoot: new URL(settings.apiPath).pathname,
       active: false,
+      query: {},
     };
     this.linkFormContainer = React.createRef();
+    this.linkInput = React.createRef();
     this.onSubmit = this.onSubmit.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.onSelectItem = this.onSelectItem.bind(this);
     this.onClose = this.onClose.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.getPaths = this.getPaths.bind(this);
+    this.makeQuery = this.makeQuery.bind(this);
   }
 
   componentDidMount() {
+    if (this.props.data.query.value && isString(this.props.data.query.value)) {
+      const query = JSON.parse(this.props.data.query.value);
+      this.setState({ query });
+    } else if (
+      this.props.data.query.value &&
+      isObject(this.props.data.query.value)
+    ) {
+      this.setState({ query: this.props.data.query.value });
+    }
     this.props.quickResetSearchContent();
     document.addEventListener('mousedown', this.handleClickOutside, false);
   }
@@ -67,28 +77,42 @@ class View extends Component {
           },
           () => {
             const title = this.props.data?.title
-              ? `&title=${this.props.data.title.value}`
+              ? `&title=${this.props.data.title.value}&`
               : '';
             this.props.history.push({
               pathname: `/search`,
               search: `?SearchableText=${
                 this.state.text
-              }${this.getPaths()}${title}`,
+              }${this.makeQuery()}${title}`,
               state: { text: this.state.text },
             });
           },
         );
       }
     }
+    if (prevProps.data.query?.value !== this.props.data.query?.value) {
+      if (
+        this.props.data.query.value &&
+        isString(this.props.data.query.value)
+      ) {
+        const query = JSON.parse(this.props.data.query.value);
+        this.setState({ query });
+      } else if (
+        this.props.data.query.value &&
+        isObject(this.props.data.query.value)
+      ) {
+        this.setState({ query: this.props.data.query.value });
+      }
+    }
   }
 
   onSubmit(event) {
     const title = this.props.data?.title
-      ? `&title=${this.props.data.title.value}`
+      ? `&title=${this.props.data.title.value}&`
       : '';
     this.props.history.push({
       pathname: `/search`,
-      search: `?SearchableText=${this.state.text}${this.getPaths()}${title}`,
+      search: `?SearchableText=${this.state.text}${this.makeQuery()}${title}`,
       state: { text: this.state.text },
     });
     this.setState({ active: false });
@@ -97,20 +121,20 @@ class View extends Component {
 
   handleClickOutside(e) {
     if (
-      this.linkFormContainer.current &&
-      doesNodeContainClick(this.linkFormContainer.current, e)
+      this.linkFormContainer &&
+      !this.linkFormContainer.current.contains(e.target)
     ) {
-      this.setState({ active: true });
+      return this.setState({ active: false });
     } else {
-      this.setState({ active: false });
+      this.setState({ active: true });
     }
   }
 
   onChange(event, { value }) {
     if (value && value !== '') {
       this.props.quickSearchContent('', {
-        Title: `*${value}*`,
-        path: this.props.data?.paths?.value,
+        SearchableText: `*${value}*`,
+        ...this.makeQueryObject(),
       });
     } else {
       this.props.quickResetSearchContent();
@@ -119,13 +143,7 @@ class View extends Component {
   }
 
   onSelectItem(item) {
-    this.setState(
-      {
-        text: item.title,
-      },
-      () => this.onSubmit(),
-    );
-    this.onClose();
+    item?.['@id'] && this.props.history.push(item['@id']);
   }
 
   onClose() {
@@ -133,18 +151,35 @@ class View extends Component {
     this.setState({ active: false });
   }
 
-  getPaths() {
-    let paths = '';
-    if (this.props.data?.paths) {
-      if (Array.isArray(this.props.data?.paths?.value)) {
-        this.props.data.paths.value.forEach(path => {
-          paths += `&path=${path}`;
-        });
-      } else {
-        paths += `&path=${this.props.data.paths.value}`;
-      }
-    }
-    return paths;
+  makeQuery() {
+    let query = '';
+    this.state.query.properties &&
+      isObject(this.state.query.properties) &&
+      Object.entries(this.state.query.properties).forEach(([itemKey, item]) => {
+        if (isArray(item.value)) {
+          item.value.forEach(value => {
+            query += `&${itemKey}:query=${value}`;
+          });
+        } else if (item.value) {
+          query += `&${itemKey}:query=${item.value}`;
+        }
+      });
+    return query;
+  }
+
+  makeQueryObject() {
+    const queryObj = {};
+    this.state.query.properties &&
+      isObject(this.state.query.properties) &&
+      Object.entries(this.state.query.properties).forEach(([itemKey, item]) => {
+        if (isArray(item.value)) {
+          queryObj[itemKey] = item.value;
+        } else if (item.value) {
+          queryObj[itemKey] = [];
+          queryObj[itemKey].push(item.value);
+        }
+      });
+    return queryObj;
   }
 
   render() {
@@ -166,8 +201,14 @@ class View extends Component {
                   : '0',
               }}
             >
-              <Icon name={zoomSVG} size="26px" />
+              <Icon
+                className="searchIcon"
+                onClick={this.onSubmit}
+                name={zoomSVG}
+                size="26px"
+              />
               <Input
+                ref={this.linkInput}
                 aria-label={this.props.intl.formatMessage(messages.search)}
                 placeholder={
                   this.props.data?.placeholder?.value ||
@@ -181,7 +222,7 @@ class View extends Component {
               />
               {this.state.text.length ? (
                 <Icon
-                  className="clear"
+                  className="clearIcon"
                   name={clearSVG}
                   size="26px"
                   onClick={() => {

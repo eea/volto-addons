@@ -172,7 +172,7 @@ export function getMapData() {
   };
 }
 
-export function quickSearchContent(url, options, subrequest = null) {
+export function quickSearchContent(url, options, subrequest = null, filters) {
   let queryArray = [];
   const arrayOptions = pickBy(options, item => isArray(item));
 
@@ -184,7 +184,7 @@ export function quickSearchContent(url, options, subrequest = null) {
             if (item[0] === 'SearchableText') {
               // Adds the wildcard to the SearchableText param
               item[1] = `${item[1]}*`;
-            }
+            } else if (!item[1]) return;
             return join(item, '=');
           }),
           '&',
@@ -197,9 +197,7 @@ export function quickSearchContent(url, options, subrequest = null) {
     arrayOptions
       ? join(
           map(pickBy(arrayOptions), (item, key) => {
-            let property = ':list';
-            if (key === 'path') property = '.query';
-            return join(item.map(value => `${key}${property}=${value}`), '&');
+            return join(item.map(value => `${key}=${value}`), '&');
           }),
           '&',
         )
@@ -211,6 +209,7 @@ export function quickSearchContent(url, options, subrequest = null) {
   return {
     type: QUICK_SEARCH_CONTENT,
     subrequest,
+    filters,
     request: {
       op: 'get',
       path: `${url}/@search${querystring ? `?${querystring}` : ''}`,

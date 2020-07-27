@@ -11,10 +11,6 @@ const schema = {
     title: 'Title',
     type: 'text',
   },
-  paths: {
-    title: 'Paths',
-    type: 'array',
-  },
   placeholder: {
     title: 'Placeholder',
     type: 'text',
@@ -32,6 +28,39 @@ const schema = {
     title: 'Button class name',
     type: 'text',
     requires: 'searchButton',
+  },
+  query: {
+    title: 'Query parameters',
+    type: 'schema',
+    fieldSetTitle: 'Query metadata',
+    fieldSetId: 'query-metadata',
+    fieldSetSchema: {
+      fieldsets: [
+        {
+          id: 'default',
+          title: 'title',
+          fields: ['title', 'id', 'value'],
+        },
+      ],
+      properties: {
+        title: {
+          type: 'string',
+          title: 'Query title',
+        },
+        id: {
+          type: 'string',
+          title: 'Query id',
+          description: 'This will be used as query parameter key',
+        },
+        value: {
+          type: 'array',
+          title: 'Values',
+        },
+      },
+      required: ['id', 'title', 'value'],
+    },
+    editFieldset: false,
+    deleteFieldset: false,
   },
 };
 
