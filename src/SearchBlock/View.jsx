@@ -9,7 +9,7 @@ import { isArray, isObject, isString } from 'lodash';
 import { Icon } from '@plone/volto/components';
 import zoomSVG from '@plone/volto/icons/zoom.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
-
+import { getBaseUrl } from '@plone/volto/helpers';
 import { settings } from '~/config';
 import { quickResetSearchContent, quickSearchContent } from '../actions';
 import Highlighter from 'react-highlight-words';
@@ -239,20 +239,22 @@ class View extends Component {
               this.props.search &&
               this.props.search.length ? (
                 <ul className="floating_search_results">
-                  {this.props.search.map((item, index) => (
-                    <li
-                      key={`${index}_${item.title}`}
-                      onClick={() => this.onSelectItem(item)}
-                      role="presentation"
-                    >
-                      <Highlighter
-                        highlightClassName="highlight"
-                        searchWords={this.state.text?.split(' ') || []}
-                        autoEscape={true}
-                        textToHighlight={item.title}
-                      />
-                    </li>
-                  ))}
+                  {this.props.search.map((item, index) => {
+                    return (
+                      <li
+                        key={`${index}_${item['@id']}`}
+                        onClick={() => this.onSelectItem(item)}
+                        role="presentation"
+                      >
+                        <Highlighter
+                          highlightClassName="highlight"
+                          searchWords={this.state.text?.split(' ') || []}
+                          autoEscape={true}
+                          textToHighlight={item['@id']}
+                        />
+                      </li>
+                    );
+                  })}
                 </ul>
               ) : (
                 ''
