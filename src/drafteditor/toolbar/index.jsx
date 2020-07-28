@@ -8,30 +8,30 @@ import { Separator } from 'draft-js-inline-toolbar-plugin';
 // import { CodeBlockButton } from 'draft-js-buttons';
 
 import {
-  BlockquoteButton,
   BoldButton,
-  CalloutButton,
   ItalicButton,
   OrderedListButton,
   UnorderedListButton,
+  // BlockquoteButton,
+  // CalloutButton,
   // HeadlineTwoButton,
   // HeadlineThreeButton,
 } from '@plone/volto/config/RichTextEditor/Styles';
 
-import strickthroughSVG from '@plone/volto/icons/strickthrough.svg';
+import strikethroughSVG from '@plone/volto/icons/strikethrough.svg';
 import alignLeftSVG from '@plone/volto/icons/align-left.svg';
 import alignRightSVG from '@plone/volto/icons/align-right.svg';
 import alignCenterSVG from '@plone/volto/icons/align-center.svg';
 import underlineSVG from '@plone/volto/icons/underline.svg';
-import addSVG from '@plone/volto/icons/add.svg';
 
 import plugins from '@plone/volto/config/RichTextEditor/Plugins';
 
+// import addSVG from '@plone/volto/icons/add.svg';
 // import underlineSVG from '@plone/volto/icons/underline.svg';
 
 export const Strikethrough = createInlineStyleButton({
   style: 'STRIKETHROUGH',
-  children: <Icon name={strickthroughSVG} size="24px" />,
+  children: <Icon name={strikethroughSVG} size="24px" />,
 });
 
 export const Underline = createInlineStyleButton({
@@ -145,8 +145,6 @@ export const defaultToolbarButtons = [
   OrderedListButton,
 
   Separator,
-  
-
 
   // Separator,
   //
