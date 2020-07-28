@@ -57,7 +57,7 @@ import {
 } from './Portlets';
 
 function addCustomGroup(config) {
-  const hasCustomGroup = config.blocks.groupBlocksOrder.filter(el => {
+  const hasCustomGroup = config.blocks.groupBlocksOrder.filter((el) => {
     return el.id === 'custom_addons';
   });
   if (hasCustomGroup.length === 0) {
@@ -134,17 +134,17 @@ export function applyConfig(config) {
   };
 
   console.log('addonReducers', addonReducers);
-  // config.addonReducers = {
-  //   // ...config.addonReducers,
-  //   ...addonReducers,
-  // };
-  //
-  if (!config.addonReducers) {
-    config.addonReducers = {};
-  }
-  Object.keys(addonReducers).forEach(name => {
-    config.addonReducers[name] = addonReducers[name];
-  });
+  config.addonReducers = {
+    // ...config.addonReducers,
+    ...addonReducers,
+  };
+
+  // if (!config.addonReducers) {
+  //   config.addonReducers = {};
+  // }
+  // Object.keys(addonReducers).forEach((name) => {
+  //   config.addonReducers[name] = addonReducers[name];
+  // });
 
   config.settings.tableauVersion = '2.3.0';
   config.blocks.blocksConfig.search_block = {
