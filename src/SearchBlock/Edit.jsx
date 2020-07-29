@@ -17,7 +17,7 @@ const schema = {
   },
   searchButton: {
     title: 'Search button',
-    type: 'checkbox',
+    type: 'boolean',
   },
   buttonText: {
     title: 'Button text',

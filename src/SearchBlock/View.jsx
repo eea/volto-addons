@@ -51,11 +51,14 @@ class View extends Component {
   }
 
   componentDidMount() {
-    if (this.props.data.query.value && isString(this.props.data.query.value)) {
+    if (
+      this.props.data?.query?.value &&
+      isString(this.props.data.query.value)
+    ) {
       const query = JSON.parse(this.props.data.query.value);
       this.setState({ query });
     } else if (
-      this.props.data.query.value &&
+      this.props.data?.query?.value &&
       isObject(this.props.data.query.value)
     ) {
       this.setState({ query: this.props.data.query.value });
@@ -250,7 +253,7 @@ class View extends Component {
                           highlightClassName="highlight"
                           searchWords={this.state.text?.split(' ') || []}
                           autoEscape={true}
-                          textToHighlight={item['@id']}
+                          textToHighlight={item.title}
                         />
                       </li>
                     );
