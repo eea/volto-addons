@@ -64,7 +64,7 @@ class ModalForm extends Component {
         }),
       ),
       properties: PropTypes.objectOf(PropTypes.any),
-      required: PropTypes.arrayOf(PropTypes.string),
+      required: PropTypes.any,
     }).isRequired,
     title: PropTypes.string.isRequired,
     formData: PropTypes.objectOf(PropTypes.any),
@@ -118,12 +118,12 @@ class ModalForm extends Component {
         if (
           properties[property]
             .choices(prevState.formData)
-            .concat()
+            ?.concat()
             .sort()
             .join(',') !==
           properties[property]
             .choices(this.state.formData)
-            .concat()
+            ?.concat()
             .sort()
             .join(',')
         ) {
@@ -180,7 +180,13 @@ class ModalForm extends Component {
       map(fieldset.fields, fieldId => {
         const field = this.props.schema.properties[fieldId];
         const data = this.state.formData[fieldId];
-        if (this.props.schema.required.indexOf(fieldId) !== -1) {
+        if (
+          (isFunction(this.props.schema.required) &&
+            this.props.schema.required(this.state.formData).indexOf(fieldId) !==
+              -1) ||
+          (!isFunction(this.props.schema.required) &&
+            this.props.schema.required.indexOf(fieldId) !== -1)
+        ) {
           if (field.type !== 'boolean' && !data) {
             errors[fieldId] = errors[field] || [];
             errors[fieldId].push(
@@ -242,6 +248,24 @@ class ModalForm extends Component {
       const choices = isFunction(schema.properties[field]?.choices)
         ? schema.properties[field].choices(this.state.formData)
         : schema.properties[field]?.choices;
+      const disabled = isFunction(schema.properties[field]?.disabled)
+        ? schema.properties[field].disabled(this.state.formData)
+        : false;
+      const required = isFunction(schema.required)
+        ? schema.required(this.state.formData).indexOf(field) !== -1
+        : schema.required.indexOf(field) !== -1;
+      const title = isFunction(schema.properties[field]?.title)
+        ? schema.properties[field].title(this.state.formData)
+        : schema.properties[field]?.title;
+      const type = isFunction(schema.properties[field]?.type)
+        ? schema.properties[field].type(this.state.formData)
+        : schema.properties[field]?.type;
+      const items = isFunction(schema.properties[field]?.items)
+        ? schema.properties[field].items(this.state.formData)
+        : schema.properties[field]?.items;
+      const description = isFunction(schema.properties[field]?.description)
+        ? schema.properties[field].description(this.state.formData)
+        : schema.properties[field]?.description;
       const value = choices
         ? choices
             .map(choice => choice[0] === this.state.formData[field])
@@ -254,12 +278,14 @@ class ModalForm extends Component {
         ...schema.properties[field],
         id: field,
         value: value,
-        required: schema.required.indexOf(field) !== -1,
         onChange: this.onChangeField,
-        disabled: schema.properties[field]?.disabled
-          ? schema.properties[field].disabled(this.state.formData)
-          : false,
         choices,
+        disabled,
+        required,
+        title,
+        type,
+        items,
+        description,
       };
     });
     const state_errors = keys(this.state.errors).length > 0;
