@@ -229,6 +229,8 @@ export function installImageSlides(config) {
   //   },
   //   ...(config.addonRoutes || []),
   // ];
+  //
+  console.log('execute imageCards');
 
   config.blocks.blocksConfig.imagecards = {
     id: 'imagecards',
