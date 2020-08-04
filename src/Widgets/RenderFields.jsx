@@ -10,6 +10,7 @@ import {
 } from '@plone/volto/components';
 import { addAppURL } from '@plone/volto/helpers';
 
+import AddLinkForm from './AddLinkForm';
 import { getDataFromProvider } from 'volto-datablocks/actions';
 
 const makeChoices = keys => keys.map(k => [k, k]);
@@ -29,7 +30,9 @@ const RenderFields = props => {
       {schema &&
         Object.keys(schema).map(key => (
           <React.Fragment key={key}>
-            {!['schema', 'sql', 'chart-sources'].includes(schema[key].type) ? (
+            {!['schema', 'sql', 'chart-sources', 'link'].includes(
+              schema[key].type,
+            ) ? (
               <Segment className="form sidebar-image-data">
                 <Field
                   id={`field-widget-${key}`}
@@ -237,6 +240,26 @@ const RenderFields = props => {
                 >
                   Add source
                 </Button>
+              </Segment>
+            ) : (
+              ''
+            )}
+            {/* LINK TYPE */}
+            {schema[key].type === 'link' ? (
+              <Segment className="form sidebar-image-data">
+                <AddLinkForm
+                  title={schema[key].title}
+                  onAddLink={({ value }) => {
+                    props.onChangeBlock(props.block, {
+                      ...props.data,
+                      [key]: {
+                        ...props.data?.[key],
+                        value,
+                      },
+                    });
+                  }}
+                  value={data?.[key]?.value}
+                />
               </Segment>
             ) : (
               ''
