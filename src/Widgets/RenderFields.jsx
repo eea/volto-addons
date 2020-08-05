@@ -22,6 +22,16 @@ const RenderFields = props => {
   };
   const data = withFormManager ? { ...props.formData } : { ...props.data };
   const onChangeAction = withFormManager ? props.setFormData : onChangeBlock;
+  const getValue = (value, defaultValue, type, noValueKey) => {
+    const finalValue = noValueKey ? value : value?.value;
+    if (type === 'boolean' && (finalValue !== true && finalValue !== false))
+      return false;
+    if (type === 'array' && !finalValue && !defaultValue) return '';
+    if (type === 'text' && !finalValue && !defaultValue) return '';
+    if (defaultValue && !finalValue) return defaultValue;
+    if (!finalValue) return '';
+    return finalValue;
+  };
   const fieldsView = (
     <Segment.Group>
       <header className="header pulled">
@@ -48,10 +58,12 @@ const RenderFields = props => {
                           },
                     });
                   }}
-                  value={
-                    (noValueKey ? data?.[key] : data?.[key]?.value) ||
-                    schema?.[key]?.default
-                  }
+                  value={getValue(
+                    data?.[key],
+                    schema?.[key]?.default,
+                    schema?.[key]?.type,
+                    noValueKey,
+                  )}
                 />
               </Segment>
             ) : (

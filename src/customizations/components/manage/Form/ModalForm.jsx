@@ -252,8 +252,10 @@ class ModalForm extends Component {
         ? schema.properties[field].disabled(this.state.formData)
         : false;
       const required = isFunction(schema.required)
-        ? schema.required(this.state.formData).indexOf(field) !== -1
-        : schema.required.indexOf(field) !== -1;
+        ? (field &&
+            schema.required(this.state.formData)?.indexOf(field) !== -1) ||
+          false
+        : (field && schema.required?.indexOf(field) !== -1) || false;
       const title = isFunction(schema.properties[field]?.title)
         ? schema.properties[field].title(this.state.formData)
         : schema.properties[field]?.title;
