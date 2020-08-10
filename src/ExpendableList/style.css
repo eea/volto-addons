@@ -1,0 +1,46 @@
+.faq li {
+  color: #4296B3;
+  font-weight: 300;
+}
+
+ol.faq {
+  counter-reset: faq-counter;
+}
+
+ol.faq li {
+  counter-increment: faq-counter;
+}
+
+ol.faq li::before {
+  content: counter(faq-counter) ". "!important;
+  color: #4296B3 !important;
+  font-weight: 300 !important;
+}
+
+li {
+  cursor: pointer;
+}
+
+li p {
+  cursor: text;
+}
+
+li p.show {
+  max-height: 500px;
+  transition: max-height 0.4s ease-in;
+}
+
+li p.hide {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease-out;
+}
+
+li span {
+  display: block;
+  transition: margin-bottom 0.4s ease-in-out;
+}
+
+li span.active {
+  margin-bottom: 0.5em;
+}

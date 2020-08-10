@@ -22,14 +22,64 @@ const RenderFields = props => {
   };
   const data = withFormManager ? { ...props.formData } : { ...props.data };
   const onChangeAction = withFormManager ? props.setFormData : onChangeBlock;
-  const getValue = (value, defaultValue, type, noValueKey) => {
+
+  const getValue = (value, schema, noValueKey, onChangeAction, data, key) => {
     const finalValue = noValueKey ? value : value?.value;
-    if (type === 'boolean' && (finalValue !== true && finalValue !== false))
+    if (schema.type === 'array') {
+      if (schema.items?.choices) {
+        if (
+          !finalValue &&
+          schema.defaultValue &&
+          typeof schema.defaultValue === 'string'
+        ) {
+          return [schema.defaultValue];
+        }
+        if (
+          !finalValue &&
+          schema.defaultValue &&
+          Array.isArray(schema.defaultValue)
+        ) {
+          return schema.defaultValue;
+        }
+        if (finalValue && typeof finalValue === 'string') {
+          return [finalValue];
+        }
+        if (finalValue && Array.isArray(finalValue)) {
+          return finalValue;
+        }
+        return [];
+      } else if (schema.choices) {
+        if (
+          !finalValue &&
+          schema.defaultValue &&
+          typeof schema.defaultValue === 'string' &&
+          schema.choices.filter(item => {
+            return item[0] === schema.defaultValue;
+          }).length > 0
+        ) {
+          return schema.defaultValue;
+        }
+        if (
+          typeof finalValue === 'string' &&
+          schema.choices.filter(item => {
+            return item[0] === finalValue;
+          }).length === 0
+        ) {
+          return '';
+        } else if (Array.isArray(finalValue) || !finalValue) {
+          return '';
+        }
+      }
+    }
+    if (
+      schema.type === 'boolean' &&
+      (finalValue !== true && finalValue !== false)
+    )
       return false;
-    if (type === 'array' && !finalValue && !defaultValue) return '';
-    if (type === 'text' && !finalValue && !defaultValue) return '';
-    if (defaultValue && !finalValue) return defaultValue;
-    if (!finalValue) return '';
+    if (schema.type === 'text' && !finalValue && !schema.defaultValue)
+      return '';
+    if (schema.defaultValue && !finalValue) return schema.defaultValue;
+    if (!finalValue && schema.type !== 'boolean') return '';
     return finalValue;
   };
   const fieldsView = (
@@ -60,9 +110,11 @@ const RenderFields = props => {
                   }}
                   value={getValue(
                     data?.[key],
-                    schema?.[key]?.default,
-                    schema?.[key]?.type,
+                    schema?.[key],
                     noValueKey,
+                    onChangeAction,
+                    data,
+                    key,
                   )}
                 />
               </Segment>

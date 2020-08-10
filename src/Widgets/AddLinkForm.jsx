@@ -180,7 +180,7 @@ class AddLinkForm extends Component {
             ref={this.onRef}
             type="text"
             value={
-              value.text !== this.props.value ? value.text : this.props.value
+              value.text !== this.props?.value ? value.text : this.props?.value
             }
             defaultValue={this.props.initialValue}
             placeholder={this.props.intl.formatMessage(messages.placeholder)}
