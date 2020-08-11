@@ -136,10 +136,9 @@ class Tableau extends React.Component {
         : '';
     const queriedUrl =
       url +
-      '?:embed=yes' +
+      `?${queryParameters ? queryParameters : ''}&:embed=yes` +
       toolbarQuery +
-      hideShareQuery +
-      (queryParameters ? queryParameters : '');
+      hideShareQuery;
 
     console.log('thequeriedurl', queriedUrl);
     return queriedUrl;
