@@ -11,6 +11,10 @@ const schema = {
     title: 'Title',
     type: 'text',
   },
+  description: {
+    title: 'Description',
+    type: 'text',
+  },
   placeholder: {
     title: 'Placeholder',
     type: 'text',

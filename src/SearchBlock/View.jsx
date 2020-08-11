@@ -80,13 +80,16 @@ class View extends Component {
           },
           () => {
             const title = this.props.data?.title
-              ? `&title=${this.props.data.title.value}&`
+              ? `&title=${this.props.data.title.value}`
+              : '';
+            const description = this.props.data?.description
+              ? `&description=${this.props.data.description.value}`
               : '';
             this.props.history.push({
               pathname: `/search`,
               search: `?SearchableText=${
                 this.state.text
-              }${this.makeQuery()}${title}`,
+              }${this.makeQuery()}${title}${description}`,
               state: { text: this.state.text },
             });
           },
@@ -111,11 +114,16 @@ class View extends Component {
 
   onSubmit(event) {
     const title = this.props.data?.title
-      ? `&title=${this.props.data.title.value}&`
+      ? `&title=${this.props.data.title.value}`
+      : '';
+    const description = this.props.data?.description
+      ? `&description=${this.props.data.description.value}`
       : '';
     this.props.history.push({
       pathname: `/search`,
-      search: `?SearchableText=${this.state.text}${this.makeQuery()}${title}`,
+      search: `?SearchableText=${
+        this.state.text
+      }${this.makeQuery()}${title}${description}`,
       state: { text: this.state.text },
     });
     this.setState({ active: false });
