@@ -7,9 +7,14 @@ import View from './View';
 import { settings } from '~/config';
 
 const getSchema = props => {
+  const isExpandable = props.data.isExpandable?.value;
   return {
     ordered: {
       title: 'Ordered',
+      type: 'boolean',
+    },
+    isExpandable: {
+      title: 'Is expandable',
       type: 'boolean',
     },
     listClassname: {
@@ -47,7 +52,10 @@ const getSchema = props => {
             type: 'text',
           },
         },
-        required: ['id', 'title', 'description'],
+        required: () => {
+          if (isExpandable) return ['id', 'title', 'description'];
+          return ['id', 'title'];
+        },
       },
       editFieldset: false,
       deleteFieldset: false,
@@ -68,7 +76,7 @@ const Edit = props => {
       }),
     });
     /* eslint-disable-next-line */
-  }, [state.item, props.data.components])
+  }, [props.data.isExpandable])
   return (
     <div>
       <RenderFields schema={state.schema} {...props} title="Navigation block" />

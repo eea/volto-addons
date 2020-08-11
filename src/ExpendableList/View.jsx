@@ -9,6 +9,7 @@ const View = ({ content, ...props }) => {
   const [state, setState] = useState({
     activeItem: '',
   });
+  const isExpandable = props.data?.isExpandable?.value;
   const ordered = props.data?.ordered?.value;
   const listItemClassname = props.data?.listItemClassname?.value;
   const listClassname = props.data?.listClassname?.value;
@@ -18,28 +19,47 @@ const View = ({ content, ...props }) => {
   return (
     <List
       as={ordered ? 'ol' : 'ul'}
-      className={listClassname ? listClassname : ''}
+      className={
+        listClassname ? `expendableList ${listClassname}` : 'expendableList'
+      }
     >
       {items
         ? Object.entries(items).map(([key, value]) => (
             <List.Item
               as="li"
               key={key}
-              className={listItemClassname ? listItemClassname : ''}
+              className={
+                (listItemClassname ? listItemClassname : '') +
+                (isExpandable ? 'expandable' : 'no-expandable')
+              }
               onClick={() => {
-                if (state.activeItem === key) {
+                if (isExpandable && state.activeItem === key) {
                   setState({ ...state, activeItem: '' });
-                } else {
+                } else if (isExpandable) {
                   setState({ ...state, activeItem: key });
                 }
               }}
             >
-              <span className={state.activeItem === key ? 'active' : ''}>
+              <span
+                className={
+                  isExpandable
+                    ? state.activeItem === key
+                      ? 'active'
+                      : ''
+                    : 'active'
+                }
+              >
                 {value.title}
               </span>
               <List.Item
                 as="p"
-                className={state.activeItem === key ? 'show' : 'hide'}
+                className={
+                  isExpandable
+                    ? state.activeItem === key
+                      ? 'show'
+                      : 'hide'
+                    : ''
+                }
                 onClick={e => {
                   e.stopPropagation();
                 }}

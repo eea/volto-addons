@@ -1,46 +1,53 @@
-.faq li {
+.expendableList.faq li {
   color: #4296B3;
   font-weight: 300;
 }
 
-ol.faq {
+ol.expendableList.faq,
+ol.expendableList.faq-2 {
   counter-reset: faq-counter;
 }
 
-ol.faq li {
+ol.expendableList.faq li,
+ol.expendableList.faq-2 li {
   counter-increment: faq-counter;
 }
 
-ol.faq li::before {
+ol.expendableList.faq li::before,
+ol.expendableList.faq-2 li::before {
   content: counter(faq-counter) ". "!important;
   color: #4296B3 !important;
   font-weight: 300 !important;
 }
 
-li {
+.expendableList  li.expandable {
   cursor: pointer;
 }
 
-li p {
+.expendableList  li.no-expandable {
   cursor: text;
 }
 
-li p.show {
+.expendableList  li p {
+  cursor: text;
+}
+
+.expendableList  li p.show {
   max-height: 500px;
   transition: max-height 0.4s ease-in;
 }
 
-li p.hide {
+.expendableList  li p.hide {
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.4s ease-out;
 }
 
-li span {
+.expendableList  li span {
   display: block;
   transition: margin-bottom 0.4s ease-in-out;
 }
 
-li span.active {
+.expendableList  li span.active {
   margin-bottom: 0.5em;
 }
