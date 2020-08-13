@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { List } from 'semantic-ui-react';
+import DOMPurify from 'dompurify';
 import './style.css';
 
 const View = ({ content, ...props }) => {
@@ -16,6 +17,7 @@ const View = ({ content, ...props }) => {
   const items = props.data?.items?.value
     ? JSON.parse(props.data.items.value).properties
     : {};
+
   return (
     <List
       as={ordered ? 'ol' : 'ul'}
@@ -24,50 +26,53 @@ const View = ({ content, ...props }) => {
       }
     >
       {items
-        ? Object.entries(items).map(([key, value]) => (
-            <List.Item
-              as="li"
-              key={key}
-              className={
-                (listItemClassname ? listItemClassname : '') +
-                (isExpandable ? 'expandable' : 'no-expandable')
-              }
-              onClick={() => {
-                if (isExpandable && state.activeItem === key) {
-                  setState({ ...state, activeItem: '' });
-                } else if (isExpandable) {
-                  setState({ ...state, activeItem: key });
-                }
-              }}
-            >
-              <span
-                className={
-                  isExpandable
-                    ? state.activeItem === key
-                      ? 'active'
-                      : ''
-                    : 'active'
-                }
-              >
-                {value.title}
-              </span>
+        ? Object.entries(items).map(([key, value]) => {
+            return (
               <List.Item
-                as="p"
+                as="li"
+                key={key}
                 className={
-                  isExpandable
-                    ? state.activeItem === key
-                      ? 'show'
-                      : 'hide'
-                    : ''
+                  (listItemClassname ? listItemClassname : '') +
+                  (isExpandable ? 'expandable' : 'no-expandable')
                 }
-                onClick={e => {
-                  e.stopPropagation();
+                onClick={() => {
+                  if (isExpandable && state.activeItem === key) {
+                    setState({ ...state, activeItem: '' });
+                  } else if (isExpandable) {
+                    setState({ ...state, activeItem: key });
+                  }
                 }}
               >
-                {value.description}
+                <span
+                  className={
+                    'title ' +
+                    (isExpandable
+                      ? state.activeItem === key
+                        ? 'active'
+                        : ''
+                      : 'active')
+                  }
+                >
+                  {value.title}
+                </span>
+                {/* eslint-disable-next-line */}
+                <div
+                  className={
+                    'description ' +
+                    (isExpandable
+                      ? state.activeItem === key
+                        ? 'show'
+                        : 'hide'
+                      : '')
+                  }
+                  onClick={e => e.stopPropagation()}
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(value.description),
+                  }}
+                />
               </List.Item>
-            </List.Item>
-          ))
+            );
+          })
         : ''}
     </List>
   );

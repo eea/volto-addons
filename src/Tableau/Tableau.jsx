@@ -47,22 +47,35 @@ class Tableau extends React.Component {
       prevProps.options.hideTabs !== this.props.options.hideTabs;
     const isToolbarsChanged =
       prevProps.options.hideToolbars !== this.props.options.hideToolbars;
-    const isParametersChanged =
-      !shallowequal(prevProps, this.props.parameters) ||
-      !shallowequal(prevProps.queryParameters, this.props.queryParameters);
-    console.log('HERE', this.props.url);
+    const isParametersChanged = !shallowequal(
+      prevProps.parameters,
+      this.props.parameters,
+    );
+    const isQueryParametersChanged =
+      (this.props.queryParameters && !prevProps.queryParameters) ||
+      (this.props.queryParameters &&
+        prevProps.queryParameters &&
+        JSON.stringify(this.props.queryParameters) !==
+          JSON.stringify(prevProps.queryParameters));
     if (
+      isQueryParametersChanged ||
       isTabsChanged ||
       isReportChanged ||
       isToolbarsChanged ||
       isShareChanged
     ) {
+      console.log(
+        'AICI',
+        prevProps.url !== this.props.url,
+        prevProps.url,
+        this.props.url,
+      );
       this.initTableau(this.props.url);
     }
     // Only parameters are changed, apply via the API
-    if (!isReportChanged && isParametersChanged && !isLoading) {
-      this.applyParameters(this.props.parameters);
-    }
+    // if (!isReportChanged && isParametersChanged && !isLoading) {
+    //   this.applyParameters(this.props.parameters);
+    // }
     // token change, validate it.
     if (prevProps.token !== this.props.token) {
       this.setState({ didInvalidateToken: false });
@@ -120,13 +133,10 @@ class Tableau extends React.Component {
       return queriedUrl;
     }
 
-    return this.applyQueryParameters(
-      parsed.protocol + '//' + parsed.host + parsed.pathname,
-    );
+    return parsed.protocol + '//' + parsed.host + parsed.pathname;
   }
 
   applyQueryParameters = url => {
-    const queryParameters = qs.stringify(this.props.queryParameters);
     const toolbarQuery = this.props.options.hideToolbars
       ? '&:toolbar=no'
       : '&:toolbar=yes';
@@ -136,7 +146,7 @@ class Tableau extends React.Component {
         : '';
     const queriedUrl =
       url +
-      `?${queryParameters ? queryParameters : ''}&:embed=yes` +
+      // `?${queryParameters ? queryParameters : ''}&:embed=yes` +
       toolbarQuery +
       hideShareQuery;
 
@@ -150,8 +160,13 @@ class Tableau extends React.Component {
     const options = {
       ...this.props.filters,
       ...this.props.parameters,
+      ...this.props.queryParameters,
       sheetname: this.props.sheetname || '',
-      url: vizUrl || '',
+      ...{
+        ':toolbar': this.props.options.hideToolbars,
+        ':showShareOptions':
+          this.props.hideShare && !this.props.options.hideToolbars,
+      },
       onFirstInteractive: () => {
         this.workbook = this.viz.getWorkbook();
         let activeSheet = this.workbook.getActiveSheet();
@@ -162,6 +177,7 @@ class Tableau extends React.Component {
         };
         saveData['url'] = this.viz.getUrl();
         saveData['sheetname'] = activeSheet.getName();
+        console.log('BAA', saveData['url']);
         if (
           this.props.url !== saveData['url'] ||
           this.props.sheetname !== saveData['sheetname']

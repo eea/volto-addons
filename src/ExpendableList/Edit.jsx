@@ -49,7 +49,7 @@ const getSchema = props => {
           },
           description: {
             title: 'Description',
-            type: 'text',
+            widget: 'textarea',
           },
         },
         required: () => {

@@ -28,26 +28,21 @@ ol.expendableList.faq-2 li::before {
   cursor: text;
 }
 
-.expendableList  li p {
+.expendableList  li .description {
   cursor: text;
 }
 
-.expendableList  li p.show {
-  max-height: 500px;
-  transition: max-height 0.4s ease-in;
+.expendableList  li .description.show {
+  /* transition: height 0.4s ease-in; */
 }
 
-.expendableList  li p.hide {
+.expendableList  li .description.hide {
   overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.4s ease-out;
+  height: 0;
+  /* transition: height 0.4s ease-out; */
 }
 
-.expendableList  li span {
-  display: block;
-  transition: margin-bottom 0.4s ease-in-out;
-}
-
-.expendableList  li span.active {
+.expendableList  li .title {
   margin-bottom: 0.5em;
+  display: block;
 }

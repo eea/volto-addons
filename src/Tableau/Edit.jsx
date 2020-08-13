@@ -74,8 +74,13 @@ const getSchema = props => {
           },
           queryParam: {
             title: 'Query to use',
-            type: 'array',
-            choices: globalQuery ? makeChoices(Object.keys(globalQuery)) : [],
+            type: formData => (formData.urlQuery ? 'array' : 'text'),
+            choices: formData =>
+              formData.urlQuery
+                ? globalQuery
+                  ? makeChoices(Object.keys(globalQuery))
+                  : []
+                : undefined,
           },
         },
         required: ['id', 'title', 'key'],
@@ -182,6 +187,17 @@ class TableauEdit extends Component {
       hideTabs: hideTabs?.value || '',
       hideToolbars: hideToolbars?.value || '',
     };
+    const { query } = qs.parse(this.props);
+    const { search } = this.props.discodata_query;
+    const globalQuery = { ...query, ...search };
+    const queryParameters = this.props.data?.queryParameters?.value
+      ? JSON.parse(this.props.data.queryParameters.value).properties
+      : {};
+    const queryParametersToSet = {};
+    queryParameters &&
+      Object.entries(queryParameters).forEach(([key, value]) => {
+        queryParametersToSet[key] = globalQuery[value.queryParam] || '';
+      });
     return (
       <div className="block chartWrapperEdit">
         <div className="block-inner-wrapper">
@@ -216,6 +232,7 @@ class TableauEdit extends Component {
                 callback={this.onSubmit}
                 options={options}
                 hideShare={hideShare?.value}
+                queryParameters={queryParametersToSet}
               />
             </div>
           ) : (
