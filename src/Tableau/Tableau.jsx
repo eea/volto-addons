@@ -64,12 +64,6 @@ class Tableau extends React.Component {
       isToolbarsChanged ||
       isShareChanged
     ) {
-      console.log(
-        'AICI',
-        prevProps.url !== this.props.url,
-        prevProps.url,
-        this.props.url,
-      );
       this.initTableau(this.props.url);
     }
     // Only parameters are changed, apply via the API
@@ -133,7 +127,12 @@ class Tableau extends React.Component {
       return queriedUrl;
     }
 
-    return parsed.protocol + '//' + parsed.host + parsed.pathname;
+    if (parsed) {
+      return this.applyQueryParameters(
+        parsed.protocol + '//' + parsed.host + parsed.pathname,
+      );
+    }
+    return null;
   }
 
   applyQueryParameters = url => {
@@ -144,13 +143,7 @@ class Tableau extends React.Component {
       this.props.hideShare && !this.props.options.hideToolbars
         ? '&:showShareOptions=false'
         : '';
-    const queriedUrl =
-      url +
-      // `?${queryParameters ? queryParameters : ''}&:embed=yes` +
-      toolbarQuery +
-      hideShareQuery;
-
-    console.log('thequeriedurl', queriedUrl);
+    const queriedUrl = url + `?:embed=yes` + toolbarQuery + hideShareQuery;
     return queriedUrl;
   };
 
@@ -162,11 +155,6 @@ class Tableau extends React.Component {
       ...this.props.parameters,
       ...this.props.queryParameters,
       sheetname: this.props.sheetname || '',
-      ...{
-        ':toolbar': this.props.options.hideToolbars,
-        ':showShareOptions':
-          this.props.hideShare && !this.props.options.hideToolbars,
-      },
       onFirstInteractive: () => {
         this.workbook = this.viz.getWorkbook();
         let activeSheet = this.workbook.getActiveSheet();
@@ -177,7 +165,6 @@ class Tableau extends React.Component {
         };
         saveData['url'] = this.viz.getUrl();
         saveData['sheetname'] = activeSheet.getName();
-        console.log('BAA', saveData['url']);
         if (
           this.props.url !== saveData['url'] ||
           this.props.sheetname !== saveData['sheetname']
@@ -222,17 +209,17 @@ class Tableau extends React.Component {
         );
       },
     };
-
     if (this.viz) {
       this.viz.dispose();
       this.viz = null;
     }
-
-    this.viz = new this.api.tableauSoftware.Viz(
-      this.container,
-      vizUrl,
-      options,
-    );
+    if (vizUrl) {
+      this.viz = new this.api.tableauSoftware.Viz(
+        this.container,
+        vizUrl,
+        options,
+      );
+    }
   }
 
   render() {
