@@ -51,11 +51,14 @@ class View extends Component {
   }
 
   componentDidMount() {
-    if (this.props.data.query.value && isString(this.props.data.query.value)) {
+    if (
+      this.props.data?.query?.value &&
+      isString(this.props.data.query.value)
+    ) {
       const query = JSON.parse(this.props.data.query.value);
       this.setState({ query });
     } else if (
-      this.props.data.query.value &&
+      this.props.data?.query?.value &&
       isObject(this.props.data.query.value)
     ) {
       this.setState({ query: this.props.data.query.value });
@@ -77,13 +80,16 @@ class View extends Component {
           },
           () => {
             const title = this.props.data?.title
-              ? `&title=${this.props.data.title.value}&`
+              ? `&title=${this.props.data.title.value}`
+              : '';
+            const description = this.props.data?.description
+              ? `&description=${this.props.data.description.value}`
               : '';
             this.props.history.push({
               pathname: `/search`,
               search: `?SearchableText=${
                 this.state.text
-              }${this.makeQuery()}${title}`,
+              }${this.makeQuery()}${title}${description}`,
               state: { text: this.state.text },
             });
           },
@@ -108,11 +114,16 @@ class View extends Component {
 
   onSubmit(event) {
     const title = this.props.data?.title
-      ? `&title=${this.props.data.title.value}&`
+      ? `&title=${this.props.data.title.value}`
+      : '';
+    const description = this.props.data?.description
+      ? `&description=${this.props.data.description.value}`
       : '';
     this.props.history.push({
       pathname: `/search`,
-      search: `?SearchableText=${this.state.text}${this.makeQuery()}${title}`,
+      search: `?SearchableText=${
+        this.state.text
+      }${this.makeQuery()}${title}${description}`,
       state: { text: this.state.text },
     });
     this.setState({ active: false });
@@ -250,7 +261,7 @@ class View extends Component {
                           highlightClassName="highlight"
                           searchWords={this.state.text?.split(' ') || []}
                           autoEscape={true}
-                          textToHighlight={item['@id']}
+                          textToHighlight={item.title}
                         />
                       </li>
                     );

@@ -1,0 +1,48 @@
+.expendableList.faq li {
+  color: #4296B3;
+  font-weight: 300;
+}
+
+ol.expendableList.faq,
+ol.expendableList.faq-2 {
+  counter-reset: faq-counter;
+}
+
+ol.expendableList.faq li,
+ol.expendableList.faq-2 li {
+  counter-increment: faq-counter;
+}
+
+ol.expendableList.faq li::before,
+ol.expendableList.faq-2 li::before {
+  content: counter(faq-counter) ". "!important;
+  color: #4296B3 !important;
+  font-weight: 300 !important;
+}
+
+.expendableList  li.expandable {
+  cursor: pointer;
+}
+
+.expendableList  li.no-expandable {
+  cursor: text;
+}
+
+.expendableList  li .description {
+  cursor: text;
+}
+
+.expendableList  li .description.show {
+  /* transition: height 0.4s ease-in; */
+}
+
+.expendableList  li .description.hide {
+  overflow: hidden;
+  height: 0;
+  /* transition: height 0.4s ease-out; */
+}
+
+.expendableList  li .title {
+  margin-bottom: 0.5em;
+  display: block;
+}

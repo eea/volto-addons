@@ -11,13 +11,17 @@ const schema = {
     title: 'Title',
     type: 'text',
   },
+  description: {
+    title: 'Description',
+    type: 'text',
+  },
   placeholder: {
     title: 'Placeholder',
     type: 'text',
   },
   searchButton: {
     title: 'Search button',
-    type: 'checkbox',
+    type: 'boolean',
   },
   buttonText: {
     title: 'Button text',

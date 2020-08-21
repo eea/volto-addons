@@ -14,7 +14,7 @@
 }
   
 .searchbox .icon {
-  fill: #606060 !important;
+  fill: #606060;
   position: absolute;
   z-index: 1;
   left: 1rem;
@@ -39,7 +39,7 @@
 
 .searchbox .searchIcon:hover,
 .searchbox .clearIcon:hover {
-  fill: #000 !important;
+  fill: #000;
 }
 
 

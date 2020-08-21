@@ -12,8 +12,13 @@ import TemplatingToolbarWidget from './Widgets/TemplatingToolbar';
 import PDFBlockView from './PDFViewer/BlockView';
 import PDFBlockEdit from './PDFViewer/BlockEdit';
 
-import TableauBlockView from './Tableau/BlockView';
-import TableauBlockEdit from './Tableau/BlockEdit';
+// import TableauBlockView from './Tableau/BlockView';
+// import TableauBlockEdit from './Tableau/BlockEdit';
+import TableauBlockEdit from './Tableau/Edit';
+import TableauBlockView from './Tableau/View';
+
+import ExpendableListEdit from './ExpendableList/Edit';
+import ExpendableListView from './ExpendableList/View';
 
 import NewsView from './News/NewsView';
 import NewsEdit from './News/NewsEdit';
@@ -57,7 +62,7 @@ import {
 } from './Portlets';
 
 function addCustomGroup(config) {
-  const hasCustomGroup = config.blocks.groupBlocksOrder.filter((el) => {
+  const hasCustomGroup = config.blocks.groupBlocksOrder.filter(el => {
     return el.id === 'custom_addons';
   });
   if (hasCustomGroup.length === 0) {
@@ -199,6 +204,18 @@ export function installTableau(config) {
     title: 'Tableau',
     view: TableauBlockView,
     edit: TableauBlockEdit,
+    icon: chartIcon,
+    group: 'custom_addons',
+  };
+  return config;
+}
+
+export function installExpendableList(config) {
+  config.blocks.blocksConfig.expendable_list = {
+    id: 'expendable_list',
+    title: 'Expendable list',
+    view: ExpendableListView,
+    edit: ExpendableListEdit,
     icon: chartIcon,
     group: 'custom_addons',
   };
