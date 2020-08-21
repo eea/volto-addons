@@ -65,7 +65,7 @@ const View = ({ content, ...props }) => {
                         : 'hide'
                       : '')
                   }
-                  onClick={e => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(value.description),
                   }}
