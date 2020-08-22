@@ -18,8 +18,6 @@
     "redraft": "^0.10.2"
   },
   "dependencies": {
-    "@esri/react-arcgis": "^5.0.0",
-    "arcgis-react-redux-legend": "^3.0.0",
     "dompurify": "^2.0.12",
     "draft-js-alignment-plugin": "^2.0.6",
     "draft-js-focus-plugin": "^3.0.1",

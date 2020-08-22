@@ -148,12 +148,7 @@ class ModalForm extends Component {
   onChangeField(id, value) {
     let formDataId = this.state.formData.id;
     if (id === 'title') {
-      formDataId = value
-        ? value
-            .toLowerCase()
-            .split(' ')
-            .join('_')
-        : undefined;
+      formDataId = value ? value.toLowerCase().split(' ').join('_') : undefined;
     }
     if (id === 'id') {
       formDataId = value;
@@ -176,8 +171,8 @@ class ModalForm extends Component {
   onSubmit(event) {
     event.preventDefault();
     const errors = {};
-    map(this.props.schema.fieldsets, fieldset =>
-      map(fieldset.fields, fieldId => {
+    map(this.props.schema.fieldsets, (fieldset) =>
+      map(fieldset.fields, (fieldId) => {
         const field = this.props.schema.properties[fieldId];
         const data = this.state.formData[fieldId];
         if (
@@ -215,7 +210,7 @@ class ModalForm extends Component {
         errors,
       });
     } else {
-      let setFormDataCallback = formData => {
+      let setFormDataCallback = (formData) => {
         this.setState({ formData: formData });
       };
       this.props.onSubmit(this.state.formData, setFormDataCallback);
@@ -244,7 +239,7 @@ class ModalForm extends Component {
     const { schema, onCancel } = this.props;
     const currentFieldset = schema.fieldsets[this.state.currentTab];
 
-    const fields = map(currentFieldset.fields, field => {
+    const fields = map(currentFieldset.fields, (field) => {
       const choices = isFunction(schema.properties[field]?.choices)
         ? schema.properties[field].choices(this.state.formData)
         : schema.properties[field]?.choices;
@@ -270,7 +265,7 @@ class ModalForm extends Component {
         : schema.properties[field]?.description;
       const value = choices
         ? choices
-            .map(choice => choice[0] === this.state.formData[field])
+            .map((choice) => choice[0] === this.state.formData[field])
             .includes(true)
           ? this.state.formData[field]
           : null
@@ -327,7 +322,7 @@ class ModalForm extends Component {
               </Menu>
             )}
             {fields.map(
-              field =>
+              (field) =>
                 !field.disabled && (
                   <Field
                     {...field}

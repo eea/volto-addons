@@ -4,11 +4,11 @@ import { compose } from 'redux';
 import { Tab } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import NewsItem from './NewsItem';
-import WidthBasedLayoutProvider from 'volto-base/components/theme/LayoutProvider/WidthBasedLayoutProvider';
+import WidthBasedLayoutProvider from '../Widgets/WidthBasedLayoutProvider';
 import { settings } from '~/config';
 import './style.css';
 
-const panes = context => [
+const panes = (context) => [
   {
     menuItem: 'News',
     render: () => {
@@ -46,8 +46,8 @@ const panes = context => [
 
 const getPortletItems = (portletsManagers, portletId) => {
   let items = null;
-  Object.keys(portletsManagers).forEach(manager => {
-    portletsManagers[manager].forEach(portlet => {
+  Object.keys(portletsManagers).forEach((manager) => {
+    portletsManagers[manager].forEach((portlet) => {
       if (portlet.portlet_id === portletId) {
         items = portlet[portletId + 'portlet']?.items.sort((a, b) => {
           return new Date(b.effective) - new Date(a.effective);
@@ -63,7 +63,7 @@ const RenderItems = ({ items, type }) => {
     <Tab.Pane>
       <div className="articles">
         {items &&
-          items.map(item => {
+          items.map((item) => {
             return <NewsItem key={item['@id']} item={item} />;
           })}
       </div>
@@ -83,7 +83,7 @@ const RenderItems = ({ items, type }) => {
   );
 };
 
-const NewsView = props => {
+const NewsView = (props) => {
   const [newsItems, setNewsItems] = useState();
   const [eventsItems, setEventsItems] = useState();
 
