@@ -62,7 +62,7 @@ import {
 } from './Portlets';
 
 function addCustomGroup(config) {
-  const hasCustomGroup = config.blocks.groupBlocksOrder.filter(el => {
+  const hasCustomGroup = config.blocks.groupBlocksOrder.filter((el) => {
     return el.id === 'custom_addons';
   });
   if (hasCustomGroup.length === 0) {
@@ -138,7 +138,6 @@ export function applyConfig(config) {
     group: 'custom_addons',
   };
 
-  console.log('addonReducers', addonReducers);
   config.addonReducers = {
     // ...config.addonReducers,
     ...addonReducers,
@@ -247,7 +246,6 @@ export function installImageSlides(config) {
   //   ...(config.addonRoutes || []),
   // ];
   //
-  console.log('execute imageCards');
 
   config.blocks.blocksConfig.imagecards = {
     id: 'imagecards',
