@@ -91,9 +91,13 @@ const RenderFields = (props) => {
       {schema &&
         Object.keys(schema).map((key) => (
           <React.Fragment key={key}>
-            {!['schema', 'sql', 'chart-sources', 'link'].includes(
-              schema[key].type,
-            ) ? (
+            {![
+              'schema',
+              'sql',
+              'chart-sources',
+              'link',
+              'import-export',
+            ].includes(schema[key].type) ? (
               <Segment className="form sidebar-image-data">
                 <Field
                   id={`field-widget-${key}`}
@@ -322,6 +326,31 @@ const RenderFields = (props) => {
                     });
                   }}
                   value={data?.[key]?.value}
+                />
+              </Segment>
+            ) : (
+              ''
+            )}
+            {/* IMPORT EXPORT TYPE */}
+            {schema[key].type === 'import-export' ? (
+              <Segment className="form sidebar-image-data">
+                <Field
+                  widget="textarea"
+                  id={`field-widget-${key}`}
+                  {...schema[key]}
+                  onChange={(id, value) => {
+                    try {
+                      const newData = JSON.parse(value);
+                      delete newData.id;
+                      delete newData.rowId;
+                      onChangeAction({
+                        ...data,
+                        ...newData,
+                        ...newData,
+                      });
+                    } catch {}
+                  }}
+                  value={JSON.stringify(data)}
                 />
               </Segment>
             ) : (
