@@ -81,8 +81,6 @@ export function applyConfig(config) {
   // config.views.layoutViews.compositepage_view = View;
 
   config.widgets.id.collection_years = CollectionYears;
-  config.widgets.id.blocks = HiddenWidget;
-  config.widgets.id.blocks_layout = HiddenWidget;
   config.widgets.id.templatingtoolbar = TemplatingToolbarWidget;
 
   config.widgets.widget.sidebar = [TemplatingToolbarWidget];
