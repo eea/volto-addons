@@ -12,7 +12,7 @@ import { Toast } from '@plone/volto/components';
 import RenderFields from 'volto-addons/Widgets/RenderFields';
 import qs from 'query-string';
 
-const makeChoices = keys => keys && keys.map(k => [k, k]);
+const makeChoices = (keys) => keys && keys.map((k) => [k, k]);
 
 const messages = defineMessages({
   readyForSave: {
@@ -29,16 +29,21 @@ const messages = defineMessages({
   },
 });
 
-const getSchema = props => {
+const getSchema = (props) => {
   const { query } = qs.parse(props.query);
   const { search } = props.discodata_query;
   const globalQuery = { ...query, ...search };
+  console.log(globalQuery);
   return {
     tableauVersion: {
       type: 'array',
       title: 'Tableau Version',
       defaultValue: props.tableauVersion || '2.3.0',
-      choices: [['2.3.0', '2.3.0'], ['2.4.0', '2.4.0'], ['2.5.0', '2.5.0']],
+      choices: [
+        ['2.3.0', '2.3.0'],
+        ['2.4.0', '2.4.0'],
+        ['2.5.0', '2.5.0'],
+      ],
     },
     url: {
       type: 'text',
@@ -74,8 +79,8 @@ const getSchema = props => {
           },
           queryParam: {
             title: 'Query to use',
-            type: formData => (formData.urlQuery ? 'array' : 'text'),
-            choices: formData =>
+            type: (formData) => (formData.urlQuery ? 'array' : 'text'),
+            choices: (formData) =>
               formData.urlQuery
                 ? globalQuery
                   ? makeChoices(Object.keys(globalQuery))
@@ -118,7 +123,6 @@ class TableauEdit extends Component {
   }
 
   componentDidCatch(e) {
-    console.log('HERE componentDidCatch');
     this.setState({ error: this.props.data.url?.value }, () => {
       toast.error(
         <Toast
@@ -137,7 +141,6 @@ class TableauEdit extends Component {
   }
 
   onSubmit(saveData) {
-    console.log('HERE onSubmit', saveData);
     this.props.onChangeBlock(this.props.block, {
       ...this.props.data,
       url: {
@@ -160,7 +163,10 @@ class TableauEdit extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (JSON.stringify(prevProps.query) !== JSON.stringify(this.props.query)) {
+    if (
+      JSON.stringify(prevProps.discodata_query.search) !==
+      JSON.stringify(this.props.discodata_query.search)
+    ) {
       const schema = getSchema({
         ...this.props,
         tableauVersion: settings.tableauVersion,

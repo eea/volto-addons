@@ -4,7 +4,6 @@ import url from 'url';
 import shallowequal from 'shallowequal';
 import tokenizeUrl from './tokenizeUrl';
 import qs from 'query-string';
-import { parse } from 'path';
 
 const propTypes = {
   tableauVersion: PropTypes.string.isRequired,
@@ -107,7 +106,10 @@ class Tableau extends React.Component {
    * whether any throw an error.
    */
   onComplete(promises, cb) {
-    Promise.all(promises).then(() => cb(), () => cb());
+    Promise.all(promises).then(
+      () => cb(),
+      () => cb(),
+    );
   }
 
   /**
@@ -135,7 +137,7 @@ class Tableau extends React.Component {
     return null;
   }
 
-  applyQueryParameters = url => {
+  applyQueryParameters = (url) => {
     const toolbarQuery = this.props.options.hideToolbars
       ? '&:toolbar=no'
       : '&:toolbar=yes';
@@ -143,7 +145,18 @@ class Tableau extends React.Component {
       this.props.hideShare && !this.props.options.hideToolbars
         ? '&:showShareOptions=false'
         : '';
-    const queriedUrl = url + `?:embed=yes` + toolbarQuery + hideShareQuery;
+    const filteredQueryParameters = {};
+    Object.keys(this.props.queryParameters)
+      .filter((key) => this.props.queryParameters[key])
+      .forEach((key) => {
+        filteredQueryParameters[key] = this.props.queryParameters[key];
+      });
+
+    const queriedUrl =
+      url +
+      `?${qs.stringify(filteredQueryParameters)}` +
+      toolbarQuery +
+      hideShareQuery;
     return queriedUrl;
   };
 
@@ -151,9 +164,6 @@ class Tableau extends React.Component {
     if (__SERVER__) return;
     const vizUrl = this.getUrl(nextUrl);
     const options = {
-      ...this.props.filters,
-      ...this.props.parameters,
-      ...this.props.queryParameters,
       sheetname: this.props.sheetname || '',
       onFirstInteractive: () => {
         this.workbook = this.viz.getWorkbook();
@@ -174,9 +184,9 @@ class Tableau extends React.Component {
 
         this.viz.addEventListener(
           this.api.tableauSoftware.TableauEventName.TAB_SWITCH,
-          e => {
+          (e) => {
             let newSheetname = e.getNewSheetName();
-            this.viz.getCurrentUrlAsync().then(newUrl => {
+            this.viz.getCurrentUrlAsync().then((newUrl) => {
               if (
                 this.props.sheetname !== newSheetname ||
                 this.props.url !== newUrl
@@ -191,8 +201,8 @@ class Tableau extends React.Component {
 
         this.viz.addEventListener(
           this.api.tableauSoftware.TableauEventName.FILTER_CHANGE,
-          e => {
-            e.getFilterAsync().then(r => {
+          (e) => {
+            e.getFilterAsync().then((r) => {
               if (r.$appliedValues.length > 1) {
                 delete saveData['filters'][r.$caption];
               } else if (r.$appliedValues.length === 1) {
@@ -224,7 +234,16 @@ class Tableau extends React.Component {
 
   render() {
     if (__SERVER__) return '';
-    return <div ref={c => (this.container = c)} />;
+    return (
+      <div
+        className="chartWrapperView"
+        style={{
+          width: '100%',
+          overflowX: 'auto',
+        }}
+        ref={(c) => (this.container = c)}
+      />
+    );
   }
 }
 

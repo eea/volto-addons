@@ -5,7 +5,7 @@ import qs from 'query-string';
 import { settings } from '~/config';
 import Tableau from './Tableau';
 
-const TableauBlockView = props => {
+const TableauBlockView = (props) => {
   const { query } = props;
   const { search } = props.discodata_query;
   const data = props.data || {};
@@ -34,13 +34,7 @@ const TableauBlockView = props => {
     });
   if (__SERVER__) return '';
   return (
-    <div
-      className="chartWrapperView"
-      style={{
-        width: '100%',
-        overflowX: 'auto',
-      }}
-    >
+    <>
       {state.url ? (
         <Tableau
           url={state.url}
@@ -54,7 +48,7 @@ const TableauBlockView = props => {
       ) : (
         <div>Invalid or missing data.</div>
       )}
-    </div>
+    </>
   );
 };
 
