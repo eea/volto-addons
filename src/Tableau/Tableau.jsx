@@ -145,6 +145,7 @@ class Tableau extends React.Component {
       this.props.hideShare && !this.props.options.hideToolbars
         ? '&:showShareOptions=false'
         : '';
+    const size = `&:size=auto`;
     const filteredQueryParameters = {};
     Object.keys(this.props.queryParameters)
       .filter((key) => this.props.queryParameters[key])
@@ -155,6 +156,7 @@ class Tableau extends React.Component {
     const queriedUrl =
       url +
       `?${qs.stringify(filteredQueryParameters)}` +
+      size +
       toolbarQuery +
       hideShareQuery;
     return queriedUrl;

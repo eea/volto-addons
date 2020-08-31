@@ -75,8 +75,6 @@ function addCustomGroup(config) {
 
 export function applyConfig(config) {
   addCustomGroup(config);
-  installDraftEditor(config); // BBB
-
   config.views.contentTypesViews.Collection = CollectionView;
   config.views.contentTypesViews.EmbeddedMap = MapView;
   config.views.contentTypesViews.embeddedmap = MapView;
@@ -280,3 +278,5 @@ export function installPortlets(config) {
   };
   return config;
 }
+
+export { installDraftEditor };
