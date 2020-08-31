@@ -13,6 +13,7 @@ import { getBaseUrl } from '@plone/volto/helpers';
 import { settings } from '~/config';
 import { quickResetSearchContent, quickSearchContent } from '../actions';
 import Highlighter from 'react-highlight-words';
+import cx from 'classnames';
 import './style.css';
 
 const messages = defineMessages({
@@ -168,7 +169,7 @@ class View extends Component {
       isObject(this.state.query.properties) &&
       Object.entries(this.state.query.properties).forEach(([itemKey, item]) => {
         if (isArray(item.value)) {
-          item.value.forEach(value => {
+          item.value.forEach((value) => {
             query += `&${itemKey}:query=${value}`;
           });
         } else if (item.value) {
@@ -219,6 +220,7 @@ class View extends Component {
                 size="26px"
               />
               <Input
+                className={cx(this.props.data.className?.value)}
                 ref={this.linkInput}
                 aria-label={this.props.intl.formatMessage(messages.search)}
                 placeholder={
