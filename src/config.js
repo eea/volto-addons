@@ -134,18 +134,6 @@ export function applyConfig(config) {
     group: 'custom_addons',
   };
 
-  config.addonReducers = {
-    // ...config.addonReducers,
-    ...addonReducers,
-  };
-
-  // if (!config.addonReducers) {
-  //   config.addonReducers = {};
-  // }
-  // Object.keys(addonReducers).forEach((name) => {
-  //   config.addonReducers[name] = addonReducers[name];
-  // });
-
   config.settings.tableauVersion = '2.3.0';
   config.blocks.blocksConfig.search_block = {
     id: 'search_block',
