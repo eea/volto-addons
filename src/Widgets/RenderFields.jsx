@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Portal } from 'react-portal';
 import { Segment, Button } from 'semantic-ui-react';
 import {
@@ -8,12 +7,7 @@ import {
   SchemaWidget,
   TextWidget,
 } from '@plone/volto/components';
-import { addAppURL } from '@plone/volto/helpers';
-
 import AddLinkForm from './AddLinkForm';
-import { getDataFromProvider } from 'volto-datablocks/actions';
-
-const makeChoices = (keys) => keys.map((k) => [k, k]);
 
 const RenderFields = (props) => {
   const { schema, title, withFormManager, noValueKey } = props;
@@ -369,34 +363,4 @@ const RenderFields = (props) => {
   );
 };
 
-function getProviderData(state, props) {
-  let providers = null;
-  if (props?.data?.providers)
-    providers = { ...JSON.parse(JSON.stringify(props.data.providers)) };
-  if (props?.data?.provider_url && !providers)
-    providers = {
-      default: {
-        path: props?.data?.provider_url,
-      },
-    };
-  if (!providers) return;
-  Object.keys(providers).forEach((provider) => {
-    const path = `${providers[provider].path}/@connector-data`;
-    const url = `${addAppURL(path)}/@connector-data`;
-    const data = state.data_providers.data || {};
-    providers[provider].data = path ? data[path] || data[url] : [];
-    providers[provider].choices = makeChoices(
-      Object.keys(providers[provider].data || {}),
-    );
-  });
-  return providers;
-}
-
-export default connect(
-  (state, props) => ({
-    providers: props.withProvider ? getProviderData(state, props) : null,
-  }),
-  {
-    getDataFromProvider,
-  },
-)(RenderFields);
+export default RenderFields;
