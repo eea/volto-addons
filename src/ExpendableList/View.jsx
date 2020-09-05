@@ -18,64 +18,119 @@ const View = ({ content, ...props }) => {
     ? JSON.parse(props.data.items.value).properties
     : {};
 
-  return (
-    <List
-      as={ordered ? 'ol' : 'ul'}
-      className={
-        listClassname ? `expendableList ${listClassname}` : 'expendableList'
-      }
-    >
-      {items
-        ? Object.entries(items).map(([key, value]) => {
-            return (
-              <List.Item
-                as="li"
-                key={key}
-                className={
-                  (listItemClassname ? listItemClassname : '') +
-                  (isExpandable ? 'expandable' : 'no-expandable')
-                }
-                onClick={() => {
-                  if (isExpandable && state.activeItem === key) {
-                    setState({ ...state, activeItem: '' });
-                  } else if (isExpandable) {
-                    setState({ ...state, activeItem: key });
-                  }
-                }}
-              >
-                <span
+  if (ordered) {
+    return (
+      <ol
+        className={
+          listClassname ? `expendableList ${listClassname}` : 'expendableList'
+        }
+      >
+        {items
+          ? Object.entries(items).map(([key, value]) => {
+              return (
+                <li
                   className={
-                    'title ' +
-                    (isExpandable
-                      ? state.activeItem === key
-                        ? 'active'
-                        : ''
-                      : 'active')
+                    (listItemClassname ? listItemClassname : '') +
+                    (isExpandable ? 'expandable' : 'no-expandable')
                   }
-                >
-                  {value.title}
-                </span>
-                {/* eslint-disable-next-line */}
-                <div
-                  className={
-                    'description ' +
-                    (isExpandable
-                      ? state.activeItem === key
-                        ? 'show'
-                        : 'hide'
-                      : '')
-                  }
-                  onClick={(e) => e.stopPropagation()}
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(value.description),
+                  onClick={() => {
+                    if (isExpandable && state.activeItem === key) {
+                      setState({ ...state, activeItem: '' });
+                    } else if (isExpandable) {
+                      setState({ ...state, activeItem: key });
+                    }
                   }}
-                />
-              </List.Item>
-            );
-          })
-        : ''}
-    </List>
-  );
+                >
+                  <span
+                    className={
+                      'title ' +
+                      (isExpandable
+                        ? state.activeItem === key
+                          ? 'active'
+                          : ''
+                        : 'active')
+                    }
+                  >
+                    {value.title}
+                  </span>
+                  {/* eslint-disable-next-line */}
+                                <div
+                    className={
+                      'description ' +
+                      (isExpandable
+                        ? state.activeItem === key
+                          ? 'show'
+                          : 'hide'
+                        : '')
+                    }
+                    onClick={(e) => e.stopPropagation()}
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(value.description),
+                    }}
+                  />
+                </li>
+              );
+            })
+          : ''}
+      </ol>
+    );
+  } else {
+    return (
+      <ul
+        className={
+          listClassname ? `expendableList ${listClassname}` : 'expendableList'
+        }
+      >
+        {items
+          ? Object.entries(items).map(([key, value]) => {
+              return (
+                <li
+                  className={
+                    (listItemClassname ? listItemClassname : '') +
+                    (isExpandable ? 'expandable' : 'no-expandable')
+                  }
+                  onClick={() => {
+                    if (isExpandable && state.activeItem === key) {
+                      setState({ ...state, activeItem: '' });
+                    } else if (isExpandable) {
+                      setState({ ...state, activeItem: key });
+                    }
+                  }}
+                >
+                  <span
+                    className={
+                      'title ' +
+                      (isExpandable
+                        ? state.activeItem === key
+                          ? 'active'
+                          : ''
+                        : 'active')
+                    }
+                  >
+                    {value.title}
+                  </span>
+                  {/* eslint-disable-next-line */}
+                                <div
+                    className={
+                      'description ' +
+                      (isExpandable
+                        ? state.activeItem === key
+                          ? 'show'
+                          : 'hide'
+                        : '')
+                    }
+                    onClick={(e) => e.stopPropagation()}
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(value.description),
+                    }}
+                  />
+                </li>
+              );
+            })
+          : ''}
+      </ul>
+    );
+  }
 };
 
 export default compose(
