@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import _uniqueId from 'lodash/uniqueId';
 import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import { SidebarPortal } from '@plone/volto/components';
-import View from './View';
+import View from './ViewEdit';
 import { settings } from '~/config';
 import { makeSchema } from './schema';
 
