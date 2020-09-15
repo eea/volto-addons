@@ -5,7 +5,7 @@ import ImageCardsView from './ImageCardsView';
 
 import schema from './schema';
 
-const ImageCardEdit = props => {
+const ImageCardEdit = (props) => {
   return (
     <div className="block selected">
       <div className="block-inner-wrapper">
