@@ -39,56 +39,40 @@ const View = ({ content, ...props }) => {
       {props.mode === 'edit' && !items.length ? <p>Expandable list</p> : ''}
       {items
         ? Object.entries(items).map(([key, value], index) => (
-            <div
-              style={{
-                position: 'relative',
-                height: '100%',
-              }}
-            >
-              <div
-                style={{
-                  visibility: 'visible',
-                  display: 'inline-block',
+            <div className="list-item" key={`list-item-${key}`}>
+              <button
+                className={cx(
+                  'list-item-title',
+                  listItemTitleClassname ? listItemTitleClassname : '',
+                  isExpandable ? 'expandable' : 'no-expandable',
+                )}
+                onClick={() => {
+                  if (isExpandable && state.activeItem === key) {
+                    setState({ ...state, activeItem: '' });
+                  } else if (isExpandable) {
+                    setState({ ...state, activeItem: key });
+                  }
                 }}
-                className="drag handle wrapper"
               >
-                <Icon name={dragSVG} size="18px" />
-              </div>
-              <div className="list-item" key={`list-item-${key}`}>
-                <button
-                  className={cx(
-                    'list-item-title',
-                    listItemTitleClassname ? listItemTitleClassname : '',
-                    isExpandable ? 'expandable' : 'no-expandable',
-                  )}
-                  onClick={() => {
-                    if (isExpandable && state.activeItem === key) {
-                      setState({ ...state, activeItem: '' });
-                    } else if (isExpandable) {
-                      setState({ ...state, activeItem: key });
-                    }
-                  }}
-                >
-                  {ordered ? `${index + 1}. ` : ''}
-                  {value.title}
-                </button>
-                <div
-                  className={cx(
-                    'list-item-description',
-                    listItemDescriptionClassname
-                      ? listItemDescriptionClassname
-                      : '',
-                    isExpandable
-                      ? state.activeItem === key
-                        ? 'show'
-                        : 'hide'
-                      : '',
-                  )}
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(value.description),
-                  }}
-                />
-              </div>
+                {ordered ? `${index + 1}. ` : ''}
+                {value.title}
+              </button>
+              <div
+                className={cx(
+                  'list-item-description',
+                  listItemDescriptionClassname
+                    ? listItemDescriptionClassname
+                    : '',
+                  isExpandable
+                    ? state.activeItem === key
+                      ? 'show'
+                      : 'hide'
+                    : '',
+                )}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(value.description),
+                }}
+              />
             </div>
           ))
         : ''}
