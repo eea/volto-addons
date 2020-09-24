@@ -120,6 +120,7 @@ export function applyConfig(config) {
     icon: chartIcon,
     group: 'custom_addons',
   };
+
   config.blocks.blocksConfig.pdf_viewer = {
     id: 'pdf_viewer',
     title: 'PDF Viewer',
@@ -127,6 +128,7 @@ export function applyConfig(config) {
     edit: PDFBlockEdit,
     icon: chartIcon,
     group: 'custom_addons',
+    sidebarTab: 1,
   };
 
   config.blocks.blocksConfig.web_map = {
@@ -136,6 +138,7 @@ export function applyConfig(config) {
     edit: WebMapBlockEdit,
     icon: chartIcon,
     group: 'custom_addons',
+    sidebarTab: 1,
   };
 
   config.addonReducers = {
