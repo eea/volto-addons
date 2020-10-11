@@ -19,21 +19,6 @@ const View = ({ content, ...props }) => {
   const items = props.data?.items || [];
   const ordered = props.data?.ordered;
 
-  const onDragEnd = (result) => {
-    const { source, destination } = result;
-    if (!destination) {
-      return;
-    }
-    if (source.droppableId === destination.droppableId) {
-      props.onChangeBlock(props.block, {
-        ...props.data,
-        items: move(props.data.items, source.index, destination.index),
-      });
-    } else {
-      //  WIP
-    }
-  };
-
   return (
     <div className={cx('expandable-list', listClassname)}>
       {props.mode === 'edit' && !items.length ? <p>Expandable list</p> : ''}
@@ -54,8 +39,8 @@ const View = ({ content, ...props }) => {
                   }
                 }}
               >
-                {ordered ? `${index + 1}. ` : ''}
-                {value.title}
+                <span className="count">{ordered ? `${index + 1}. ` : ''}</span>
+                <span>{value.title}</span>
               </button>
               <div
                 className={cx(

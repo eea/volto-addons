@@ -1,7 +1,18 @@
+.expandable-list.blue .list-item-title .count {
+  color: #4296B3;
+}
+
 .expandable-list .list-item-title.blue {
   color: #4296B3;
   font-weight: 300;
 }
+
+.expandable-list.blue .list-item-title,
+.expandable-list  .list-item-description {
+  color: #333333;
+}
+
+
 
 .expandable-list .list-item-title.text-decoration-underline {
   text-decoration: underline;
@@ -12,6 +23,8 @@
   display: block;
   border: none;
   background: transparent;
+  text-align: left;
+  padding: 0;
 }
 
 .expandable-list  .list-item-title:focus {
