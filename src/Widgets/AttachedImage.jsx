@@ -53,7 +53,7 @@ const messages = defineMessages({
   },
 });
 
-export const thumbUrl = url =>
+export const thumbUrl = (url) =>
   (url || '').includes(settings.apiPath)
     ? `${flattenToAppURL(url)}/@@images/image/thumb`
     : url;
@@ -88,15 +88,15 @@ export class UnconnectedAttachedImageWidget extends Component {
       });
 
       const url = this.props.content['@id'];
-      this.props.onChange(this.props.id, url);
+      this.props.onChange(this.props.id, flattenToAppURL(url));
     }
   }
 
   onDrop(acceptedFiles) {
     this.setState({ uploading: true });
 
-    acceptedFiles.forEach(file => {
-      readAsDataURL(file).then(data => {
+    acceptedFiles.forEach((file) => {
+      readAsDataURL(file).then((data) => {
         const fields = data.match(/^data:(.*);(.*),(.*)$/);
         // console.log('fields', fields);
 
@@ -226,7 +226,7 @@ export class UnconnectedAttachedImageWidget extends Component {
                 </div>
               )}
 
-              {map(error, message => (
+              {map(error, (message) => (
                 <Label key={message} basic color="red" pointing>
                   {message}
                 </Label>
