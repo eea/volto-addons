@@ -4,12 +4,17 @@ import { settings } from '~/config';
 import { flattenToAppURL } from '@plone/volto/helpers';
 import React, { useEffect } from 'react';
 
-export const thumbUrl = url =>
+export const getPath = (url) => new URL(url).pathname;
+
+// TODO: the approach for the URL path generation is not correct, it does not
+// work on local;
+
+export const thumbUrl = (url) =>
   (url || '').includes(settings.apiPath)
     ? `${flattenToAppURL(url)}/@@images/image/preview`
-    : url;
+    : `${url}/@@images/image/preview`;
 
-export const Card = props => {
+export const Card = (props) => {
   const { title, link, attachedimage } = props; // text,
 
   useEffect(() => {
@@ -21,10 +26,7 @@ export const Card = props => {
       {link ? (
         <>
           <Link to={link}>
-            <img
-              src={flattenToAppURL(thumbUrl(attachedimage) || '')}
-              alt={title}
-            />
+            <img src={thumbUrl(getPath(attachedimage))} alt={title} />
           </Link>
           <h5>
             <Link to={link}>{title}</Link>
@@ -32,10 +34,7 @@ export const Card = props => {
         </>
       ) : (
         <>
-          <img
-            src={flattenToAppURL(thumbUrl(attachedimage) || '')}
-            alt={title}
-          />
+          <img src={thumbUrl(getPath(attachedimage))} alt={title} />
           <h5>{title}</h5>
         </>
       )}
@@ -63,7 +62,7 @@ const RoundTiled = ({ data }) => {
         <div className="roundtiled">
           <h2>{title}</h2>
           <div className="cards">
-            {(cards || []).map(card => (
+            {(cards || []).map((card) => (
               <Card {...card} />
             ))}
           </div>

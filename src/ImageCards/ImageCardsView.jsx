@@ -7,7 +7,7 @@ const byDisplayType = {
   round_tiled: RoundTiled,
 };
 
-const ImageCardView = props => {
+const ImageCardView = (props) => {
   const Impl = byDisplayType[props.data.display || 'carousel'];
   return <Impl {...props} />;
 };
