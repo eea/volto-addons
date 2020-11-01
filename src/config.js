@@ -153,11 +153,6 @@ export function applyConfig(config) {
     group: 'custom_addons',
   };
 
-  config.addonReducers = {
-    ...config.addonReducers,
-    ...addonReducers,
-  };
-
   config.viewlets = [
     {
       path: '/controlpanel',
@@ -166,7 +161,13 @@ export function applyConfig(config) {
     ...(config.viewlets || []),
   ];
 
-  return config;
+  return {
+    ...config,
+    addonReducers: {
+      ...config.addonReducers,
+      ...addonReducers,
+    },
+  };
 }
 
 export function installFolderListing(config) {
