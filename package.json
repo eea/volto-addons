@@ -18,7 +18,7 @@
     "redraft": "^0.10.2"
   },
   "dependencies": {
-    "dompurify": "^2.0.12",
+    "dompurify": "^2.0.17",
     "draft-js-alignment-plugin": "^2.0.6",
     "draft-js-focus-plugin": "^3.0.1",
     "draft-js-import-html": "^1.4.1",
