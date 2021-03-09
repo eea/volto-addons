@@ -7,7 +7,7 @@ import React from 'react';
 
 import { Form, Grid } from 'semantic-ui-react';
 
-import { AlignBlock } from '@plone/volto/helpers';
+import AlignBlock from '@plone/volto/components/manage/Sidebar/AlignBlock';
 
 const AlignBlockWidget = ({ id, title, required, value, onChange }) => (
   <Form.Field inline required={required}>
