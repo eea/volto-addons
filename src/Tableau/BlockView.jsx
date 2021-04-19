@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 import TableauReport from './TableauReport';
 
 class TableauBlockView extends Component {
@@ -32,7 +32,7 @@ class TableauBlockView extends Component {
           <TableauReport
             url={this.state.url}
             tableauVersion={
-              this.props.data.tableauVersion || settings.tableauVersion
+              this.props.data.tableauVersion || config.settings.tableauVersion
             }
             filters={this.state.filters}
             sheetname={this.state.sheetname}

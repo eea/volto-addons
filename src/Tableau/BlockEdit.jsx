@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Input } from 'semantic-ui-react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { toast } from 'react-toastify';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 import TableauReport from './TableauReport';
 import { compose } from 'redux';
 import editingSVG from '@plone/volto/icons/editing.svg';
@@ -200,7 +200,8 @@ class TableauEdit extends Component {
               <TableauReport
                 url={this.state.url}
                 tableauVersion={
-                  this.props.data.tableauVersion || settings.tableauVersion
+                  this.props.data.tableauVersion ||
+                  config.settings.tableauVersion
                 }
                 filters={this.state.filters}
                 sheetname={this.state.sheetname}

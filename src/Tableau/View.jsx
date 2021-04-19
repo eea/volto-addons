@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import qs from 'query-string';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 import Tableau from './Tableau';
 
 const TableauBlockView = (props) => {
@@ -11,7 +11,8 @@ const TableauBlockView = (props) => {
   const data = props.data || {};
   const [state, setState] = useState({
     url: data.url?.value || '',
-    tableauVersion: data.tableauVersion?.value || settings.tableauVersion || '',
+    tableauVersion:
+      data.tableauVersion?.value || config.settings.tableauVersion || '',
     sheetname: data.sheetname?.value || '',
     filters: data.filters?.value || undefined,
     hideTabs: data.hideTabs?.value || '',
@@ -38,7 +39,9 @@ const TableauBlockView = (props) => {
       {state.url ? (
         <Tableau
           url={state.url}
-          tableauVersion={state.tableauVersion || settings.tableauVersion}
+          tableauVersion={
+            state.tableauVersion || config.settings.tableauVersion
+          }
           filters={state.filters}
           sheetname={state.sheetname}
           options={options}

@@ -31,8 +31,9 @@ const messages = defineMessages({
 
 const getSchema = (props) => {
   const { query } = qs.parse(props.query);
-  const { search } = props.discodata_query;
+  const { search } = props.discodata_query || {};
   const globalQuery = { ...query, ...search };
+
   console.log(globalQuery);
   return {
     tableauVersion: {
@@ -164,8 +165,8 @@ class TableauEdit extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      JSON.stringify(prevProps.discodata_query.search) !==
-      JSON.stringify(this.props.discodata_query.search)
+      JSON.stringify(prevProps.discodata_query?.search) !==
+      JSON.stringify(this.props.discodata_query?.search)
     ) {
       const schema = getSchema({
         ...this.props,
@@ -194,7 +195,7 @@ class TableauEdit extends Component {
       hideToolbars: hideToolbars?.value || '',
     };
     const { query } = qs.parse(this.props);
-    const { search } = this.props.discodata_query;
+    const { search } = this.props.discodata_query || {};
     const globalQuery = { ...query, ...search };
     const queryParameters = this.props.data?.queryParameters?.value
       ? JSON.parse(this.props.data.queryParameters.value).properties

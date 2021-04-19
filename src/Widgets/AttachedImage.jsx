@@ -20,7 +20,7 @@ import { flattenToAppURL, getBaseUrl } from '@plone/volto/helpers';
 import imageBlockSVG from '@plone/volto/components/manage/Blocks/Image/block-image.svg';
 import { createContent } from '@plone/volto/actions';
 
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 
 const messages = defineMessages({
   default: {
@@ -54,7 +54,7 @@ const messages = defineMessages({
 });
 
 export const thumbUrl = (url) =>
-  (url || '').includes(settings.apiPath)
+  (url || '').includes(config.settings.apiPath)
     ? `${flattenToAppURL(url)}/@@images/image/thumb`
     : url;
 
