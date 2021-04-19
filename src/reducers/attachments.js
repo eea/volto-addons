@@ -1,5 +1,5 @@
 import { GET_ALL_ATTACHMENTS, CREATE_ATTACHMENT } from '../constants';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 
 const initialState = {
   error: null,
@@ -29,9 +29,9 @@ export default function attachments(state = initialState, action = {}) {
       return {
         ...state,
         error: null,
-        attachments: action.result.items.map(item => ({
+        attachments: action.result.items.map((item) => ({
           ...item,
-          url: item['@id'].replace(settings.apiPath, ''),
+          url: item['@id'].replace(config.settings.apiPath, ''),
         })),
         loaded: true,
         loading: false,

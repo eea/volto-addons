@@ -4,9 +4,9 @@ import { compose } from 'redux';
 import _uniqueId from 'lodash/uniqueId';
 import RenderFields from 'volto-addons/Widgets/RenderFields';
 import View from './View';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 
-const getSchema = props => {
+const getSchema = (props) => {
   const isExpandable = props.data.isExpandable?.value;
   return {
     ordered: {
@@ -63,9 +63,9 @@ const getSchema = props => {
   };
 };
 
-const Edit = props => {
+const Edit = (props) => {
   const [state, setState] = useState({
-    schema: getSchema({ ...props, providerUrl: settings.providerUrl }),
+    schema: getSchema({ ...props, providerUrl: config.settings.providerUrl }),
     id: _uniqueId('block_'),
   });
   useEffect(() => {
@@ -76,7 +76,7 @@ const Edit = props => {
       }),
     });
     /* eslint-disable-next-line */
-  }, [props.data.isExpandable])
+  }, [props.data.isExpandable]);
   return (
     <div>
       <RenderFields schema={state.schema} {...props} title="Navigation block" />
