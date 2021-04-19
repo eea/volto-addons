@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { toast } from 'react-toastify';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 import Tableau from './Tableau';
 import { compose } from 'redux';
 import { Icon } from '@plone/volto/components';
@@ -116,7 +116,7 @@ class TableauEdit extends Component {
       error: false,
       schema: getSchema({
         ...props,
-        tableauVersion: settings.tableauVersion,
+        tableauVersion: config.settings.tableauVersion,
       }),
     };
 
@@ -170,7 +170,7 @@ class TableauEdit extends Component {
     ) {
       const schema = getSchema({
         ...this.props,
-        tableauVersion: settings.tableauVersion,
+        tableauVersion: config.settings.tableauVersion,
       });
       this.setState({ schema, error: false });
     } else if (this.state.error) {
@@ -232,7 +232,7 @@ class TableauEdit extends Component {
               <Tableau
                 url={url?.value}
                 tableauVersion={
-                  tableauVersion?.value || settings.tableauVersion
+                  tableauVersion?.value || config.settings.tableauVersion
                 }
                 filters={filters?.value}
                 sheetname={sheetname?.value}
