@@ -12,7 +12,7 @@ import { Button, Input, Message, Segment } from 'semantic-ui-react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import Dropzone from 'react-dropzone';
 
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 
 import { Icon, SidebarPortal, TextWidget } from '@plone/volto/components';
 import { createContent } from '@plone/volto/actions';
@@ -103,7 +103,7 @@ class Edit extends Component {
     }
   }
 
-  handleWheel = event => {
+  handleWheel = (event) => {
     let page;
     if (event.deltaY < 0) {
       page = Math.max(this.state.currentPage - 1, 1);
@@ -160,7 +160,7 @@ class Edit extends Component {
     this.setState({
       uploading: true,
     });
-    readAsDataURL(file).then(data => {
+    readAsDataURL(file).then((data) => {
       const fields = data.match(/^data:(.*);(.*),(.*)$/);
       this.props.createContent(getBaseUrl(this.props.pathname), {
         '@type': 'Image',
@@ -206,12 +206,12 @@ class Edit extends Component {
    * @param {array} files File objects
    * @returns {undefined}
    */
-  onDrop = file => {
+  onDrop = (file) => {
     this.setState({
       uploading: true,
     });
 
-    readAsDataURL(file[0]).then(data => {
+    readAsDataURL(file[0]).then((data) => {
       const fields = data.match(/^data:(.*);(.*),(.*)$/);
       this.props.createContent(getBaseUrl(this.props.pathname), {
         '@type': 'File',
@@ -234,7 +234,7 @@ class Edit extends Component {
    * @param {Object} e Event object
    * @returns {undefined}
    */
-  onKeyDownVariantMenuForm = e => {
+  onKeyDownVariantMenuForm = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       e.stopPropagation();
@@ -256,7 +256,7 @@ class Edit extends Component {
   render() {
     const dataUrl =
       (this.props.data.url &&
-        (this.props.data.url.includes(settings.apiPath)
+        (this.props.data.url.includes(config.settings.apiPath)
           ? `${flattenToAppURL(this.props.data.url)}/@@download/file`
           : this.props.data.url)) ||
       null;
@@ -319,7 +319,7 @@ class Edit extends Component {
                       <Button
                         basic
                         icon
-                        onClick={e => {
+                        onClick={(e) => {
                           e.stopPropagation();
                           this.props.openObjectBrowser();
                         }}
@@ -335,7 +335,7 @@ class Edit extends Component {
                       )}
                       // Prevents propagation to the Dropzone and the opening
                       // of the upload browser dialog
-                      onClick={e => e.stopPropagation()}
+                      onClick={(e) => e.stopPropagation()}
                     />
                     {this.state.url && (
                       <Button.Group>
@@ -379,7 +379,7 @@ class Edit extends Component {
                   <img src={pdfSVG} alt="" />
                 </Segment>
                 <Segment className="form sidebar-image-data">
-                  {data.url.includes(settings.apiPath) && (
+                  {data.url.includes(config.settings.apiPath) && (
                     <TextWidget
                       id="Origin"
                       title={this.props.intl.formatMessage(messages.Origin)}
@@ -392,7 +392,7 @@ class Edit extends Component {
                       onChange={() => {}}
                     />
                   )}
-                  {!data.url.includes(settings.apiPath) && (
+                  {!data.url.includes(config.settings.apiPath) && (
                     <TextWidget
                       id="external"
                       title={this.props.intl.formatMessage(
@@ -401,7 +401,7 @@ class Edit extends Component {
                       required={false}
                       value={data.url}
                       icon={clearSVG}
-                      iconAction={block =>
+                      iconAction={(block) =>
                         this.props.onChangeBlock(block, {
                           ...data,
                           url: '',
@@ -423,7 +423,7 @@ class Edit extends Component {
 export default compose(
   injectIntl,
   connect(
-    state => ({
+    (state) => ({
       request: state.content.create,
       content: state.content.data,
     }),

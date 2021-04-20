@@ -10,7 +10,7 @@ import { Icon } from '@plone/volto/components';
 import zoomSVG from '@plone/volto/icons/zoom.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import { getBaseUrl } from '@plone/volto/helpers';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 import { quickResetSearchContent, quickSearchContent } from '../actions';
 import Highlighter from 'react-highlight-words';
 import cx from 'classnames';
@@ -37,7 +37,7 @@ class View extends Component {
     super(props);
     this.state = {
       text: '',
-      apiRoot: new URL(settings.apiPath).pathname,
+      apiRoot: new URL(config.settings.apiPath).pathname,
       active: false,
       query: {},
     };

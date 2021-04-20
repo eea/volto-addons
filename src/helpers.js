@@ -1,6 +1,6 @@
 import redraft from 'redraft';
 import { compact, concat, isArray, join, map, pickBy, toPairs } from 'lodash';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 const url = require('url');
 
 // NOTE: this needs to be improvded to recursively convert the query to qs
@@ -9,13 +9,13 @@ const url = require('url');
 
 export function dataToQueryString(data) {
   let queryArray = [];
-  const arrayOptions = pickBy(data, item => isArray(item));
+  const arrayOptions = pickBy(data, (item) => isArray(item));
 
   queryArray = concat(
     queryArray,
     data
       ? join(
-          map(toPairs(pickBy(data, item => !isArray(item))), item => {
+          map(toPairs(pickBy(data, (item) => !isArray(item))), (item) => {
             if (item[0] === 'SearchableText') {
               // Adds the wildcard to the SearchableText param
               item[1] = `${item[1]}*`;
@@ -32,7 +32,10 @@ export function dataToQueryString(data) {
     arrayOptions
       ? join(
           map(pickBy(arrayOptions), (item, key) =>
-            join(item.map(value => `${key}:list=${value}`), '&'),
+            join(
+              item.map((value) => `${key}:list=${value}`),
+              '&',
+            ),
           ),
           '&',
         )
@@ -46,7 +49,8 @@ export function dataToQueryString(data) {
 // if URL matches a defined cors proxy destination, then use the cors proxy
 export function useCorsproxy(targetUrl) {
   console.log('using cors proxy', targetUrl);
-  const allowed_cors_destinations = settings.allowed_cors_destinations || [];
+  const allowed_cors_destinations =
+    config.settings.allowed_cors_destinations || [];
   const parsed = url.parse(targetUrl);
   const nextUrl =
     allowed_cors_destinations.indexOf(parsed.host) === -1
@@ -58,6 +62,10 @@ export function useCorsproxy(targetUrl) {
 
 export function renderDraft(draftValue) {
   return draftValue
-    ? redraft(draftValue, settings.ToHTMLRenderers, settings.ToHTMLOptions)
+    ? redraft(
+        draftValue,
+        config.settings.ToHTMLRenderers,
+        config.settings.ToHTMLOptions,
+      )
     : '';
 }

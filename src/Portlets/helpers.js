@@ -1,11 +1,11 @@
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 
 export function cleanUrl(url) {
   return (
     (url &&
       url
-        .replace(settings.apiPath, '')
-        .replace(settings.internalApiPath, '')) ||
+        .replace(config.settings.apiPath, '')
+        .replace(config.settings.internalApiPath, '')) ||
     ''
   );
 }

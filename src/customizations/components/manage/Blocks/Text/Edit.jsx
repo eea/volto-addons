@@ -18,7 +18,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 import { includes, isEqual } from 'lodash';
 import { Portal } from 'react-portal';
 
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 
 import { Icon, BlockChooser, SidebarPortal } from '@plone/volto/components';
 import addSVG from '@plone/volto/icons/add.svg';
@@ -89,7 +89,7 @@ class Edit extends Component {
       }
       const inlineToolbarPlugin = createInlineToolbarPlugin({
         structure: [
-          ...settings.richTextEditorInlineToolbarButtons,
+          ...config.settings.richTextEditorInlineToolbarButtons,
           () => this.addNewBlockButton(this.props.onAddBlock),
         ],
         theme: {
@@ -205,7 +205,7 @@ class Edit extends Component {
     // this.onAlignChange(editorState);
   }
 
-  addNewBlockButton = addBlock => {
+  addNewBlockButton = (addBlock) => {
     return (
       <button
         style={{ outline: 'none' }}
@@ -246,9 +246,9 @@ class Edit extends Component {
   }
 
   toggleAddNewBlock = () =>
-    this.setState(state => ({ addNewBlockOpened: !state.addNewBlockOpened }));
+    this.setState((state) => ({ addNewBlockOpened: !state.addNewBlockOpened }));
 
-  handleClickOutside = e => {
+  handleClickOutside = (e) => {
     if (
       this.props.blockNode.current &&
       doesNodeContainClick(this.props.blockNode.current, e)
@@ -288,14 +288,14 @@ class Edit extends Component {
           editorState={this.state.editorState}
           plugins={[
             this.state.inlineToolbarPlugin,
-            ...settings.richTextEditorPlugins,
+            ...config.settings.richTextEditorPlugins,
           ]}
           key={this.props.draftEditorKey}
-          customStyleMap={settings.customStyleMap}
-          blockRenderMap={settings.extendedBlockRenderMap}
-          blockStyleFn={settings.blockStyleFn}
+          customStyleMap={config.settings.customStyleMap}
+          blockRenderMap={config.settings.extendedBlockRenderMap}
+          blockStyleFn={config.settings.blockStyleFn}
           placeholder={this.props.intl.formatMessage(messages.text)}
-          handleReturn={e => {
+          handleReturn={(e) => {
             if (isSoftNewlineEvent(e)) {
               this.onChange(
                 RichUtils.insertSoftNewline(this.state.editorState),
@@ -310,7 +310,7 @@ class Edit extends Component {
                 anchorKey,
               );
               const blockType = currentContentBlock.getType();
-              if (!includes(settings.listBlockTypes, blockType)) {
+              if (!includes(config.settings.listBlockTypes, blockType)) {
                 this.props.onSelectBlock(
                   this.props.onAddBlock('text', this.props.index + 1),
                 );
@@ -349,7 +349,7 @@ class Edit extends Component {
               this.props.onFocusNextBlock(this.props.block, this.node);
             }
           }}
-          ref={node => {
+          ref={(node) => {
             this.node = node;
           }}
         />

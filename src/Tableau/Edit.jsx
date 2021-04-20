@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { toast } from 'react-toastify';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 import Tableau from './Tableau';
 import { compose } from 'redux';
 import { Icon } from '@plone/volto/components';
@@ -31,8 +31,9 @@ const messages = defineMessages({
 
 const getSchema = (props) => {
   const { query } = qs.parse(props.query);
-  const { search } = props.discodata_query;
+  const { search } = props.discodata_query || {};
   const globalQuery = { ...query, ...search };
+
   console.log(globalQuery);
   return {
     tableauVersion: {
@@ -115,7 +116,7 @@ class TableauEdit extends Component {
       error: false,
       schema: getSchema({
         ...props,
-        tableauVersion: settings.tableauVersion,
+        tableauVersion: config.settings.tableauVersion,
       }),
     };
 
@@ -164,12 +165,12 @@ class TableauEdit extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      JSON.stringify(prevProps.discodata_query.search) !==
-      JSON.stringify(this.props.discodata_query.search)
+      JSON.stringify(prevProps.discodata_query?.search) !==
+      JSON.stringify(this.props.discodata_query?.search)
     ) {
       const schema = getSchema({
         ...this.props,
-        tableauVersion: settings.tableauVersion,
+        tableauVersion: config.settings.tableauVersion,
       });
       this.setState({ schema, error: false });
     } else if (this.state.error) {
@@ -194,7 +195,7 @@ class TableauEdit extends Component {
       hideToolbars: hideToolbars?.value || '',
     };
     const { query } = qs.parse(this.props);
-    const { search } = this.props.discodata_query;
+    const { search } = this.props.discodata_query || {};
     const globalQuery = { ...query, ...search };
     const queryParameters = this.props.data?.queryParameters?.value
       ? JSON.parse(this.props.data.queryParameters.value).properties
@@ -231,7 +232,7 @@ class TableauEdit extends Component {
               <Tableau
                 url={url?.value}
                 tableauVersion={
-                  tableauVersion?.value || settings.tableauVersion
+                  tableauVersion?.value || config.settings.tableauVersion
                 }
                 filters={filters?.value}
                 sheetname={sheetname?.value}

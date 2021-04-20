@@ -3,11 +3,11 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
 
-import { portlets } from '~/config';
+import config from '@plone/volto/registry';
 
 export default function renderPortletManager(name, cols, { ...props }) {
   let WrappedPortletManager =
-    portlets.managers[name] || portlets.managers.default;
+    config.portlets.managers[name] || config.portlets.managers.default;
   return cols ? (
     <Grid.Column
       mobile={12}

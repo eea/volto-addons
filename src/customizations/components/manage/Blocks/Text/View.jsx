@@ -5,7 +5,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'draft-js-alignment-plugin/lib/plugin.css';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 import './style.css';
 
 import redraft from 'redraft';
@@ -13,7 +13,11 @@ import redraft from 'redraft';
 const View = ({ data }) => {
   return data && data.text ? (
     <div>
-      {redraft(data.text, settings.ToHTMLRenderers, settings.ToHTMLOptions)}
+      {redraft(
+        data.text,
+        config.settings.ToHTMLRenderers,
+        config.settings.ToHTMLOptions,
+      )}
     </div>
   ) : (
     <p> </p>

@@ -5,12 +5,12 @@ import _uniqueId from 'lodash/uniqueId';
 import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import { SidebarPortal } from '@plone/volto/components';
 import View from './ViewEdit';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 import { makeSchema } from './schema';
 
 const Edit = (props) => {
   const [state, setState] = useState({
-    schema: makeSchema({ ...props, providerUrl: settings.providerUrl }),
+    schema: makeSchema({ ...props, providerUrl: config.settings.providerUrl }),
     id: _uniqueId('block_'),
   });
   useEffect(() => {

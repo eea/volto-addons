@@ -13,7 +13,7 @@ class Carousel extends Component {
     require('./css/carousel.less');
   }
 
-  renderSlide = card => {
+  renderSlide = (card) => {
     return (
       <div className="slider-slide">
         <LazyLoadImage
@@ -43,7 +43,7 @@ class Carousel extends Component {
 
   render() {
     const { data } = this.props;
-    const images = this.props.data.cards;
+    const images = this.props.data.cards || [];
 
     // renderLeftNav={(onClick, disabled) => (
     //   <button

@@ -52,7 +52,10 @@ const ImageCards = {
     },
     display: {
       title: 'Display',
-      choices: [['round_tiled', 'Round Tiled'], ['carousel', 'Carousel']],
+      choices: [
+        ['round_tiled', 'Round Tiled'],
+        ['carousel', 'Carousel'],
+      ],
     },
     cards: {
       widget: 'objectlist',

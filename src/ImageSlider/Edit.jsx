@@ -15,7 +15,7 @@ import {
   deleteAttachment,
 } from '../actions';
 import { flattenToAppURL, getBaseUrl } from '@plone/volto/helpers';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 import { withRouter } from 'react-router-dom';
 
 import clearIcon from '@plone/volto/icons/clear.svg';
@@ -70,8 +70,8 @@ class SlideEditor extends Component {
     const text = ReactDOMServer.renderToStaticMarkup(
       redraft(
         this.state.editorState.text,
-        settings.ToHTMLRenderers,
-        settings.ToHTMLOptions,
+        config.settings.ToHTMLRenderers,
+        config.settings.ToHTMLOptions,
       ),
     );
     this.setState({ editing: false }, () => {
@@ -87,7 +87,7 @@ class SlideEditor extends Component {
   render() {
     const slide = this.props.slide;
     let editorState = stateFromHTML(slide.text.data || '', {
-      customBlockFn: settings.FromHTMLCustomBlockFn,
+      customBlockFn: config.settings.FromHTMLCustomBlockFn,
     });
     let text = convertToRaw(editorState);
     const textdata = { text };
@@ -171,8 +171,8 @@ class EditSlider extends Component {
 
   onDrop(acceptedFiles) {
     this.setState({ uploading: true });
-    acceptedFiles.forEach(file => {
-      readAsDataURL(file).then(data => {
+    acceptedFiles.forEach((file) => {
+      readAsDataURL(file).then((data) => {
         const fields = data.match(/^data:(.*);(.*),(.*)$/);
 
         this.props.createAttachment(
@@ -252,7 +252,8 @@ function getSliderImages(attachments, new_attachment) {
   if (!attachments) return [];
 
   const atch = attachments.attachments || [];
-  const slider = (atch && atch.find(el => el['@id'] === 'slider-images')) || [];
+  const slider =
+    (atch && atch.find((el) => el['@id'] === 'slider-images')) || [];
   let res = [...(slider.items || [])];
   if (new_attachment) res = [new_attachment, ...res];
   return res;
@@ -262,7 +263,7 @@ function getSliderImages(attachments, new_attachment) {
 function saveAttachment(path, data) {
   return (dispatch, getState) => {
     const basePath = getState().router.location.pathname;
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       resolve(dispatch(updateAttachment(path, data)));
     }).then(() => {
       const url = `${getBaseUrl(basePath)}/@attachments`;

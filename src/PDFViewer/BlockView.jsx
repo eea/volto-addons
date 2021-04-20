@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@plone/volto/components';
-import { settings } from '~/config';
+import config from '@plone/volto/registry';
 import { flattenToAppURL } from '@plone/volto/helpers';
 import Loadable from 'react-loadable';
 
@@ -53,7 +53,7 @@ class PDFView extends Component {
     }
   }
 
-  handleWheel = event => {
+  handleWheel = (event) => {
     let page;
     if (event.deltaY < 0) {
       page = Math.max(this.state.currentPage - 1, 1);
@@ -81,7 +81,7 @@ class PDFView extends Component {
     const { data } = this.props;
     const dataUrl =
       (data.url &&
-        (data.url.includes(settings.apiPath)
+        (data.url.includes(config.settings.apiPath)
           ? `${flattenToAppURL(data.url)}/@@download/file`
           : useCorsproxy(data.url))) ||
       null;
