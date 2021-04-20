@@ -21,7 +21,7 @@ const Edit = (props) => {
       }),
     });
     /* eslint-disable-next-line */
-  }, [props.data.isExpandable])
+  }, [props.data.isExpandable]);
   return (
     <div>
       <SidebarPortal selected={props.selected}>
