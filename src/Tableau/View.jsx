@@ -7,7 +7,7 @@ import Tableau from './Tableau';
 
 const TableauBlockView = (props) => {
   const { query } = props;
-  const { search } = props.discodata_query;
+  const { search } = props.discodata_query || {};
   const data = props.data || {};
   const [state, setState] = useState({
     url: data.url?.value || '',
@@ -19,7 +19,7 @@ const TableauBlockView = (props) => {
     hideToolbars: data.hideToolbars?.value || '',
     hideShare: data.hideShare?.value || false,
   });
-  const globalQuery = { ...query, ...search };
+  const globalQuery = { ...query, ...(search || {}) };
   const options = {
     ...state.filters,
     hideTabs: state.hideTabs,
